@@ -1,0 +1,33 @@
+{
+  "name": "fanta_ic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./build/server/server.js",
+  "scripts": {
+    "dev": "nodemon exec",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatteoColombo/fanta_ic.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MatteoColombo/fanta_ic/issues"
+  },
+  "homepage": "https://github.com/MatteoColombo/fanta_ic#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.0",
+    "@types/node": "^12.6.8",
+    "mysql2": "^1.6.5",
+    "nodemon": "^1.19.1",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
