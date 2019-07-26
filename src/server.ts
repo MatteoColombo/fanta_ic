@@ -10,4 +10,5 @@ app.use("/static", express.static(STATIC_DIR));
 
 app.get("/", (req, res) => res.send("Ciao"));
 
+// tslint:disable-next-line:no-console
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

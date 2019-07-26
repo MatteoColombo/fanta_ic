@@ -6,12 +6,12 @@
       "test/**/*.spec.ts"
     ],
     "watch": [
-      "server/**/*.ts"
+      "src/**/*.ts"
     ],
     "env": {
       "NODE_ENV": "development",
       "PORT":4200
     },
     "ext": "ts",
-    "exec": "ts-node ./server/server.ts"
+    "exec": "ts-node ./src/server.ts"
   }

@@ -2,9 +2,9 @@
   "name": "fanta_ic",
   "version": "1.0.0",
   "description": "",
-  "main": "./build/server/server.js",
+  "main": "./build/server.js",
   "scripts": {
-    "dev": "nodemon exec",
+    "start": "nodemon exec",
     "prebuild":"tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
