@@ -1,6 +1,12 @@
-class user {
+import { autoserialize } from "cerialize";
 
+
+export class UserModel {
+
+    @autoserialize
     public id: number;
-    public name: String;
-    public isOrganizer: boolean;
+
+    @autoserialize
+    public name: string;
+
 }
