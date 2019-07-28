@@ -8,5 +8,7 @@ export class UserModel {
 
     @autoserialize
     public name: string;
-
+    
+    @autoserialize
+    public email: string;
 }

@@ -1,8 +1,11 @@
-.navbar-brand {
-    outline: none;
-    font-weight: 700;
+a{
+    text-decoration: none;
 }
 
-.navbar-brand, h1, h2, h3, h4 {
+.navbar-brand, h1, h2, h3, h4, a {
+    color: #fff;
+    outline: none;
+    font-weight: 700;
     font-family: 'Montserrat', sans-serif;
 }
+

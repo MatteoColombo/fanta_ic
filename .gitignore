@@ -1,4 +1,4 @@
 node_modules
 build
-src/secrets/keys.ts
+src/secrets/config.ts
 ormconfig.json

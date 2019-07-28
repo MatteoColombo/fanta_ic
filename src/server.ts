@@ -10,7 +10,7 @@ import "reflect-metadata";
 import { TypeormStore } from "typeorm-store";
 import { Database } from "./database/database";
 import { Session } from "./database/entities/session.entity";
-import { keys } from "./secrets/keys";
+import { config } from "./secrets/config";
 import { router as pages } from "./routes/pages";
 import { router as apis } from "./routes/apis";
 
@@ -48,10 +48,10 @@ function setMiddleware() {
 function addSession() {
     const repo = db.connection.getRepository(Session);
     let sess = {
-        secret: keys.session.secret,
+        secret: config.session.secret,
         resave: true,
         saveUninitialized: false,
-        cookie: keys.session.cookie,
+        cookie: config.session.cookie,
         store: new TypeormStore({ repository: repo })
     }
 

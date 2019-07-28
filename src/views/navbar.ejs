@@ -1,5 +1,10 @@
 <nav class="navbar navbar-dark bg-primary">
     <div class="container"> 
     <a class="navbar-brand" href="/"><%- title -%></a>
+    <% if(user){ %>
+        <a href="/api/auth/logout"><%= user.name %></a>
+    <% } else{ %>  
+        <a href="/api/auth/login">foo</a>
+    <% } %>
     </div>
 </nav>

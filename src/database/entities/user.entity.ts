@@ -12,6 +12,9 @@ export class UserEntity extends BaseEntity implements Transformable<UserModel> {
     @Column({ nullable: false })
     name: string;
 
+    @Column({ nullable: false })
+    email: string;
+
     _transform(): UserModel {
         let model: UserModel = new UserModel();
         model.id = this.id;
@@ -22,6 +25,7 @@ export class UserEntity extends BaseEntity implements Transformable<UserModel> {
     _assimilate(origin: UserModel) {
         this.id = origin.id || null;
         this.name = origin.name;
+        this.email = origin.email || null;
     }
 
 }
