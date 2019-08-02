@@ -1,13 +1,14 @@
-import { Entity, Column, PrimaryColumn, BaseEntity } from 'typeorm';
+import { Entity, Column, PrimaryColumn, BaseEntity, OneToOne, JoinColumn } from 'typeorm';
 import { Transformable } from '../transformable.interface';
 import { UserModel } from '../../model/user';
+import { TeamEntity } from './team.entity'
 
 
 @Entity()
 export class UserEntity extends BaseEntity implements Transformable<UserModel> {
 
     @PrimaryColumn({ nullable: false })
-    id: number
+    id: number;
 
     @Column({ nullable: false })
     name: string;
@@ -15,17 +16,27 @@ export class UserEntity extends BaseEntity implements Transformable<UserModel> {
     @Column({ nullable: false })
     email: string;
 
+    @Column({ nullable: false })
+    isOrganizer: boolean;
+
+    @OneToOne(type => TeamEntity)
+    @JoinColumn()
+    team: TeamEntity;
+
+
     _transform(): UserModel {
         let model: UserModel = new UserModel();
         model.id = this.id;
         model.name = this.name;
+        model.isOrganizer = this.isOrganizer;
         return model;
     }
 
     _assimilate(origin: UserModel) {
-        this.id = origin.id || null;
+        this.id = origin.id;
         this.name = origin.name;
-        this.email = origin.email || null;
+        this.email = origin.email;
+        this.isOrganizer = origin.isOrganizer;
     }
 
 }
