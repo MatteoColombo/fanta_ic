@@ -19,8 +19,8 @@ export class UserEntity extends BaseEntity implements Transformable<UserModel> {
     @Column({ nullable: false })
     isOrganizer: boolean;
 
-    @OneToOne(type => TeamEntity)
-    @JoinColumn()
+    @OneToOne(type => TeamEntity, { cascade: true }, )
+    @JoinColumn() 
     team: TeamEntity;
 
 

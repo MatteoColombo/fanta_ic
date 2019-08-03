@@ -1,9 +1,10 @@
-import { Entity, Column, PrimaryColumn, BaseEntity } from 'typeorm';
+import { Entity, Column, PrimaryColumn, BaseEntity, OneToMany } from 'typeorm';
 import { Transformable } from '../transformable.interface';
 import { PersonModel } from '../../model/person'
+import { ResultsEntity } from './results.entity'
 
 @Entity()
-export class PersonEntity extends BaseEntity implements Transformable<PersonModel>{
+export class PersonEntity extends BaseEntity implements Transformable<PersonModel> {
 
     @PrimaryColumn()
     id: number;
@@ -13,6 +14,9 @@ export class PersonEntity extends BaseEntity implements Transformable<PersonMode
 
     @Column()
     price: number;
+
+    @OneToMany(type => ResultsEntity, res => res.person)
+    results: ResultsEntity[];
 
     _transform(): PersonModel {
         let model = new PersonModel();

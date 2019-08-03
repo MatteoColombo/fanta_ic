@@ -24,7 +24,9 @@ export class TeamEntity extends BaseEntity implements Transformable<TeamModel> {
         model.id = this.id;
         model.name = this.name;
         model.points = this.points;
-        model.cubers = this.cubers;
+        for(let i = 0; i < this.cubers.length || 0; i++) {
+            model.cubers[i] = this.cubers[i]._transform();
+        }
         return model; 
     }
 
@@ -32,7 +34,7 @@ export class TeamEntity extends BaseEntity implements Transformable<TeamModel> {
         this.id = origin.id;
         this.name = origin.name;
         this.points = origin.points;
-        for(let i = 0; i < origin.cubers.length; i++){
+        for(let i = 0; i < origin.cubers.length || 0; i++) {
             this.cubers[i]._assimilate(origin.cubers[i]);
         }
     }
