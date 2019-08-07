@@ -6,13 +6,16 @@ import { ResultsEntity } from './results.entity'
 @Entity()
 export class CategoryEntity extends BaseEntity implements Transformable<CategoryModel> {
 
-    @PrimaryColumn()
+    @PrimaryColumn({ nullable: false })
     id: string;
 
-    @Column()
+    @Column({ nullable: false })
     name: string;
 
     @Column()
+    cubecompsId: number;
+
+    @Column({ nullable: false, type: "float" })
     multiplicator: number;
 
     @OneToMany(type => ResultsEntity, res => res.category)
@@ -22,6 +25,7 @@ export class CategoryEntity extends BaseEntity implements Transformable<Category
         let model = new CategoryModel;
         model.id = this.id;
         model.name = this.name;
+        model.cubecompsId = this.cubecompsId;
         model.multiplicator = this.multiplicator;
         return model;
     }
@@ -30,7 +34,7 @@ export class CategoryEntity extends BaseEntity implements Transformable<Category
         this.id = origin.id;
         this.name = origin.name;
         this.multiplicator = origin.multiplicator;
-
+        this.cubecompsId = origin.cubecompsId;
     }
 
 

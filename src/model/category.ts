@@ -10,4 +10,7 @@ export class CategoryModel {
 
     @autoserialize
     multiplicator: number;
+
+    @autoserialize
+    cubecompsId: number;
 }

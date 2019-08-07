@@ -1,6 +1,6 @@
-import { getCustomRepository } from "typeorm";
-import { BaseEntity } from "typeorm/repository/BaseEntity";
+import { getCustomRepository, BaseEntity } from "typeorm";
 import { BaseCommonRepository } from "./BaseCommonRepository";
+import { CategoryRepository } from "../database/repos/category.repository";
 
 /**
  * Holds all the custom repository that needs to run a custom function
@@ -10,6 +10,7 @@ import { BaseCommonRepository } from "./BaseCommonRepository";
  * @returns {BaseCommonRepository<BaseEntity>[]}
  */
 export function Bootstrap(): Array<BaseCommonRepository<BaseEntity>> {
-    return [
-    ];
+        return [
+                getCustomRepository(CategoryRepository)
+        ];
 }
