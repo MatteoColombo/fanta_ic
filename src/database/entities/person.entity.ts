@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, BaseEntity, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryColumn, BaseEntity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Transformable } from '../transformable.interface';
 import { PersonModel } from '../../model/person'
 import { ResultsEntity } from './results.entity'
@@ -6,7 +6,7 @@ import { ResultsEntity } from './results.entity'
 @Entity()
 export class PersonEntity extends BaseEntity implements Transformable<PersonModel> {
 
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
