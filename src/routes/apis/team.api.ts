@@ -9,6 +9,10 @@ import { teamHasName } from "../middlewares/team.middlewares";
 
 const router: Router = Router();
 
+function checkPointsZero(req,res,next){
+    req.body.team.points = 0;
+    next();
+}
 
 
 router.post("/", teamHasName, async (req, res) => {
@@ -16,10 +20,12 @@ router.post("/", teamHasName, async (req, res) => {
      * 1. verificare il login
      * 2. verificare se l'utente ha già un team -> let it crash
      * 3. controllo dei dati ricevuti
+     *      - verificare che team sia nella richiesta
      *      - deve avere un nome
      *      - devono esserci 6 persone 
+     *      - il periodo per modificare è attivo
      *      - le persone devono esistere
-     *      - i punti sono nulli o zero
+     *      - i punti sono nulli o zero 
      *      - la somma dei prezzi è minore del valore massimo
      * 4. costruisci l'oggetto TeamModel
      * 5. salvi l'oggetto
@@ -35,7 +41,7 @@ router.post("/", teamHasName, async (req, res) => {
         if (e.code == "ER_DUP_ENTRY") {
             res.status(400).json({ "error": "ER_DUP_ENTRY" });
         } else {
-            res.status(403).json({ "error": e.message });
+            res.status(400).json({ "error": e.message });
         }
     }
 });
