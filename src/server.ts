@@ -88,7 +88,7 @@ function setErrorHandlers() {
 
     // production herror handler
     app.use((err, req, res, next) => {
-
+        console.log(err);
         res.status(err.status || 500);
         res.json({
             error: {},
