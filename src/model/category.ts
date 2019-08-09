@@ -13,4 +13,10 @@ export class CategoryModel {
 
     @autoserialize
     cubecompsId: number;
+
+    @autoserialize
+    rounds: number;
+
+    @autoserialize
+    importedRounds: number;
 }

@@ -8,27 +8,29 @@ import { CategoryEntity } from './category.entity'
 export class ResultsEntity extends BaseEntity implements Transformable<ResultsModel> {
 
     @Column()
-    pos: number;
+    position: number;
 
     @Column()
     points: number;
 
-    @ManyToOne(type => PersonEntity, person => person.results, { primary: true })
+    @ManyToOne(type => PersonEntity, person => person.results, { primary: true, eager: true })
     person: PersonEntity;
 
-    @ManyToOne(type => CategoryEntity, category => category.results, { primary: true })
+    @ManyToOne(type => CategoryEntity, category => category.results, { primary: true, eager: true })
     category: CategoryEntity;
 
     _transform(): ResultsModel {
         let model = new ResultsModel();
-        model.pos = this.pos;
+        model.position = this.position;
         model.points = this.points;
+        model.category = this.category.id;
+        model.person = this.person.name;
         return model;
     }
 
     _assimilate(origin: ResultsModel) {
         this.points = origin.points;
-        this.pos = origin.pos;
+        this.position = origin.position;
     }
 
 }

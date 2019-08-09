@@ -11,5 +11,7 @@ export class PersonModel {
     @autoserialize
     price: number;
 
+    @autoserialize
+    points: number;
 
 }

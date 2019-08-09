@@ -9,7 +9,7 @@ import { CategoryRepository } from "../database/repos/category.repository";
  * @export
  * @returns {BaseCommonRepository<BaseEntity>[]}
  */
-export function Bootstrap(): Array<BaseCommonRepository<BaseEntity>> {
+export function Bootstrap(): Array<BaseCommonRepository<any>> {
         return [
                 getCustomRepository(CategoryRepository)
         ];

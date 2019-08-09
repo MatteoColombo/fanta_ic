@@ -9,11 +9,14 @@ export class PersonEntity extends BaseEntity implements Transformable<PersonMode
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ nullable: false })
     name: string;
 
-    @Column()
+    @Column({ nullable: false, default: 10 })
     price: number;
+
+    @Column({ default: 0 })
+    points: number;
 
     @OneToMany(type => ResultsEntity, res => res.person)
     results: ResultsEntity[];
@@ -23,6 +26,7 @@ export class PersonEntity extends BaseEntity implements Transformable<PersonMode
         model.id = this.id;
         model.name = this.name;
         model.price = this.price;
+        model.points = this.points || 0;
         return model;
     }
 
@@ -30,5 +34,6 @@ export class PersonEntity extends BaseEntity implements Transformable<PersonMode
         this.id = origin.id;
         this.name = origin.name;
         this.price = origin.price;
+        this.points = origin.points || 0;
     }
 }

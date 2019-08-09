@@ -18,6 +18,12 @@ export class CategoryEntity extends BaseEntity implements Transformable<Category
     @Column({ nullable: false, type: "float" })
     multiplicator: number;
 
+    @Column({ nullable: false })
+    rounds: number;
+
+    @Column({ nullable: false, default: 0 })
+    importedRounds: number;
+
     @OneToMany(type => ResultsEntity, res => res.category)
     results: ResultsEntity[];
 
@@ -27,6 +33,8 @@ export class CategoryEntity extends BaseEntity implements Transformable<Category
         model.name = this.name;
         model.cubecompsId = this.cubecompsId;
         model.multiplicator = this.multiplicator;
+        model.rounds = this.rounds;
+        model.importedRounds = this.importedRounds || 0;
         return model;
     }
 
@@ -35,9 +43,8 @@ export class CategoryEntity extends BaseEntity implements Transformable<Category
         this.name = origin.name;
         this.multiplicator = origin.multiplicator;
         this.cubecompsId = origin.cubecompsId;
+        this.rounds = origin.rounds;
+        this.importedRounds = origin.importedRounds || 0;
     }
-
-
-
 
 }

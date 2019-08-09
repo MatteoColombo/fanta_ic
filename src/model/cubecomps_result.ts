@@ -1,6 +1,7 @@
 import { autoserialize } from "cerialize";
+import { ResultsModel } from "./results";
 
-class CubecompsResults {
+export class CubecompsResults {
 
     @autoserialize
     competitor_id: number;
@@ -19,4 +20,17 @@ class CubecompsResults {
 
     @autoserialize
     best: string;
+
+    @autoserialize
+    points: number;
+
+    public toResult(): ResultsModel {
+        let result: ResultsModel = new ResultsModel();
+        result.category;
+        result.points = this.points;
+        result.person = this.name;
+        result.position= this.position
+
+        return result;
+    }
 }

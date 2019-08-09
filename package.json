@@ -58,6 +58,8 @@
     "passport": "^0.4.0",
     "passport-wca": "^1.0.3",
     "reflect-metadata": "^0.1.13",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
     "typeorm": "^0.2.18",
     "typeorm-store": "^1.2.0"
   }
