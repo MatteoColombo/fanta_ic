@@ -25,7 +25,7 @@ export class PersonRepository extends BaseCommonRepository<PersonEntity>{
 
 
     public async getPersons(): Promise<PersonEntity[]> {
-        return this.repository.find({ order: { name: "ASC" } });
+        return this.repository.find({ order: { points: "DESC" } });
     }
 
     public async updateUserPoints(): Promise<void> {

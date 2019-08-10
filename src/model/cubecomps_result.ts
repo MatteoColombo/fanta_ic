@@ -1,6 +1,9 @@
 import { autoserialize } from "cerialize";
 import { ResultsModel } from "./results";
 
+/**
+ * An auxiliary class used to parse results received from Cubecomps.
+ */
 export class CubecompsResults {
 
     @autoserialize
@@ -29,7 +32,7 @@ export class CubecompsResults {
         result.category;
         result.points = this.points;
         result.person = this.name;
-        result.position= this.position
+        result.position = this.position
 
         return result;
     }

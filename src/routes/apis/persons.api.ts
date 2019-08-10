@@ -8,6 +8,7 @@ import { PersonEntity } from "../../database/entities/person.entity";
 
 const router: Router = Router();
 
+//THIS API IS JUST FOR TESTING PURPOSES. IT SHOULD IMPORT DATA FROM WCA WEBSITE.
 
 router.get("/update", async (req, res) => {
     try {
