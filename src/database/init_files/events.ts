@@ -11,7 +11,7 @@ export const events: { id: string, name: string, cubecomps_id: number, multiplic
         { id: "333oh", name: "3x3x3 OH", cubecomps_id: 13, multiplicator: 1, rounds: 1 , sortByAverage: true},
         { id: "minx", name: "Megaminx", cubecomps_id: 10, multiplicator: 1, rounds: 1 , sortByAverage: true},
         { id: "pyram", name: "Pyraminx", cubecomps_id: 11, multiplicator: 1, rounds: 1 , sortByAverage: true},
-        { id: "clock", name: "Clock", cubecomps_id: 7, multiplicator: 1, rounds: 1 , sortByAverage: true},
+        { id: "clock", name: "Clock", cubecomps_id: 7, multiplicator: 0.75, rounds: 1 , sortByAverage: true},
         { id: "skewb", name: "Skewb", cubecomps_id: 20, multiplicator: 1, rounds: 1 , sortByAverage: true},
         { id: "sq1", name: "Square-1", cubecomps_id: 12, multiplicator: 0.75, rounds: 1 , sortByAverage: true},
         { id: "444bf", name: "4x4x4 BLD", cubecomps_id: 17, multiplicator: 0.75, rounds: 0.75 , sortByAverage: false},

@@ -89,6 +89,7 @@ router.get("/import/prices", isOrganizer, async (req, res) => {
             let prevPos: number = 0;
             // We consider only people who get points.
             for (let i = 0; i < Math.min(config.game.at_points, p.length); i++) {
+                if(!p[i].rank) break;
                 let result: ResultsModel = new ResultsModel();
                 result.person = p[i].name;
                 // If the ranks is the same of the previous person, assign same points and position.
