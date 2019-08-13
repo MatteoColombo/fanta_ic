@@ -1,6 +1,5 @@
-import { AbstractRepository, Repository } from "typeorm";
+import { AbstractRepository, Repository, BaseEntity } from "typeorm";
 import { FindManyOptions } from "typeorm/find-options/FindManyOptions";
-import { BaseEntity } from "typeorm/repository/BaseEntity";
 
 /**
  * Defines a common base repository structure that every custom repository should properly extend.

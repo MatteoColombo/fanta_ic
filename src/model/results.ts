@@ -1,10 +1,18 @@
 import { autoserialize } from 'cerialize';
 
 export class ResultsModel {
-    
+
     @autoserialize
-    pos: number;
+    position: number;
 
     @autoserialize
     points: number;
+
+    @autoserialize
+    person: string;
+
+    @autoserialize
+    category: string;
+
+
 }

@@ -1,4 +1,4 @@
-import { EntityRepository, Like, getCustomRepository, Not, Any, IsNull } from "typeorm";
+import { EntityRepository } from "typeorm";
 import { UserEntity } from "../entities/user.entity";
 import { BaseCommonRepository } from "../BaseCommonRepository";
 import { UserModel } from "../../model/user";
@@ -23,7 +23,6 @@ export class UserRepository extends BaseCommonRepository<UserEntity>{
     public async saveUser(user: UserModel): Promise<UserEntity> {
         return this.repository.save(this.convertUser(user));
     }
-
 
 
 

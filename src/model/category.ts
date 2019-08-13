@@ -10,4 +10,19 @@ export class CategoryModel {
 
     @autoserialize
     multiplicator: number;
+
+    @autoserialize
+    cubecompsId: number;
+
+    @autoserialize
+    rounds: number;
+
+    @autoserialize
+    importedRounds: number;
+
+    @autoserialize
+    sortByAverage: boolean;
+
+    @autoserialize
+    priceComputed: boolean;
 }

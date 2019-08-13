@@ -9,6 +9,8 @@ import { teamHasName } from "../middlewares/team.middlewares";
 
 const router: Router = Router();
 
+//TODO add login requirement
+
 function checkPointsZero(req,res,next){
     req.body.team.points = 0;
     next();
