@@ -1,6 +1,14 @@
-export const keys = {
+export const config = {
     wca: {
-        competition_id: "",
+        competition_id: "ItalianChampionship2019",
+        dev: {
+            login_redirect_uri: "http://localhost:4200/api/auth/login/callback",
+            user_agent: "http://localhost:4200",
+            scope: "public email",
+            client_id: "",
+            client_secret: "",
+            wca_website: "https://staging.worldcubeassociation.org"
+        },
         prod: {
             login_redirect_uri: "websitedomain/api/v0/auth/wca/callback",
             user_agent: "websitedomain",
@@ -9,24 +17,20 @@ export const keys = {
             client_secret: "client secret",
             wca_website: "https://www.worldcubeassociation.org"
         },
-        dev: {
-            login_redirect_uri: "http://localhost:4200/api/v0/auth/wca/callback",
-            user_agent: "http://localhost:4200",
-            scope: "public",
-            client_id: "client id",
-            client_secret: "client secret",
-            wca_website: "https://staging.worldcubeassociation.org"
-        }
     },
     session: {
-        secret: 'secret',
+        secret: "secret",
         cookie: {
             secure: false,
             maxAge: 1000 * 3600 * 24 * 7
         }
     },
     game: {
+        country: "Italy",
         creation_closes: "",
+        competitors_per_team: 6,
+        best_n_placements_to_consider: 3,
+        default_price: 10,
         at_points: 24,
         points: {
             "1": 300,
@@ -56,6 +60,6 @@ export const keys = {
         }
     },
     cubecomps: {
-        competition_id: 0,
+        competition_id: 4360,
     }
 }
