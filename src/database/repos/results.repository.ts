@@ -1,4 +1,4 @@
-import { EntityRepository, Like, getCustomRepository, Not, Any, IsNull } from "typeorm";
+import { EntityRepository, getCustomRepository, MoreThan } from "typeorm";
 import { ResultsEntity } from "../entities/results.entity";
 import { BaseCommonRepository } from "../BaseCommonRepository";
 import { ResultsModel } from "../../model/results";
@@ -30,5 +30,8 @@ export class ResultsRepository extends BaseCommonRepository<ResultsEntity>{
         return this.repository.find({ where: { person: person } });
     }
 
+    public async deleteResults(): Promise<void> {
+        this.repository.delete({ points: MoreThan(0) });
+    }
 
 }

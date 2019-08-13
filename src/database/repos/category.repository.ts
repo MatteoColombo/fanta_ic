@@ -3,7 +3,6 @@ import { CategoryEntity } from "../entities/category.entity";
 import { BaseCommonRepository } from "../BaseCommonRepository";
 import { events } from "../init_files/events";
 
-
 @EntityRepository(CategoryEntity)
 export class CategoryRepository extends BaseCommonRepository<CategoryEntity>{
 
@@ -19,6 +18,7 @@ export class CategoryRepository extends BaseCommonRepository<CategoryEntity>{
             category.cubecompsId = e.cubecomps_id;
             category.multiplicator = e.multiplicator;
             category.rounds = e.rounds;
+            category.sortByAverage = e.sortByAverage;
             await this.repository.save(category);
         };
 
@@ -49,6 +49,11 @@ export class CategoryRepository extends BaseCommonRepository<CategoryEntity>{
     public async incrementImports(id: string): Promise<void> {
         let entity: CategoryEntity = await this.repository.findOne(id);
         entity.importedRounds++;
+        this.repository.save(entity);
+    }
+    public async setPriceComputed(id: string): Promise<void> {
+        let entity: CategoryEntity = await this.repository.findOne(id);
+        entity.priceComputed = true;
         this.repository.save(entity);
     }
 }

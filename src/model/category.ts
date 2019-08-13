@@ -19,4 +19,10 @@ export class CategoryModel {
 
     @autoserialize
     importedRounds: number;
+
+    @autoserialize
+    sortByAverage: boolean;
+
+    @autoserialize
+    priceComputed: boolean;
 }

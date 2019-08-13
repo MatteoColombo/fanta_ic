@@ -82,7 +82,7 @@ function transformJSON(json) {
  * @param result 
  */
 function filterResult(result: CubecompsResults[]) {
-    return result.filter((r: CubecompsResults) => r.country === "Italy").sort((a, b) => (a.position - b.position));
+    return result.filter((r: CubecompsResults) => r.country === config.game.country).sort((a, b) => (a.position - b.position));
 }
 
 /**
