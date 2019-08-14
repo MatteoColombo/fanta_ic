@@ -17,7 +17,7 @@ import errorHandler from "errorhandler";
 const app = express();
 const PORT = process.env.PORT || 4200;
 const PRODUCTION = process.env.NODE_ENV === "production";
-const STATIC_DIR = path.join(__dirname, "static");
+const STATIC_DIR = path.join(__dirname, "public");
 const db: Database = new Database();
 
 db.createConnection()
