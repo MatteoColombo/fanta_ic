@@ -12,7 +12,6 @@ import { Session } from "./database/entities/session.entity";
 import { config } from "./secrets/config";
 import { router as pages } from "./routes/pages";
 import { router as apis } from "./routes/apis";
-import errorHandler from "errorhandler";
 
 const app = express();
 const PORT = process.env.PORT || 4200;
@@ -84,12 +83,9 @@ function setRoutes() {
 
 function setErrorHandlers() {
     app.use(function (req, res, next) {
+        // TODO replace this with an error page.
         res.status(404).send('Sorry cant find that!');
     });
-
-    if (!PRODUCTION) {
-        app.use(errorHandler());
-    }
 }
 
 function setPort() {
