@@ -1,9 +1,8 @@
-import bodyparser, { urlencoded } from "body-parser";
+import bodyparser from "body-parser";
 import compression from "compression";
 import express from "express";
 import session from "express-session";
 import helmet from "helmet";
-import * as http from "http";
 import passport from "passport";
 import path from "path";
 import "reflect-metadata";
@@ -13,13 +12,13 @@ import { Session } from "./database/entities/session.entity";
 import { config } from "./secrets/config";
 import { router as pages } from "./routes/pages";
 import { router as apis } from "./routes/apis";
+import errorHandler from "errorhandler";
 
 const app = express();
 const PORT = process.env.PORT || 4200;
 const PRODUCTION = process.env.NODE_ENV === "production";
 const STATIC_DIR = path.join(__dirname, "static");
 const db: Database = new Database();
-let server: http.Server;
 
 db.createConnection()
     .then(() => db.initDatabase())
@@ -32,10 +31,14 @@ db.createConnection()
         setStaticFiles();
         setErrorHandlers();
         setPort();
-        server = http.createServer(app);
-        server.listen(PORT);
-        server.on("error", onError);
-        server.on("listening", onListening);
+        const server = app.listen(app.get("port"), () => {
+            console.log(
+                "  App is running at http://localhost:%d in %s mode",
+                app.get("port"),
+                app.get("env")
+            );
+            console.log("  Press CTRL-C to stop\n");
+        });
     });
 
 function setMiddleware() {
@@ -71,7 +74,7 @@ function setViewEngine() {
 }
 
 function setStaticFiles() {
-    app.use("/static", express.static(STATIC_DIR));
+    app.use("/public", express.static(STATIC_DIR));
 }
 
 function setRoutes() {
@@ -80,56 +83,16 @@ function setRoutes() {
 }
 
 function setErrorHandlers() {
-    // catch 404 and forward to herror handler
-    app.use((req, res, next) => {
-        const err = new Error("Not Found");
-        next(err);
+    app.use(function (req, res, next) {
+        res.status(404).send('Sorry cant find that!');
     });
 
-    // production herror handler
-    app.use((err, req, res, next) => {
-        console.log(err);
-        res.status(err.status || 500);
-        res.json({
-            error: {},
-            message: err.message,
-        });
-    });
+    if (!PRODUCTION) {
+        app.use(errorHandler());
+    }
 }
 
 function setPort() {
     app.set("port", PORT);
 }
 
-function onError(error) {
-    if (error.syscall !== "listen") {
-        throw error;
-    }
-
-    const bind = typeof PORT === "string"
-        ? "Pipe " + PORT
-        : "Port " + PORT;
-
-    // handle specific listen errors with friendly messages
-    switch (error.code) {
-        case "EACCES":
-            // tslint:disable-next-line
-            console.error(bind + " requires elevated privileges");
-            process.exit(1);
-            break;
-        case "EADDRINUSE":
-            // tslint:disable-next-line
-            console.error(bind + " is already in use");
-            process.exit(1);
-            break;
-        default:
-            throw error;
-    }
-}
-
-function onListening() {
-    const addr = server.address();
-    const bind = typeof addr === "string"
-        ? "pipe " + addr
-        : "port " + addr.port;
-}
