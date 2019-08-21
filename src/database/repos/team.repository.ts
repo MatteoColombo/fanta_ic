@@ -4,6 +4,8 @@ import { BaseCommonRepository } from "../BaseCommonRepository";
 import { TeamModel } from "../../model/team";
 import { UserEntity } from "../entities/user.entity";
 import { UserRepository } from "./user.repository";
+import { config } from "../../secrets/config";
+import { PersonEntity } from "../entities/person.entity";
 
 
 @EntityRepository(TeamEntity)
@@ -23,17 +25,21 @@ export class TeamRepository extends BaseCommonRepository<TeamEntity>{
     }
 
     public async createTeam(team: TeamModel, user: number): Promise<TeamEntity> {
-        let entity: TeamEntity = await this.repository.save(this.getTeamEntity(team));
+        let entity: TeamEntity = await this.getTeamEntity(team, user);
+        await this.repository.save(entity);
         return this.getTeamById(entity.id);
     }
 
-    private getTeamEntity(origin: TeamModel): TeamEntity {
+    private async getTeamEntity(origin: TeamModel, user: number): Promise<TeamEntity> {
         let entity: TeamEntity = new TeamEntity();
         entity._assimilate(origin);
+        entity.user = await this.getUser(user);
         return entity;
     }
 
     private async getUser(id: number): Promise<UserEntity> {
         return await getCustomRepository(UserRepository).getUserById(id);
     }
+
+
 }

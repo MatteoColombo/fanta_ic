@@ -24,10 +24,15 @@ export class UserRepository extends BaseCommonRepository<UserEntity>{
         return this.repository.save(this.convertUser(user));
     }
 
+    public async userHasTeam(user: number): Promise<boolean> {
+        let u: UserEntity = await this.repository.findOne({ where: { id: user }, relations: ["team"] });
+        return u.team != null;
+    }
 
 
 
-    
+
+
     private convertUser(origin: UserModel): UserEntity {
         let entity: UserEntity = new UserEntity();
         entity._assimilate(origin);

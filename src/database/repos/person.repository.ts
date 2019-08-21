@@ -69,4 +69,16 @@ export class PersonRepository extends BaseCommonRepository<PersonEntity>{
         this.repository.createQueryBuilder()
             .delete().from(PersonEntity).where("1").execute();
     }
+
+    public async getTeamPrice(ids: number[]): Promise<number> {
+        let persons: PersonEntity[] = await this.repository.findByIds(ids);
+        return persons.reduce((a, b) => a + b.price, 0);
+    }
+
+
+    public async checkIfPersonsExist(ids: Number[]): Promise<boolean> {
+        let members: PersonEntity[] = await this.repository.findByIds(ids);
+        console.log(members);
+        return members.length === config.game.competitors_per_team;
+    }
 }
