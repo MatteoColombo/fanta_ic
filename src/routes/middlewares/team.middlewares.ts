@@ -91,4 +91,4 @@ async function checkTeamPrices(req, res, next) {
     }
 }
 
-export { teamHasName, requestHasTeam, verifyPersons, checkPointsZero, teamEditIsOpen, checkTeamPrices, userHasNoTeam }
+export { teamHasName, requestHasTeam, verifyPersons, checkPointsZero, teamEditIsOpen, checkTeamPrices, userHasNoTeam, userHasTeam }
