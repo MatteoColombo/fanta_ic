@@ -1,10 +1,11 @@
-<nav class="navbar navbar-dark bg-primary">
-    <div class="container"> 
+<nav class="navbar navbar-dark bg-primary fixed-top">
+    <div class="container-fluid"> 
     <a class="navbar-brand" href="/"><%- title -%></a>
     <% if(user){ %>
         <a href="/api/auth/logout"><%= user.name %></a>
     <% } else{ %>  
-        <a href="/api/auth/login">foo</a>
+        <a href="/api/auth/login">Login</a>
     <% } %>
     </div>
 </nav>
+
