@@ -92,3 +92,4 @@ function setPort() {
     app.set("port", PORT);
 }
 
+export { app }
