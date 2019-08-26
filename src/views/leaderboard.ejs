@@ -1,0 +1,54 @@
+<%- include('header') -%>
+<%- include('navbarbuttons') -%>
+
+<div class="container back pt-md-5 mt-md-5">
+    <div class="row pb-md-4">
+        <div class="col-md-12" align="center"><h1>Classifica</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <table class="table table-borderless">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Team</th>
+                        <th scope="col">Punti</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let pos = 1;
+                     for(let team of teams) {
+                        if(pos === 1) { %>
+                            <tr class="gold">
+                                <th scope="row"><%= team.position %></th>
+                                <td><%= team.name %></td>
+                                <td><%= team.points %></td>
+                            </tr>
+                        <%} else if(pos === 2) { %>
+                            <tr class="silver">
+                                <th scope="row"><%= team.position %></th>
+                                <td><%= team.name %></td>
+                                <td><%= team.points %></td>
+                            </tr>
+                        <% } else if(pos === 3) { %>
+                            <tr class="bronze">
+                                <th scope="row"><%= team.position %></th>
+                                <td><%= team.name %></td>
+                                <td><%= team.points %></td>
+                            </tr>
+                        <% } else { %>
+                        <tr>
+                            <th scope="row"><%= team.position %></th>
+                            <td><%= team.name %></td>
+                            <td><%= team.points %></td>
+                        </tr>
+                        <% }
+                        pos++;
+                    } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<%- include('logos') -%>
+<%- include('footer') -%>

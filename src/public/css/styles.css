@@ -2,7 +2,7 @@ a{
     text-decoration: none;
 }
 
-.navbar-brand, h1, h2, h3, h4, a {
+.navbar-brand, a {
     color: #fff;
     outline: none;
     font-weight: 700;
@@ -15,4 +15,34 @@ a{
 
 table {
     background-color: #e8ffff;
+}
+
+td, th {
+    text-align: center;
+}
+
+h1, h2, h3, h4 {
+    color: #363a42;
+    outline: none;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.gold {
+    background-color: gold;
+}
+
+.silver {
+    background-color: silver;
+}
+
+.bronze {
+    background-color: lightsalmon;
+}
+
+.login {
+    background-color: #fff;
+    color: #0275d8;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif
 }
