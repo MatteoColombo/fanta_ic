@@ -1,5 +1,6 @@
 a{
     text-decoration: none;
+    outline: none;
 }
 
 .navbar-brand, a {
@@ -9,7 +10,7 @@ a{
     font-family: 'Montserrat', sans-serif;
 }
 
-.back {
+.back, .item {
     background-color: #b3daff;
 }
 
@@ -40,9 +41,10 @@ h1, h2, h3, h4 {
     background-color: lightsalmon;
 }
 
-.login {
+.box {
     background-color: #fff;
     color: #0275d8;
     font-weight: 700;
-    font-family: 'Montserrat', sans-serif
+    font-family: 'Montserrat', sans-serif;
+    align-self: right;
 }
