@@ -25,13 +25,14 @@ export class PersonRepository extends BaseCommonRepository<PersonEntity>{
     }
 
 
-    public async getPersons(): Promise<PersonEntity[]> {
+    public async getPersons(orderByPrice: boolean): Promise<PersonEntity[]> {
+        if (orderByPrice) return this.repository.find({ order: { price: "DESC" } });
         return this.repository.find({ order: { points: "DESC" } });
     }
 
     public async updateUserPoints(): Promise<void> {
         let resultRepo = getCustomRepository(ResultsRepository);
-        let persons: PersonEntity[] = await this.getPersons();
+        let persons: PersonEntity[] = await this.getPersons(false);
         for (let p of persons) {
             let results: ResultsEntity[] = await resultRepo.getResultsByPerson(p);
             results = results.sort((a, b) => (b.points - a.points));
@@ -45,7 +46,7 @@ export class PersonRepository extends BaseCommonRepository<PersonEntity>{
 
     public async computePersonPrice(): Promise<void> {
         let resultRepo = getCustomRepository(ResultsRepository);
-        let persons: PersonEntity[] = await this.getPersons();
+        let persons: PersonEntity[] = await this.getPersons(false);
         for (let p of persons) {
             let results: ResultsEntity[] = await resultRepo.getResultsByPerson(p);
             results = results.sort((a, b) => (b.points - a.points));
@@ -68,5 +69,17 @@ export class PersonRepository extends BaseCommonRepository<PersonEntity>{
         await getCustomRepository(ResultsRepository).deleteResults();
         this.repository.createQueryBuilder()
             .delete().from(PersonEntity).where("1").execute();
+    }
+
+    public async getTeamPrice(ids: number[]): Promise<number> {
+        let persons: PersonEntity[] = await this.repository.findByIds(ids);
+        return persons.reduce((a, b) => a + b.price, 0);
+    }
+
+
+    public async checkIfPersonsExist(ids: Number[]): Promise<boolean> {
+        let members: PersonEntity[] = await this.repository.findByIds(ids);
+        console.log(members);
+        return members.length === config.game.competitors_per_team;
     }
 }
