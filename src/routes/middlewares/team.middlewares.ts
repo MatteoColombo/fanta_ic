@@ -50,7 +50,6 @@ async function verifyPersons(req, res, next) {
     let team: TeamModel = Deserialize(req.body.team, TeamModel);
     if (team.cubers instanceof Array) {
         let ids: number[] = team.cubers.map((c) => Number(c.id));
-        console.log(ids);
         let exist: boolean = await getCustomRepository(PersonRepository).checkIfPersonsExist(ids);
         if (exist) {
             next();

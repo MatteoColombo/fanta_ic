@@ -31,6 +31,10 @@ export class TeamEntity extends BaseEntity implements Transformable<TeamModel> {
         model.name = this.name;
         model.points = this.points;
         model.cubers = this.cubers.map((c: PersonEntity) => c._transform());
+        if(this.user){
+            model.ownerId=this.user.id;
+            model.ownerName=this.user.name;
+        }
         return model;
     }
 

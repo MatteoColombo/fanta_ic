@@ -71,13 +71,33 @@ h1, h2, h3, h4 {
     text-align: center;
 }
 
-.admin-page #persons-table{
+.admin-page table{
     margin: 0 auto;
     margin-top: 40px;
+    width:70%;
+}
+
+.admin-page #persons-table{
     width:50%;
 }
 
 .admin-page tbody{
     height: 800px;
     overflow-y: scroll;
+}
+
+.admin-page .form-control{
+    margin-right: 20px;
+    float:left;
+    width: 80%;
+}
+
+.admin-page button{
+    margin-right: 20px;
+    float:left;
+    width: 15%;
+}
+
+.admin-page button{
+    margin-bottom:40px;
 }

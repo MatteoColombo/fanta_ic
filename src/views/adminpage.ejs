@@ -6,11 +6,21 @@
         <%- include('admin/importdata')%>
     <% } %>
     <% if(import_results){ %> 
-        <%- include('admin/importdata')%>
+        <%- include('admin/importresults')%>
     <%} %>
+    <% if(!import_results && !import_data){ %> 
+        <%- include('admin/teamlist')%>
+    <%} %>
+
     
    
 <%- include('logos') -%>
 <%- include('footer') -%>
-<script src="/public/js/admin.js"></script>
+<% if(import_data){ %> 
+    <script src="/public/js/importdata.js"></script>
+<% } %>
+<% if(import_results){ %> 
+    <script src="/public/js/importresults.js"></script>
+<%} %>
+
 <%- include('endbody') -%>

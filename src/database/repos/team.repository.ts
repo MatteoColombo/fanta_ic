@@ -20,8 +20,8 @@ export class TeamRepository extends BaseCommonRepository<TeamEntity>{
 
     public async getTeams(orderByPoints: boolean): Promise<TeamEntity[]> {
         if (orderByPoints)
-            return this.repository.find({ order: { points: "DESC" } });
-        return this.repository.find({ order: { name: "ASC" } });
+            return this.repository.find({ order: { points: "DESC" },relations: ['user'] });
+        return this.repository.find({ order: { name: "ASC" },relations:['user'] });
     }
 
     public async getUserTeam(user: number): Promise<TeamEntity> {

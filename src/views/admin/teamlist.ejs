@@ -1,0 +1,14 @@
+<h2>Team partecipanti</h2>
+<table class="table table-bordered table-striped table-fluid" id="teams-table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Partecipante</th>
+                <th scope="col">Nome del team</th>
+            </tr>
+        </thead>
+        <tbody id="teams">
+                <% teams.forEach(function(team){ %>
+                    <tr><td><%- team.ownerName -%></td><td><%- team.name -%></td></tr>
+                  <% }); %>
+        </tbody>
+    </table>

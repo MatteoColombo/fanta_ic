@@ -56,4 +56,12 @@ export class CategoryRepository extends BaseCommonRepository<CategoryEntity>{
         entity.priceComputed = true;
         this.repository.save(entity);
     }
+
+    public async getImportableRounds(): Promise<CategoryEntity[]> {
+        return this.repository.createQueryBuilder()
+        .select("cat").from(CategoryEntity, "cat")
+        .where("cat.importedRounds < cat.rounds").getMany();
+
+        return [];
+    }
 }

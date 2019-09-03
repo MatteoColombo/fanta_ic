@@ -12,6 +12,12 @@ export class TeamModel {
     @autoserialize
     public points: number;
 
+    @autoserialize
+    public ownerId: number;
+
+    @autoserialize
+    public ownerName: string;
+
     @autoserializeAs(PersonModel)
     public cubers: PersonModel[];
 

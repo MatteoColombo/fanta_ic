@@ -14,6 +14,11 @@ import { PersonRepository } from "../../database/repos/person.repository";
 
 const router: Router = Router();
 
+router.get("/categories/importable", async (req, res) => {
+    let categories: CategoryEntity[] = await getCustomRepository(CategoryRepository).getImportableRounds();
+    res.status(200).json(categories.map((c) => c._transform()));
+});
+
 router.get("/import/events/:event/rounds/:round", isOrganizer, checkEvent, checkRound, async (req, res) => {
     try {
         let categoryRepo: CategoryRepository = getCustomRepository(CategoryRepository);
