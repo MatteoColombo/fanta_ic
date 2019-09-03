@@ -4,7 +4,7 @@ export const config = {
         dev: {
             login_redirect_uri: "http://localhost:4200/api/auth/login/callback",
             user_agent: "http://localhost:4200",
-            scope: "public email",
+            scope: "public",
             client_id: "",
             client_secret: "",
             wca_website: "https://staging.worldcubeassociation.org"
@@ -61,5 +61,8 @@ export const config = {
     },
     cubecomps: {
         competition_id: 4360,
-    }
+    },
+    admin: [
+        397,
+    ]
 }

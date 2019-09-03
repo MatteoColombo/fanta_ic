@@ -1,0 +1,16 @@
+<%- include('header') -%>
+<%- include('navbarbuttons') -%>
+
+<div class="container back pt-md-5 mt-md-5 admin-page">
+    <% if(import_data){ %> 
+        <%- include('admin/importdata')%>
+    <% } %>
+    <% if(import_results){ %> 
+        <%- include('admin/importdata')%>
+    <%} %>
+    
+   
+<%- include('logos') -%>
+<%- include('footer') -%>
+<script src="/public/js/admin.js"></script>
+<%- include('endbody') -%>

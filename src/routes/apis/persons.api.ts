@@ -5,7 +5,7 @@ import { config } from "../../secrets/config";
 import { getCustomRepository } from "typeorm";
 import { PersonEntity } from "../../database/entities/person.entity";
 import cheerio from "cheerio";
-import { isOrganizer } from "../middlewares/auth.middleware";
+import { isOrganizer, isLoggedIn } from "../middlewares/auth.middleware";
 import { PersonModel } from "../../model/person";
 import { CategoryRepository } from "../../database/repos/category.repository";
 import { CategoryEntity } from "../../database/entities/category.entity";
@@ -13,6 +13,12 @@ import { ResultsRepository } from "../../database/repos/results.repository";
 import { ResultsModel } from "../../model/results";
 
 const router: Router = Router();
+
+router.get("/", async (req, res) => {
+    let persons: PersonEntity[] = await getCustomRepository(PersonRepository).getPersons(true);
+    res.status(200).json(persons.map((p) => p._transform()));
+});
+
 
 router.get("/import", isOrganizer, async (req, res) => {
     try {
@@ -36,7 +42,7 @@ router.get("/import", isOrganizer, async (req, res) => {
             await repo.addPerson(person);
         }
         // Return the list of persons. 
-        let persons: PersonEntity[] = await repo.getPersons();
+        let persons: PersonEntity[] = await repo.getPersons(true);
         res.status(200).json(persons.map((p) => p._transform()));
     } catch (e) {
         res.status(500).json({ "error": "SERVER_ERRO" });
@@ -89,14 +95,14 @@ router.get("/import/prices", isOrganizer, async (req, res) => {
             let prevPos: number = 0;
             // We consider only people who get points.
             for (let i = 0; i < Math.min(config.game.at_points, p.length); i++) {
-                if(!p[i].rank) break;
+                if (!p[i].rank) break;
                 let result: ResultsModel = new ResultsModel();
                 result.person = p[i].name;
                 // If the ranks is the same of the previous person, assign same points and position.
                 if (prevRank === p[i].rank) {
                     result.position = prevPos;
                     result.points = config.game.points[prevPos] * c.multiplicator;
-                // Otherwise assign position= i+1 and compute points.
+                    // Otherwise assign position= i+1 and compute points.
                 } else {
                     result.position = i + 1;
                     result.points = config.game.points[(i + 1)] * c.multiplicator;
@@ -112,7 +118,7 @@ router.get("/import/prices", isOrganizer, async (req, res) => {
         }
         // Update prices.
         await getCustomRepository(PersonRepository).computePersonPrice();
-        let result: PersonEntity[] = await getCustomRepository(PersonRepository).getPersons();
+        let result: PersonEntity[] = await getCustomRepository(PersonRepository).getPersons(true);
         // Delete temporary results from the table.
         await repo.deleteResults();
         // Return the persons list.

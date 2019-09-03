@@ -84,7 +84,7 @@ function setRoutes() {
 function setErrorHandlers() {
     app.use(function (req, res, next) {
         // TODO replace this with an error page.
-        res.status(404).send('Sorry cant find that!');
+        res.status(404).send('Sorry can\'t find that!');
     });
 }
 

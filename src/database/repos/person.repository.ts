@@ -26,7 +26,7 @@ export class PersonRepository extends BaseCommonRepository<PersonEntity>{
 
 
     public async getPersons(orderByPrice: boolean): Promise<PersonEntity[]> {
-        if (orderByPrice) return this.repository.find({ order: { price: "DESC" } });
+        if (orderByPrice) return this.repository.find({ order: { price: "DESC", name: "ASC" } });
         return this.repository.find({ order: { points: "DESC" } });
     }
 

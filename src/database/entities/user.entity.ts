@@ -14,9 +14,6 @@ export class UserEntity extends BaseEntity implements Transformable<UserModel> {
     name: string;
 
     @Column({ nullable: false })
-    email: string;
-
-    @Column({ nullable: false })
     isOrganizer: boolean;
 
     @OneToOne(type => TeamEntity, { cascade: true }, )
@@ -35,7 +32,6 @@ export class UserEntity extends BaseEntity implements Transformable<UserModel> {
     _assimilate(origin: UserModel) {
         this.id = origin.id;
         this.name = origin.name;
-        this.email = origin.email;
         this.isOrganizer = origin.isOrganizer;
     }
 

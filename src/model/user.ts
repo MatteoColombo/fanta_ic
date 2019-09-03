@@ -11,9 +11,6 @@ export class UserModel {
     public name: string;
 
     @autoserialize
-    public email: string;
-
-    @autoserialize
     public isOrganizer: boolean;
 
     @autoserializeAs(TeamModel)

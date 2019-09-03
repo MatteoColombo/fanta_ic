@@ -2,6 +2,7 @@ import { EntityRepository } from "typeorm";
 import { UserEntity } from "../entities/user.entity";
 import { BaseCommonRepository } from "../BaseCommonRepository";
 import { UserModel } from "../../model/user";
+import { config } from "../../secrets/config";
 
 
 @EntityRepository(UserEntity)
@@ -21,6 +22,8 @@ export class UserRepository extends BaseCommonRepository<UserEntity>{
     }
 
     public async saveUser(user: UserModel): Promise<UserEntity> {
+        if (config.admin.findIndex((id: number) => id == user.id) > -1)
+            user.isOrganizer = true;
         return this.repository.save(this.convertUser(user));
     }
 

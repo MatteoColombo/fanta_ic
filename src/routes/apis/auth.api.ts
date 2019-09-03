@@ -11,8 +11,10 @@ const router: Router = Router();
  * Log out the user and then redirect him to the homepage
  */
 router.get("/logout", isLoggedIn, (req, res): void => {
-    req.logout();
-    res.redirect("/");
+    console.log("someone wants to log out");
+    req.session.destroy(function (err) {
+        res.redirect('/');
+    });
 });
 
 /**
