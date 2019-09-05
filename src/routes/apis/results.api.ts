@@ -11,6 +11,8 @@ import { CategoryEntity } from "../../database/entities/category.entity";
 import { getCustomRepository } from "typeorm";
 import { ResultsModel } from "../../model/results";
 import { PersonRepository } from "../../database/repos/person.repository";
+import { TeamRepository } from "../../database/repos/team.repository";
+import { TeamEntity } from "../../database/entities/team.entity";
 
 const router: Router = Router();
 
@@ -38,7 +40,8 @@ router.get("/import/events/:event/rounds/:round", isOrganizer, checkEvent, check
         // Save
         await saveResults(result, category);
         await updatePersonPoints();
-        /*await updateTeamPoints();*/
+        await updateTeamPoints();
+        await setTeamPosition();
         await incrementImports(category.id);
         res.status(200).json(result);
     } catch (e) {
@@ -166,7 +169,42 @@ async function updatePersonPoints() {
  * Updates team points. it should be called after updating person points.
  */
 async function updateTeamPoints() {
-    return;
+    return getCustomRepository(TeamRepository).computeTeamPoints();
+}
+
+async function setTeamPosition() {
+    let repo: TeamRepository = getCustomRepository(TeamRepository);
+    let teams: TeamEntity[] = await repo.getTeams(true);
+    teams[0].position = 1;
+    let dups: number[] = [];
+    for (let i = 1; i < teams.length; i++) {
+        if (teams[i].points == teams[i - 1].points) {
+            teams[i].position = teams[i - 1].position;
+            if (dups.indexOf(teams[i].position) < 0) dups.push(teams[i].position);
+        }
+        else
+            teams[i].position = i + 1;
+    }
+    if (dups.length > 0) {
+        for (let position of dups) {
+            let tiedTeams: TeamEntity[] = teams.filter((t) => t.position = position);
+            for (let t of tiedTeams) {
+                t.cubers = await repo.getTeamCubers(t.id);
+            }
+            tiedTeams.sort((a, b) => {
+                for (let i = 0; i < a.cubers.length; i++) {
+                    if (a.cubers[i].points > b.cubers[i].points) return 1;
+                    else if (a.cubers[i].points < b.cubers[i].points) return -1;
+                }
+                return 0;
+            });
+            for (let i = 0; i < tiedTeams.length; i++) {
+                tiedTeams[i].position = position + i;
+            }
+            tiedTeams.forEach((t) => teams.find((t2) => t2.id == t.id).position = t.position);
+        }
+    }
+    return repo.savePositions(teams);
 }
 
 export { router } 
