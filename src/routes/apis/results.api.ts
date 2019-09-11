@@ -40,8 +40,8 @@ router.get("/import/events/:event/rounds/:round", isOrganizer, checkEvent, check
         // Save
         await saveResults(result, category);
         await updatePersonPoints();
-        await updateTeamPoints();
-        await setTeamPosition();
+       // await updateTeamPoints();
+       // await setTeamPosition();
         await incrementImports(category.id);
         res.status(200).json(result);
     } catch (e) {
@@ -178,7 +178,7 @@ async function setTeamPosition() {
     teams[0].position = 1;
     let dups: number[] = [];
     for (let i = 1; i < teams.length; i++) {
-        if (teams[i].points == teams[i - 1].points) {
+        if (teams[i].points === teams[i - 1].points) {
             teams[i].position = teams[i - 1].position;
             if (dups.indexOf(teams[i].position) < 0) dups.push(teams[i].position);
         }
@@ -188,6 +188,7 @@ async function setTeamPosition() {
     if (dups.length > 0) {
         for (let position of dups) {
             let tiedTeams: TeamEntity[] = teams.filter((t) => t.position = position);
+            let tiedAgain: number[] = [];
             for (let t of tiedTeams) {
                 t.cubers = await repo.getTeamCubers(t.id);
             }
@@ -196,12 +197,23 @@ async function setTeamPosition() {
                     if (a.cubers[i].points > b.cubers[i].points) return 1;
                     else if (a.cubers[i].points < b.cubers[i].points) return -1;
                 }
+                tiedAgain.push(a.id);
+                tiedAgain.push(b.id);
                 return 0;
             });
             for (let i = 0; i < tiedTeams.length; i++) {
+                if (tiedAgain.findIndex((id) => id === tiedTeams[i].id) < 0) return;
                 tiedTeams[i].position = position + i;
             }
-            tiedTeams.forEach((t) => teams.find((t2) => t2.id == t.id).position = t.position);
+            if (tiedAgain.length > 0) {
+                let pInc: number = tiedTeams.length - tiedAgain.length;
+                tiedTeams.forEach(t => {
+                    if (tiedAgain.findIndex((i) => i === t.id) >= 0) {
+                        t.position = position + pInc;
+                    }
+                });
+            }
+            tiedTeams.forEach((t) => teams.find((t2) => t2.id === t.id).position = t.position);
         }
     }
     return repo.savePositions(teams);

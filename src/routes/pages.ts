@@ -22,9 +22,13 @@ router.get("/crea", (req, res) => res.render("createteam", { title: "Crea squadr
 
 router.get("/admin", isOrganizer, async (req, res) => {
     let today: Date = new Date();
-    let creation_closes: Date = new Date(config.game.creation_closes.year, config.game.creation_closes.month, config.game.creation_closes.day, config.game.creation_closes.hour, config.game.creation_closes.minute);
-    let creation_opens: Date = new Date(config.game.creation_opens.year, config.game.creation_opens.month, config.game.creation_opens.day, config.game.creation_opens.hour, config.game.creation_opens.minute);
+    let creation_closes: Date = new Date(config.game.creation_closes.year, (config.game.creation_closes.month-1), config.game.creation_closes.day, config.game.creation_closes.hour, config.game.creation_closes.minute);
+    let creation_opens: Date = new Date(config.game.creation_opens.year, (config.game.creation_opens.month-1), config.game.creation_opens.day, config.game.creation_opens.hour, config.game.creation_opens.minute);
+    console.log(today);
+    console.log(creation_opens);
+    console.log(creation_closes);
     if (today > creation_closes) {
+        console.log(1);
         res.render("adminpage", {
             title: "Admin - FantaIC",
             user: req.user,
@@ -32,6 +36,7 @@ router.get("/admin", isOrganizer, async (req, res) => {
             import_data: false
         });
     } else if (today < creation_opens) {
+        console.log(2);
         res.render("adminpage", {
             title: "Admin - FantaIC",
             user: req.user,
@@ -39,6 +44,7 @@ router.get("/admin", isOrganizer, async (req, res) => {
             import_data: true
         });
     } else {
+        console.log(3);
         let teams: TeamEntity[] = await getCustomRepository(TeamRepository).getTeams(false);
         res.render("adminpage", {
             title: "Admin - FantaIC",

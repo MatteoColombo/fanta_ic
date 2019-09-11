@@ -20,7 +20,8 @@ $(document).ready(function () {
     $('#import').click(function () {
         var value = $('#round-selector').children("option:selected").val();
         console.log(value);
-        $.getJSON("/api/results/import" + value, function(data){
+        $.getJSON("/api/results/import/events" + value, function(data){
+            console.log("imported "+value);
             getOptions();
         });
     });
