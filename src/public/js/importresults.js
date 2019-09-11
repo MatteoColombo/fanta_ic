@@ -11,18 +11,27 @@ $(document).ready(function () {
         }
     }
 
-    function getOptions(){
+    function getOptions() {
         $.getJSON("/api/results/categories/importable", function (data) {
-            setOptions(data);
+            if (data.length === 0) {
+                $('#import-section').addClass("d-none");
+                $('#comp-finished').removeClass("d-none");
+            } else {
+                setOptions(data);
+            }
         });
     }
 
     $('#import').click(function () {
         var value = $('#round-selector').children("option:selected").val();
-        console.log(value);
-        $.getJSON("/api/results/import/events" + value, function(data){
-            console.log("imported "+value);
+        $('#import').prop("disabled", true);
+        $('#progress').removeClass("d-none");
+        $('#round-selector').prop("disabled", true);
+        $.getJSON("/api/results/import/events" + value, function (data) {
             getOptions();
+            $('#import').prop("disabled", false);
+            $('#progress').addClass("d-none");
+            $('#round-selector').prop("disabled", false);
         });
     });
 });
