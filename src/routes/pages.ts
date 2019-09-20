@@ -1,13 +1,19 @@
 import { Router } from "express";
-import { isOrganizer } from "./middlewares/auth.middleware";
+import { isOrganizer, isLoggedIn } from "./middlewares/auth.middleware";
 import { config } from "../secrets/config";
 import { TeamEntity } from "../database/entities/team.entity";
 import { getCustomRepository } from "typeorm";
 import { TeamRepository } from "../database/repos/team.repository";
+import { PersonEntity } from "../database/entities/person.entity";
+import { PersonRepository } from "../database/repos/person.repository";
+import { UserEntity } from "../database/entities/user.entity";
 
 const router: Router = Router();
-const fakeTeam = [{ name: "Ciccio", points: 24, position: 1 }, { name: "Andrea", points: 17, position: 2 },
+const fakeLeaderboard = [{ name: "Ciccio", points: 24, position: 1 }, { name: "Andrea", points: 17, position: 2 },
 { name: "Carlo", points: 5, position: 3 }, { name: "Piero", points: 4, position: 4 }];
+const fakePersons = [{ name: "Ciccio", price: 24, id: 1 }, { name: "Andrea", price: 17, id: 2 },
+{ name: "Carlo", price: 5, id: 3 }, { name: "Piero", price: 4, id: 4 }];
+const fakeTeam = [{ name: "Ciccio", price: 24, id: 1 }];
 
 router.get("/", (req, res) => res.render("home", { title: "FantaIC", user: req.user }));
 
@@ -15,10 +21,20 @@ router.get("/regolamento", (req, res) => res.render("regulation", { title: "Rego
 
 router.get("/classifica", (req, res) => res.render("leaderboard", {
     title: "Classifica - FantaIC", user: req.user,
-    teams: fakeTeam
+    teams: fakeLeaderboard
 }));
 
-router.get("/crea", (req, res) => res.render("createteam", { title: "Crea squadra - FantaIC", user: req.user }));
+router.get("/crea", async (req, res) => {
+    //let cubers: PersonEntity[] = await getCustomRepository(PersonRepository).getPersons(true);
+    //let team: TeamEntity = await getCustomRepository(TeamRepository).getUserTeam(req.user.id);
+    res.render("createteam", { 
+        title: "Crea squadra - FantaIC", 
+        user: req.user,
+        cubers: fakePersons, //cubers.map((c)=>c._transform()),
+        team: fakeTeam //team.cubers.map((c)=>c._transform())
+
+    })
+});
 
 router.get("/admin", isOrganizer, async (req, res) => {
     let today: Date = new Date();
