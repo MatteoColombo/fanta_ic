@@ -143,15 +143,5 @@ async function getWCACompetitorsForEvent(id: string, event: string) {
     });
 }
 
-router.get("/cubers", async (req, res)=>{
-    try {
-        let cubers: PersonEntity[] = await getCustomRepository(PersonRepository).getPersons(true);
-        res.status(200).json(cubers.map((c)=>c._transform()));
-    } catch(e) {
-        res.status(500).json({ "error": "SERVER_ERROR" });
-        console.log(e);
-    }
-});
-
 export { router }
 
