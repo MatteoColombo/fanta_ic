@@ -11,6 +11,8 @@ import { CategoryRepository } from "../../database/repos/category.repository";
 import { CategoryEntity } from "../../database/entities/category.entity";
 import { ResultsRepository } from "../../database/repos/results.repository";
 import { ResultsModel } from "../../model/results";
+import { TeamRepository } from "../../database/repos/team.repository";
+import { TeamEntity } from "../../database/entities/team.entity";
 
 const router: Router = Router();
 
@@ -142,6 +144,11 @@ async function getWCACompetitorsForEvent(id: string, event: string) {
         json: false,
     });
 }
+
+router.get("/team", async (req, res) => {
+    let team: TeamEntity = await getCustomRepository(TeamRepository).getUserTeam(req.user.id);
+    res.status(200).json(team.cubers.map((c) => c._transform()));
+});
 
 export { router }
 

@@ -6,27 +6,6 @@
         <div class="col-md-4 offset-md-1">
             <h4>Cuber</h4>
             <ul class="list-group list-group-flush mb-md-3" id="cubers-list">
-            <!--<% function isInTeam(person, team) {
-                for(c of team) {
-                    if(c.id === person.id)
-                        return true
-                }
-                return false
-            }
-            for(let c of cubers) {%>
-                <li class="list-group-item"><div class="row">
-                    <div class="col-md-6"><%= c.name %></div>
-                    <div class="col-md-1"><i class="fas fa-coins"></i></div>
-                    <div class="col-md-2"><%= c.price %></div>
-                    <% if(isInTeam(c, team)) { %>
-                    <div class="col-md-2"><button class="btn btn-info" disabled><i class="fas fa-plus"></i></button></div>
-                    <% } else {%>
-                    <div class="col-md-2"><button class="btn btn-info"><i class="fas fa-plus"></i></button></div>
-                    <% } %>
-                </div></li>
-            <% } 
-            %>
-            -->
             </ul>
         </div>
         <div class="col-md-4 offset-md-2" >
@@ -36,12 +15,6 @@
                     <div class="col-md-4"><a class="btn btn-block btn-info mt-md-2" role="button" style="color: white">Salva</a></div>
                 </div>
             <ul class="list-group list-group-flush" id="team">
-            <% for(let c of team) { %>
-                <li class="list-group-item back"><div class="row">
-                    <div class="col-md-9"><%= c.name %></div>
-                    <div class="col-md-2"><button class="btn btn-info"><i class="fas fa-times"></i></button></div>
-                </div></li>
-            <% } %>
             </ul>
             </div>  
             </div>
