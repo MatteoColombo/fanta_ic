@@ -69,7 +69,7 @@ function selectCuber(id) {
         myTeam.push(cuber);
         /** Disable the add button */
         $("#p" + id + " button").prop("disabled", true)
-        printTeamMember();
+        printTeamMember(cuber);
         updateCredits();
         setSaveButtonState();
     }
@@ -99,7 +99,7 @@ function findPerson(id) {
 }
 
 function findIndex(id) {
-    return cubers.findIndex(p => p.id === id);
+    return myTeam.findIndex(p => p.id === id);
 }
 
 function updateCredits() {
@@ -131,6 +131,8 @@ function save() {
                 teamId = data.id;
                 $("#teamname").val(data.name);
                 myTeam = data.cubers;
+                $("#cubers-list").empty();
+                $("#team").empty();
                 printTeamList();
                 updateCredits();
                 setSaveButtonState();

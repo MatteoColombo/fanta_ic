@@ -5,7 +5,7 @@ import { TeamModel } from "../../model/team";
 import { Deserialize } from "cerialize";
 import { TeamRepository } from "../../database/repos/team.repository";
 import { getCustomRepository } from "typeorm";
-import { teamHasName, requestHasTeam, verifyPersons, checkPointsZero, teamEditIsOpen, checkTeamPrices, userHasNoTeam} from "../middlewares/team.middlewares";
+import { teamHasName, requestHasTeam, verifyPersons, checkPointsZero, teamEditIsOpen, checkTeamPrices, userHasNoTeam } from "../middlewares/team.middlewares";
 
 const router: Router = Router();
 
@@ -13,14 +13,14 @@ const router: Router = Router();
 
 
 
-router.post("/", /* isLoggedIn,*/ teamEditIsOpen, userHasNoTeam,
+router.post("/", isLoggedIn, teamEditIsOpen, userHasNoTeam,
     requestHasTeam, teamHasName, verifyPersons,
     checkPointsZero, checkTeamPrices, async (req, res) => {
         try {
             let model: TeamModel = Deserialize(req.body.team, TeamModel);
             let repo: TeamRepository = getCustomRepository(TeamRepository);
             //TODO remove 0
-            model = (await repo.createTeam(model, 397 /*req.user.id*/))._transform();
+            model = (await repo.createTeam(model, req.user.id))._transform();
             res.status(200).json(model);
         } catch (e) {
             if (e.code == "ER_DUP_ENTRY") {
@@ -31,14 +31,13 @@ router.post("/", /* isLoggedIn,*/ teamEditIsOpen, userHasNoTeam,
         }
     });
 
-    router.put("/", /* isLoggedIn,*/ teamEditIsOpen,
+router.put("/", isLoggedIn, teamEditIsOpen,
     requestHasTeam, teamHasName, verifyPersons,
     checkPointsZero, checkTeamPrices, async (req, res) => {
         try {
             let model: TeamModel = Deserialize(req.body.team, TeamModel);
             let repo: TeamRepository = getCustomRepository(TeamRepository);
-            //TODO remove 0
-            model = (await repo.updateTeam(model, 397 /*req.user.id*/))._transform();
+            model = (await repo.updateTeam(model, req.user.id))._transform();
             res.status(200).json(model);
         } catch (e) {
             console.log(e);

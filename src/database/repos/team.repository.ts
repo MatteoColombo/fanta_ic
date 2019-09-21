@@ -51,7 +51,8 @@ export class TeamRepository extends BaseCommonRepository<TeamEntity>{
             .getOne();
         let entity: TeamEntity = await this.getTeamEntity(team, user);
         if (oldteam) entity.id = oldteam.id;
-
+        oldteam.cubers=[];
+        await this.repository.save(oldteam)
         await this.repository.save(entity);
         return this.getTeamById(entity.id);
     }
