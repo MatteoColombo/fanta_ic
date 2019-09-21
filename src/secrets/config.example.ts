@@ -1,6 +1,6 @@
 export const config = {
     wca: {
-        competition_id: "ItalianChampionship2019",
+        competition_id: "RoadtoICMonterotondo2019",
         dev: {
             login_redirect_uri: "http://localhost:4200/api/auth/login/callback",
             user_agent: "http://localhost:4200",
@@ -27,10 +27,24 @@ export const config = {
     },
     game: {
         country: "Italy",
-        creation_closes: "",
+        creation_closes: {
+            year: 2019,
+            month: 9,
+            day: 11,
+            hour: 12,
+            minute: 0
+        },
+        creation_opens: {
+            year: 2019,
+            month: 9,
+            day: 9,
+            hour: 12,
+            minute: 0
+        },
         competitors_per_team: 6,
         best_n_placements_to_consider: 3,
         default_price: 10,
+        budget: 2500,
         at_points: 24,
         points: {
             "1": 300,
@@ -60,9 +74,9 @@ export const config = {
         }
     },
     cubecomps: {
-        competition_id: 4360,
+        competition_id: 4665,
     },
-    admin: [
-        397,
+    admin:[
+        397,       
     ]
 }

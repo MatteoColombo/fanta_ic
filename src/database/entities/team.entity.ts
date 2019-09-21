@@ -17,6 +17,9 @@ export class TeamEntity extends BaseEntity implements Transformable<TeamModel> {
     @Column({ nullable: false })
     points: number;
 
+    @Column({ nullable: true, default: 0 })
+    position: number;
+
     @ManyToMany(type => PersonEntity, { eager: true })
     @JoinTable()
     cubers: PersonEntity[];
@@ -30,10 +33,11 @@ export class TeamEntity extends BaseEntity implements Transformable<TeamModel> {
         model.id = this.id;
         model.name = this.name;
         model.points = this.points;
+        model.position = this.position;
         model.cubers = this.cubers.map((c: PersonEntity) => c._transform());
-        if(this.user){
-            model.ownerId=this.user.id;
-            model.ownerName=this.user.name;
+        if (this.user) {
+            model.ownerId = this.user.id;
+            model.ownerName = this.user.name;
         }
         return model;
     }

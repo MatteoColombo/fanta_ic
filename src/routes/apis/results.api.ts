@@ -11,6 +11,8 @@ import { CategoryEntity } from "../../database/entities/category.entity";
 import { getCustomRepository } from "typeorm";
 import { ResultsModel } from "../../model/results";
 import { PersonRepository } from "../../database/repos/person.repository";
+import { TeamRepository } from "../../database/repos/team.repository";
+import { TeamEntity } from "../../database/entities/team.entity";
 
 const router: Router = Router();
 
@@ -38,7 +40,8 @@ router.get("/import/events/:event/rounds/:round", isOrganizer, checkEvent, check
         // Save
         await saveResults(result, category);
         await updatePersonPoints();
-        /*await updateTeamPoints();*/
+        await updateTeamPoints();
+        await setTeamPosition();
         await incrementImports(category.id);
         res.status(200).json(result);
     } catch (e) {
@@ -166,7 +169,75 @@ async function updatePersonPoints() {
  * Updates team points. it should be called after updating person points.
  */
 async function updateTeamPoints() {
-    return;
+    return getCustomRepository(TeamRepository).computeTeamPoints();
+}
+
+async function setTeamPosition() {
+    let repo: TeamRepository = getCustomRepository(TeamRepository);
+    // Get all the teams
+    let teams: TeamEntity[] = await repo.getTeams(true);
+    // Assign position 1 to the first of the list
+    teams[0].position = 1;
+    // Array containing positions where there is a tie
+    let dups: number[] = [];
+
+    // Assign positions, if points are the same as the previous cuber, assign the same position
+    for (let i = 1; i < teams.length; i++) {
+        if (teams[i].points === teams[i - 1].points) {
+            teams[i].position = teams[i - 1].position;
+            if (dups.indexOf(teams[i].position) < 0) dups.push(teams[i].position);
+        }
+        else
+            teams[i].position = i + 1;
+    }
+
+    // If there are ties, enter 
+    if (dups.length > 0) {
+
+        // For each position that has a tie, do something
+        for (let position of dups) {
+            // Get the teams that are tied at position "position"
+            let tiedTeams: TeamEntity[] = teams.filter((t) => t.position === position);
+            let tiedAgain: Set<number> = new Set<number>([]);
+
+            // Sort them
+            tiedTeams.sort((a, b) => {
+                // Get the points of the team cubers, ordered desc.
+                let aPoints: number[] = a.cubers.map((c) => c.points).sort((p1, p2) => p1 - p2);
+                let bPoints: number[] = b.cubers.map((c) => c.points).sort((p1, p2) => p1 - p2);
+                // Iterate over the points to sort
+                for (let i = 0; i < aPoints.length; i++) {
+                    if (aPoints[i] > bPoints[i]) return 1;
+                    else if (aPoints[i] < bPoints[i]) return -1;
+                }
+                // If we got here it means that's a tie. We return 0 and we add the teams to the set of those which are still tied.
+                tiedAgain.add(a.id);
+                tiedAgain.add(b.id);
+                return 0;
+            });
+
+            // Assign positions to those that are not tied anymore
+            for (let i = 0; i < tiedTeams.length; i++) {
+                // If the person is in the list of those who are still tied, break the cycle
+                if (tiedAgain.has(tiedTeams[i].id)) break;
+                tiedTeams[i].position = position + i;
+            }
+
+            // Assign position to those that are still tied
+            if (tiedAgain.size > 0) {
+                let pInc: number = tiedTeams.length - tiedAgain.size;
+                tiedTeams.forEach(t => {
+                    if (tiedAgain.has(t.id)) {
+                        t.position = position + pInc;
+                    }
+                });
+            }
+            //Update positions in the teams list
+            tiedTeams.forEach((t) => teams.find((t2) => t2.id === t.id).position = t.position);
+        }
+    }
+    // Save the teams with updated positions
+    return repo.savePositions(teams);
 }
 
 export { router } 
