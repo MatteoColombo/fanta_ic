@@ -7,9 +7,11 @@ import { TeamRepository } from "../database/repos/team.repository";
 
 const router: Router = Router();
 
+
 router.get("/", (req, res) => res.render("home", { title: "FantaIC", user: req.user }));
 
 router.get("/regolamento", (req, res) => res.render("regulation", { title: "Regolamento - FantaIC", user: req.user }));
+
 
 router.get("/classifica", async (req, res) => {
     let teams: TeamEntity[]= await getCustomRepository(TeamRepository).getTeams(true);
@@ -19,7 +21,13 @@ router.get("/classifica", async (req, res) => {
     });
 });
 
-router.get("/crea", (req, res) => res.render("createteam", { title: "Crea squadra - FantaIC", user: req.user }));
+
+router.get("/crea", async (req, res) => {
+    res.render("createteam", { 
+        title: "Crea squadra - FantaIC", 
+        user: req.user,
+    })
+});
 
 router.get("/admin", isOrganizer, async (req, res) => {
     let today: Date = new Date();

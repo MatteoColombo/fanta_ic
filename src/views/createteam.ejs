@@ -5,13 +5,16 @@
     <div class="row">
         <div class="col-md-4 offset-md-1">
             <h4>Cuber</h4>
-            <ul class="list-group list-group-flush mb-md-3">
+            <ul class="list-group list-group-flush mb-md-3" id="cubers-list">
+            </ul>
         </div>
         <div class="col-md-4 offset-md-2" >
             <div class="border border-primary px-md-3">
-            <h4 class="pt-md-3">La tua squadra</h4>
-            <ul class="list-group list-group-flush">
-                
+                <div class="row">
+                    <div class="col-md-8"><h4 class="pt-md-3">La tua squadra</h4></div>
+                    <div class="col-md-4"><a class="btn btn-block btn-info mt-md-2" role="button" style="color: white">Salva</a></div>
+                </div>
+            <ul class="list-group list-group-flush" id="team">
             </ul>
             </div>  
             </div>
@@ -23,4 +26,5 @@
 
 <%- include('logos') -%>
 <%- include('footer') -%>
+<script src="/public/js/createteam.js"></script>
 <%- include('endbody') -%>
