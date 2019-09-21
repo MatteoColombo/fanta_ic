@@ -12,6 +12,7 @@ export class TeamRepository extends BaseCommonRepository<TeamEntity> {
     public entityIdentifier = "TeamRepository";
 
     public async InitDefaults(): Promise<void> {
+        return;
     }
 
     public async getTeamById(id: number): Promise<TeamEntity> {

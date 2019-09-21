@@ -12,7 +12,7 @@ export class PersonRepository extends BaseCommonRepository<PersonEntity> {
     public entityIdentifier = "PersonRepository";
 
     public async InitDefaults(): Promise<void> {
-
+        return;
     }
 
     public async getPersonById(id: number): Promise<PersonEntity> {

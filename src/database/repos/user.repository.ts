@@ -10,6 +10,7 @@ export class UserRepository extends BaseCommonRepository<UserEntity> {
     public entityIdentifier = "UserEntity";
 
     public async InitDefaults(): Promise<void> {
+        return;
     }
 
     public async getUserById(id: number): Promise<UserEntity> {
@@ -21,7 +22,7 @@ export class UserRepository extends BaseCommonRepository<UserEntity> {
     }
 
     public async saveUser(user: UserModel): Promise<UserEntity> {
-        if (config.admin.findIndex((id: number) => id == user.id) > -1) {
+        if (config.admin.findIndex((id: number) => id === user.id) > -1) {
             user.isOrganizer = true;
         }
         return this.repository.save(this.convertUser(user));

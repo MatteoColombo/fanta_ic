@@ -1,10 +1,10 @@
 import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
 import { UserModel } from "../../model/user";
-import { Transformable } from "../transformable.interface";
+import { ITransformable } from "../transformable.interface";
 import { TeamEntity } from "./team.entity";
 
 @Entity()
-export class UserEntity extends BaseEntity implements Transformable<UserModel> {
+export class UserEntity extends BaseEntity implements ITransformable<UserModel> {
 
     @PrimaryColumn({ nullable: false })
     public id: number;

@@ -1,11 +1,11 @@
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { ResultsModel } from "../../model/results";
-import { Transformable } from "../transformable.interface";
+import { ITransformable } from "../transformable.interface";
 import { CategoryEntity } from "./category.entity";
 import { PersonEntity } from "./person.entity";
 
 @Entity()
-export class ResultsEntity extends BaseEntity implements Transformable<ResultsModel> {
+export class ResultsEntity extends BaseEntity implements ITransformable<ResultsModel> {
 
     @Column()
     public position: number;

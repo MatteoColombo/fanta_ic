@@ -1,10 +1,10 @@
 import { BaseEntity, Column, Entity, OneToMany,  PrimaryColumn } from "typeorm";
 import { CategoryModel } from "../../model/category";
-import { Transformable } from "../transformable.interface";
+import { ITransformable } from "../transformable.interface";
 import { ResultsEntity } from "./results.entity";
 
 @Entity()
-export class CategoryEntity extends BaseEntity implements Transformable<CategoryModel> {
+export class CategoryEntity extends BaseEntity implements ITransformable<CategoryModel> {
 
     @PrimaryColumn({ nullable: false })
     public id: string;
@@ -34,7 +34,7 @@ export class CategoryEntity extends BaseEntity implements Transformable<Category
     public results: ResultsEntity[];
 
     public _transform(): CategoryModel {
-        const model = new CategoryModel;
+        const model = new CategoryModel();
         model.id = this.id;
         model.name = this.name;
         model.cubecompsId = this.cubecompsId;

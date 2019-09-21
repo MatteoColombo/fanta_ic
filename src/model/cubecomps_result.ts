@@ -29,7 +29,6 @@ export class CubecompsResults {
 
     public toResult(): ResultsModel {
         const result: ResultsModel = new ResultsModel();
-        result.category;
         result.points = this.points;
         result.person = this.name;
         result.position = this.position;

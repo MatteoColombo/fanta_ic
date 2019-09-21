@@ -12,7 +12,7 @@ export class ResultsRepository extends BaseCommonRepository<ResultsEntity> {
     public entityIdentifier = "ResultsRepository";
 
     public async InitDefaults(): Promise<void> {
-
+        return;
     }
 
     public async insertResult(model: ResultsModel, category: CategoryEntity): Promise<ResultsEntity> {

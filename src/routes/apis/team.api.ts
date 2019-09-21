@@ -4,16 +4,16 @@ import passport from "passport";
 import { getCustomRepository } from "typeorm";
 import { TeamRepository } from "../../database/repos/team.repository";
 import { TeamModel } from "../../model/team";
-import { isGuest, isLoggedIn } from "../middlewares/auth.middleware";
-import { checkPointsZero, checkTeamPrices, requestHasTeam, teamEditIsOpen, teamHasName, userHasNoTeam, verifyPersons } from "../middlewares/team.middlewares";
+import { isLoggedIn } from "../middlewares/auth.middleware";
+import * as midd from "../middlewares/team.middlewares";
 
 const router: Router = Router();
 
 // TODO add login requirement
 
-router.post("/", isLoggedIn, teamEditIsOpen, userHasNoTeam,
-    requestHasTeam, teamHasName, verifyPersons,
-    checkPointsZero, checkTeamPrices, async (req, res) => {
+router.post("/", isLoggedIn, midd.teamEditIsOpen, midd.userHasNoTeam,
+    midd.requestHasTeam, midd.teamHasName, midd.verifyPersons,
+    midd.checkPointsZero, midd.checkTeamPrices, async (req, res) => {
         try {
             let model: TeamModel = Deserialize(req.body.team, TeamModel);
             const repo: TeamRepository = getCustomRepository(TeamRepository);
@@ -21,7 +21,7 @@ router.post("/", isLoggedIn, teamEditIsOpen, userHasNoTeam,
             model = (await repo.createTeam(model, req.user.id))._transform();
             res.status(200).json(model);
         } catch (e) {
-            if (e.code == "ER_DUP_ENTRY") {
+            if (e.code === "ER_DUP_ENTRY") {
                 res.status(400).json({ error: "ER_DUP_ENTRY" });
             } else {
                 res.status(400).json({ error: e.message });
@@ -29,17 +29,16 @@ router.post("/", isLoggedIn, teamEditIsOpen, userHasNoTeam,
         }
     });
 
-router.put("/", isLoggedIn, teamEditIsOpen,
-    requestHasTeam, teamHasName, verifyPersons,
-    checkPointsZero, checkTeamPrices, async (req, res) => {
+router.put("/", isLoggedIn, midd.teamEditIsOpen,
+    midd.requestHasTeam, midd.teamHasName, midd.verifyPersons,
+    midd.checkPointsZero, midd.checkTeamPrices, async (req, res) => {
         try {
             let model: TeamModel = Deserialize(req.body.team, TeamModel);
             const repo: TeamRepository = getCustomRepository(TeamRepository);
             model = (await repo.updateTeam(model, req.user.id))._transform();
             res.status(200).json(model);
         } catch (e) {
-            console.log(e);
-            if (e.code == "ER_DUP_ENTRY") {
+            if (e.code === "ER_DUP_ENTRY") {
                 res.status(400).json({ error: "ER_DUP_ENTRY" });
             } else {
                 res.status(400).json({ error: e.message });

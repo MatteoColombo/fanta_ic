@@ -26,7 +26,8 @@ router.get("/import/events/:event/rounds/:round", isOrganizer, checkEvent, check
         const categoryRepo: CategoryRepository = getCustomRepository(CategoryRepository);
         const category: CategoryEntity = await categoryRepo.getCategoryById(req.params.event);
         // Create the url to access cubecomps APIs.
-        const url = `https://m.cubecomps.com/api/v1/competitions/${config.cubecomps.competition_id}/events/${category.cubecompsId}/rounds/${req.params.round}`;
+        const compId = config.cubecomps.competition_id;
+        const url = `https://m.cubecomps.com/api/v1/competitions/${compId}/events/${category.cubecompsId}/rounds/${req.params.round}`;
         // Download round results from cubecomps.
         let json = await getCubecompsJSON(url);
         // Make sure that there is always a "average" key.
@@ -45,7 +46,6 @@ router.get("/import/events/:event/rounds/:round", isOrganizer, checkEvent, check
         await incrementImports(category.id);
         res.status(200).json(result);
     } catch (e) {
-        console.log(e);
         res.status(400).json({ error: "BAD_REQUEST" });
     }
 });
@@ -57,9 +57,9 @@ router.get("/import/events/:event/rounds/:round", isOrganizer, checkEvent, check
  */
 async function getCubecompsJSON(url: string) {
     return request({
-        method: "GET",
-        uri: url,
         json: true,
+        method: "GET",
+        uri: url
     });
 }
 
@@ -117,7 +117,8 @@ function assignPositions(result: CubecompsResults[]) {
  * Assign points.
  *
  * If the result is DNF and it's round 1, assign 0 points.
- * To assign points, takes position points and multiplies them by a multiplicator. The value is rounded to the nearest integer.
+ * To assign points, takes position points and multiplies them by a multiplicator.
+ * The value is rounded to the nearest integer.
  *
  * @param result
  * @param multiplicator
@@ -209,7 +210,8 @@ async function setTeamPosition() {
                 for (let i = 0; i < aPoints.length; i++) {
                     if (aPoints[i] > bPoints[i]) { return 1; } else if (aPoints[i] < bPoints[i]) { return -1; }
                 }
-                // If we got here it means that's a tie. We return 0 and we add the teams to the set of those which are still tied.
+                // If we got here it means that's a tie.
+                // We return 0 and we add the teams to the set of those which are still tied.
                 tiedAgain.add(a.id);
                 tiedAgain.add(b.id);
                 return 0;

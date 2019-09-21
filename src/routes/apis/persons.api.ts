@@ -47,7 +47,6 @@ router.get("/import", isOrganizer, async (req, res) => {
         res.status(200).json(persons.map((p) => p._transform()));
     } catch (e) {
         res.status(500).json({ error: "SERVER_ERRO" });
-        console.log(e);
     }
 });
 
@@ -58,9 +57,9 @@ router.get("/import", isOrganizer, async (req, res) => {
  */
 async function getWCACompetitors(id: string) {
     return request({
-        method: "GET",
-        uri: `https://www.worldcubeassociation.org/competitions/${id}/registrations`,
         json: false,
+        method: "GET",
+        uri: `https://www.worldcubeassociation.org/competitions/${id}/registrations`
     });
 }
 
@@ -126,7 +125,6 @@ router.get("/import/prices", isOrganizer, async (req, res) => {
         res.status(200).json(result.map((r) => r._transform()));
     } catch (e) {
         res.status(500).json({ error: "SERVER_ERROR" });
-        console.log(e);
     }
 });
 
@@ -138,9 +136,9 @@ router.get("/import/prices", isOrganizer, async (req, res) => {
  */
 async function getWCACompetitorsForEvent(id: string, event: string) {
     return request({
-        method: "GET",
-        uri: `https://www.worldcubeassociation.org/competitions/${id}/registrations/psych-sheet/${event}`,
         json: false,
+        method: "GET",
+        uri: `https://www.worldcubeassociation.org/competitions/${id}/registrations/psych-sheet/${event}`
     });
 }
 

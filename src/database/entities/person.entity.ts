@@ -1,11 +1,11 @@
 import { BaseEntity, Column,  Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { PersonModel } from "../../model/person";
 import { config } from "../../secrets/config";
-import { Transformable } from "../transformable.interface";
+import { ITransformable } from "../transformable.interface";
 import { ResultsEntity } from "./results.entity";
 
 @Entity()
-export class PersonEntity extends BaseEntity implements Transformable<PersonModel> {
+export class PersonEntity extends BaseEntity implements ITransformable<PersonModel> {
 
     @PrimaryGeneratedColumn()
     public id: number;

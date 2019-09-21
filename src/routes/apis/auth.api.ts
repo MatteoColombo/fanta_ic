@@ -9,8 +9,7 @@ const router: Router = Router();
  * Log out the user and then redirect him to the homepage
  */
 router.get("/logout", isLoggedIn, (req, res): void => {
-    console.log("someone wants to log out");
-    req.session.destroy(function(err) {
+    req.session.destroy((err) => {
         res.redirect("/");
     });
 });
@@ -24,8 +23,7 @@ router.get("/login", isGuest, authMiddleWare, passport.authenticate("wca"));
  * Log in the user and then redirect him to the root
  */
 router.get("/login/callback", isGuest, passport.authenticate("wca"),
-    function(req, res) {
-        console.log("Successful login, redirecting user to root");
+    (req, res) => {
         res.redirect("/");
     });
 

@@ -1,12 +1,12 @@
 import { BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PersonModel } from "../../model/person";
 import { TeamModel } from "../../model/team";
-import { Transformable } from "../transformable.interface";
+import { ITransformable } from "../transformable.interface";
 import { PersonEntity } from "./person.entity";
 import { UserEntity } from "./user.entity";
 
 @Entity()
-export class TeamEntity extends BaseEntity implements Transformable<TeamModel> {
+export class TeamEntity extends BaseEntity implements ITransformable<TeamModel> {
 
     @PrimaryGeneratedColumn()
     public id: number;

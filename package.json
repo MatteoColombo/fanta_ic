@@ -8,7 +8,7 @@
     "copy-assets": "ts-node tools/copyAssets",
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
     "tsc": "tsc",
-    "build": "npm-run-all clean lint tsc copy-assets",
+    "build": "npm-run-all clean tsc copy-assets",
     "start": "nodemon exec",
     "test": "jest"
   },

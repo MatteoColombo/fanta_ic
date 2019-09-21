@@ -10,21 +10,21 @@ import { config } from "../secrets/config";
 export function authMiddleWare(req, res, next) {
     if (process.env.NODE_ENV === "production") {
         passport.use(new WCAStrategy({
+            callbackURL: config.wca.prod.login_redirect_uri,
             clientID: config.wca.prod.client_id,
             clientSecret: config.wca.prod.client_secret,
-            callbackURL: config.wca.prod.login_redirect_uri,
             scope: config.wca.prod.scope,
             userAgent: config.wca.prod.user_agent
         }, loginCallback));
     } else {
         passport.use(new WCAStrategy({
+            authorizationURL: "https://staging.worldcubeassociation.org/oauth/authorize",
+            callbackURL: config.wca.dev.login_redirect_uri,
             clientID: config.wca.dev.client_id,
             clientSecret: config.wca.dev.client_secret,
-            callbackURL: config.wca.dev.login_redirect_uri,
             scope: config.wca.dev.scope,
-            userAgent: config.wca.dev.user_agent,
-            authorizationURL: "https://staging.worldcubeassociation.org/oauth/authorize",
             tokenURL: "https://staging.worldcubeassociation.org/oauth/token",
+            userAgent: config.wca.dev.user_agent,
             userProfileURL: "https://staging.worldcubeassociation.org/api/v0/me"
         }, loginCallback));
     }

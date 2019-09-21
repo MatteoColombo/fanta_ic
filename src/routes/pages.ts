@@ -14,8 +14,8 @@ router.get("/regolamento", (req, res) => res.render("regulation", { title: "Rego
 router.get("/classifica", async (req, res) => {
     const teams: TeamEntity[] = await getCustomRepository(TeamRepository).getTeams(true);
     res.render("leaderboard", {
-        title: "Classifica - FantaIC", user: req.user,
-        teams
+        teams,
+        title: "Classifica - FantaIC", user: req.user
     });
 });
 
@@ -28,30 +28,32 @@ router.get("/crea", async (req, res) => {
 
 router.get("/admin", isOrganizer, async (req, res) => {
     const today: Date = new Date();
-    const creation_closes: Date = new Date(config.game.creation_closes.year, (config.game.creation_closes.month - 1), config.game.creation_closes.day, config.game.creation_closes.hour, config.game.creation_closes.minute);
-    const creation_opens: Date = new Date(config.game.creation_opens.year, (config.game.creation_opens.month - 1), config.game.creation_opens.day, config.game.creation_opens.hour, config.game.creation_opens.minute);
-    if (today > creation_closes) {
+    const co = config.game.creation_opens;
+    const cc = config.game.creation_closes;
+    const creationCloses: Date = new Date(cc.year, (cc.month - 1), cc.day, cc.hour, cc.minute);
+    const creationOpens: Date = new Date(co.year, (co.month - 1), co.day, co.hour, co.minute);
+    if (today > creationCloses) {
         res.render("adminpage", {
-            title: "Admin - FantaIC",
-            user: req.user,
+            import_data: false,
             import_results: true,
-            import_data: false
+            title: "Admin - FantaIC",
+            user: req.user
         });
-    } else if (today < creation_opens) {
+    } else if (today < creationOpens) {
         res.render("adminpage", {
+            import_data: true,
+            import_results: false,
             title: "Admin - FantaIC",
             user: req.user,
-            import_results: false,
-            import_data: true
         });
     } else {
         const teams: TeamEntity[] = await getCustomRepository(TeamRepository).getTeams(false);
         res.render("adminpage", {
-            title: "Admin - FantaIC",
-            user: req.user,
-            import_results: false,
             import_data: false,
-            teams: teams.map((t) => t._transform())
+            import_results: false,
+            teams: teams.map((t) => t._transform()),
+            title: "Admin - FantaIC",
+            user: req.user
         });
     }
 });
