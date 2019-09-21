@@ -13,7 +13,7 @@ $(document).ready(function () {
         /** Download my team */
         $.getJSON("/api/persons/team", function (data) {
             /** If team exists, save data and populate */
-            if (data !== undefined && data !== {}) {
+            if (data.id) {
                 teamId = data.id;
                 $("#teamname").val(data.name);
                 myTeam = data.cubers;

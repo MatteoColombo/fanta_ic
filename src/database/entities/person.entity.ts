@@ -1,29 +1,29 @@
-import { Entity, Column,  BaseEntity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Transformable } from '../transformable.interface';
-import { PersonModel } from '../../model/person'
-import { ResultsEntity } from './results.entity'
-import { config } from '../../secrets/config';
+import { BaseEntity, Column,  Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { PersonModel } from "../../model/person";
+import { config } from "../../secrets/config";
+import { Transformable } from "../transformable.interface";
+import { ResultsEntity } from "./results.entity";
 
 @Entity()
 export class PersonEntity extends BaseEntity implements Transformable<PersonModel> {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    public id: number;
 
     @Column({ nullable: false })
-    name: string;
+    public name: string;
 
     @Column({ nullable: false, default: config.game.default_price })
-    price: number;
+    public price: number;
 
     @Column({ default: 0 })
-    points: number;
+    public points: number;
 
-    @OneToMany(type => ResultsEntity, res => res.person)
-    results: ResultsEntity[];
+    @OneToMany((type) => ResultsEntity, (res) => res.person)
+    public results: ResultsEntity[];
 
-    _transform(): PersonModel {
-        let model = new PersonModel();
+    public _transform(): PersonModel {
+        const model = new PersonModel();
         model.id = this.id;
         model.name = this.name;
         model.price = this.price;
@@ -31,7 +31,7 @@ export class PersonEntity extends BaseEntity implements Transformable<PersonMode
         return model;
     }
 
-    _assimilate(origin: PersonModel) {
+    public _assimilate(origin: PersonModel) {
         this.id = origin.id;
         this.name = origin.name;
         this.price = origin.price;

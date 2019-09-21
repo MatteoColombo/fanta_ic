@@ -3,15 +3,15 @@ import { autoserialize } from "cerialize";
 export class PersonModel {
 
     @autoserialize
-    id: number;
+    public id: number;
 
     @autoserialize
-    name: string;
+    public name: string;
 
     @autoserialize
-    price: number;
+    public price: number;
 
     @autoserialize
-    points: number;
+    public points: number;
 
 }

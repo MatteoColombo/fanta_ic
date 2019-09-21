@@ -1,4 +1,4 @@
-import { AbstractRepository, Repository, BaseEntity } from "typeorm";
+import { AbstractRepository, BaseEntity, Repository } from "typeorm";
 import { FindManyOptions } from "typeorm/find-options/FindManyOptions";
 
 /**

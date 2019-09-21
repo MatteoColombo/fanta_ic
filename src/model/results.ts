@@ -1,18 +1,17 @@
-import { autoserialize } from 'cerialize';
+import { autoserialize } from "cerialize";
 
 export class ResultsModel {
 
     @autoserialize
-    position: number;
+    public position: number;
 
     @autoserialize
-    points: number;
+    public points: number;
 
     @autoserialize
-    person: string;
+    public person: string;
 
     @autoserialize
-    category: string;
-
+    public category: string;
 
 }

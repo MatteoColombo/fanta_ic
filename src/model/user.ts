@@ -1,7 +1,6 @@
 import { autoserialize, autoserializeAs } from "cerialize";
 import { TeamModel } from "./team";
 
-
 export class UserModel {
 
     @autoserialize

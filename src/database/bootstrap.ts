@@ -1,6 +1,6 @@
-import { getCustomRepository, BaseEntity } from "typeorm";
-import { BaseCommonRepository } from "./BaseCommonRepository";
+import { BaseEntity, getCustomRepository } from "typeorm";
 import { CategoryRepository } from "../database/repos/category.repository";
+import { BaseCommonRepository } from "./BaseCommonRepository";
 
 /**
  * Holds all the custom repository that needs to run a custom function

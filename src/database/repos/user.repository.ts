@@ -1,12 +1,11 @@
 import { EntityRepository } from "typeorm";
-import { UserEntity } from "../entities/user.entity";
-import { BaseCommonRepository } from "../BaseCommonRepository";
 import { UserModel } from "../../model/user";
 import { config } from "../../secrets/config";
-
+import { BaseCommonRepository } from "../BaseCommonRepository";
+import { UserEntity } from "../entities/user.entity";
 
 @EntityRepository(UserEntity)
-export class UserRepository extends BaseCommonRepository<UserEntity>{
+export class UserRepository extends BaseCommonRepository<UserEntity> {
 
     public entityIdentifier = "UserEntity";
 
@@ -22,22 +21,19 @@ export class UserRepository extends BaseCommonRepository<UserEntity>{
     }
 
     public async saveUser(user: UserModel): Promise<UserEntity> {
-        if (config.admin.findIndex((id: number) => id == user.id) > -1)
+        if (config.admin.findIndex((id: number) => id == user.id) > -1) {
             user.isOrganizer = true;
+        }
         return this.repository.save(this.convertUser(user));
     }
 
     public async userHasTeam(user: number): Promise<boolean> {
-        let u: UserEntity = await this.repository.findOne({ where: { id: user }, relations: ["team"] });
+        const u: UserEntity = await this.repository.findOne({ where: { id: user }, relations: ["team"] });
         return u.team != null;
     }
 
-
-
-
-
     private convertUser(origin: UserModel): UserEntity {
-        let entity: UserEntity = new UserEntity();
+        const entity: UserEntity = new UserEntity();
         entity._assimilate(origin);
         return entity;
     }

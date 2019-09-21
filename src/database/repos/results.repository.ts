@@ -1,25 +1,24 @@
 import { EntityRepository, getCustomRepository, MoreThan } from "typeorm";
-import { ResultsEntity } from "../entities/results.entity";
-import { BaseCommonRepository } from "../BaseCommonRepository";
 import { ResultsModel } from "../../model/results";
+import { BaseCommonRepository } from "../BaseCommonRepository";
 import { CategoryEntity } from "../entities/category.entity";
 import { PersonEntity } from "../entities/person.entity";
+import { ResultsEntity } from "../entities/results.entity";
 import { PersonRepository } from "./person.repository";
 
-
 @EntityRepository(ResultsEntity)
-export class ResultsRepository extends BaseCommonRepository<ResultsEntity>{
+export class ResultsRepository extends BaseCommonRepository<ResultsEntity> {
 
-    entityIdentifier = "ResultsRepository";
+    public entityIdentifier = "ResultsRepository";
 
     public async InitDefaults(): Promise<void> {
 
     }
 
     public async insertResult(model: ResultsModel, category: CategoryEntity): Promise<ResultsEntity> {
-        let person: PersonEntity = await getCustomRepository(PersonRepository).getPersonByName(model.person);
-        if (!person) return null;
-        let entity: ResultsEntity = new ResultsEntity();
+        const person: PersonEntity = await getCustomRepository(PersonRepository).getPersonByName(model.person);
+        if (!person) { return null; }
+        const entity: ResultsEntity = new ResultsEntity();
         entity._assimilate(model);
         entity.category = category;
         entity.person = person;
@@ -27,7 +26,7 @@ export class ResultsRepository extends BaseCommonRepository<ResultsEntity>{
     }
 
     public async getResultsByPerson(person: PersonEntity): Promise<ResultsEntity[]> {
-        return this.repository.find({ where: { person: person } });
+        return this.repository.find({ where: { person } });
     }
 
     public async deleteResults(): Promise<void> {

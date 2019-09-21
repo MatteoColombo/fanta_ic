@@ -1,28 +1,28 @@
-import { autoserialize } from 'cerialize';
+import { autoserialize } from "cerialize";
 
 export class CategoryModel {
 
     @autoserialize
-    id: string;
+    public id: string;
 
     @autoserialize
-    name: string;
+    public name: string;
 
     @autoserialize
-    multiplicator: number;
+    public multiplicator: number;
 
     @autoserialize
-    cubecompsId: number;
+    public cubecompsId: number;
 
     @autoserialize
-    rounds: number;
+    public rounds: number;
 
     @autoserialize
-    importedRounds: number;
+    public importedRounds: number;
 
     @autoserialize
-    sortByAverage: boolean;
+    public sortByAverage: boolean;
 
     @autoserialize
-    priceComputed: boolean;
+    public priceComputed: boolean;
 }

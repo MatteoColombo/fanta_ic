@@ -1,5 +1,5 @@
 import { autoserialize, autoserializeAs } from "cerialize";
-import { PersonModel } from './person'
+import { PersonModel } from "./person";
 
 export class TeamModel {
 
@@ -13,7 +13,7 @@ export class TeamModel {
     public points: number;
 
     @autoserialize
-    public position:number;
+    public position: number;
 
     @autoserialize
     public ownerId: number;

@@ -7,32 +7,32 @@ import { ResultsModel } from "./results";
 export class CubecompsResults {
 
     @autoserialize
-    competitor_id: number;
+    public competitor_id: number;
 
     @autoserialize
-    name: string;
+    public name: string;
 
     @autoserialize
-    position: number;
+    public position: number;
 
     @autoserialize
-    country: string;
+    public country: string;
 
     @autoserialize
-    average: string;
+    public average: string;
 
     @autoserialize
-    best: string;
+    public best: string;
 
     @autoserialize
-    points: number;
+    public points: number;
 
     public toResult(): ResultsModel {
-        let result: ResultsModel = new ResultsModel();
+        const result: ResultsModel = new ResultsModel();
         result.category;
         result.points = this.points;
         result.person = this.name;
-        result.position = this.position
+        result.position = this.position;
 
         return result;
     }

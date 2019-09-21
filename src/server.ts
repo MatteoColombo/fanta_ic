@@ -9,9 +9,9 @@ import "reflect-metadata";
 import { TypeormStore } from "typeorm-store";
 import { Database } from "./database/database";
 import { Session } from "./database/entities/session.entity";
-import { config } from "./secrets/config";
-import { router as pages } from "./routes/pages";
 import { router as apis } from "./routes/apis";
+import { router as pages } from "./routes/pages";
+import { config } from "./secrets/config";
 
 const app = express();
 const PORT = process.env.PORT || 4200;
@@ -49,17 +49,17 @@ function setMiddleware() {
 
 function addSession() {
     const repo = db.connection.getRepository(Session);
-    let sess = {
-        secret: config.session.secret,
+    const sess = {
+        cookie: config.session.cookie,
         resave: true,
         saveUninitialized: false,
-        cookie: config.session.cookie,
+        secret: config.session.secret,
         store: new TypeormStore({ repository: repo })
-    }
+    };
 
     if (PRODUCTION) {
-        app.set('trust proxy', 1) // trust first proxy
-        sess.cookie.secure = true // serve secure cookies
+        app.set("trust proxy", 1); // trust first proxy
+        sess.cookie.secure = false; // serve secure cookies
     }
     app.use(session(sess));
 
@@ -82,14 +82,12 @@ function setRoutes() {
 }
 
 function setErrorHandlers() {
-    app.use(function (req, res, next) {
+    app.use((req, res, next) => {
         // TODO replace this with an error page.
-        res.status(404).send('Sorry can\'t find that!');
+        res.status(404).send("Sorry can't find that!");
     });
 }
 
 function setPort() {
     app.set("port", PORT);
 }
-
-export { app }

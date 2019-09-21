@@ -1,26 +1,26 @@
-import { Entity, Column, PrimaryColumn, BaseEntity, ManyToOne } from 'typeorm';
-import { Transformable } from '../transformable.interface';
-import { ResultsModel } from '../../model/results'
-import { PersonEntity } from './person.entity';
-import { CategoryEntity } from './category.entity'
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { ResultsModel } from "../../model/results";
+import { Transformable } from "../transformable.interface";
+import { CategoryEntity } from "./category.entity";
+import { PersonEntity } from "./person.entity";
 
 @Entity()
 export class ResultsEntity extends BaseEntity implements Transformable<ResultsModel> {
 
     @Column()
-    position: number;
+    public position: number;
 
     @Column()
-    points: number;
+    public points: number;
 
-    @ManyToOne(type => PersonEntity, person => person.results, { primary: true, eager: true })
-    person: PersonEntity;
+    @ManyToOne((type) => PersonEntity, (person) => person.results, { primary: true, eager: true })
+    public person: PersonEntity;
 
-    @ManyToOne(type => CategoryEntity, category => category.results, { primary: true, eager: true })
-    category: CategoryEntity;
+    @ManyToOne((type) => CategoryEntity, (category) => category.results, { primary: true, eager: true })
+    public category: CategoryEntity;
 
-    _transform(): ResultsModel {
-        let model = new ResultsModel();
+    public _transform(): ResultsModel {
+        const model = new ResultsModel();
         model.position = this.position;
         model.points = this.points;
         model.category = this.category.id;
@@ -28,7 +28,7 @@ export class ResultsEntity extends BaseEntity implements Transformable<ResultsMo
         return model;
     }
 
-    _assimilate(origin: ResultsModel) {
+    public _assimilate(origin: ResultsModel) {
         this.points = origin.points;
         this.position = origin.position;
     }

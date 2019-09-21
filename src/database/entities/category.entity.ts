@@ -1,40 +1,40 @@
-import { Entity, Column, PrimaryColumn, BaseEntity,  OneToMany } from 'typeorm';
-import { Transformable } from '../transformable.interface';
-import { CategoryModel } from '../../model/category';
-import { ResultsEntity } from './results.entity'
+import { BaseEntity, Column, Entity, OneToMany,  PrimaryColumn } from "typeorm";
+import { CategoryModel } from "../../model/category";
+import { Transformable } from "../transformable.interface";
+import { ResultsEntity } from "./results.entity";
 
 @Entity()
 export class CategoryEntity extends BaseEntity implements Transformable<CategoryModel> {
 
     @PrimaryColumn({ nullable: false })
-    id: string;
+    public id: string;
 
     @Column({ nullable: false })
-    name: string;
+    public name: string;
 
     @Column()
-    cubecompsId: number;
+    public cubecompsId: number;
 
     @Column({ nullable: false, type: "float" })
-    multiplicator: number;
+    public multiplicator: number;
 
     @Column({ nullable: false })
-    rounds: number;
+    public rounds: number;
 
     @Column({ nullable: false, default: 0 })
-    importedRounds: number;
+    public importedRounds: number;
 
-    @Column({nullable:false, default:true})
-    sortByAverage: boolean;
+    @Column({nullable: false, default: true})
+    public sortByAverage: boolean;
 
-    @Column({nullable:false, default:false})
-    priceComputed: boolean;
+    @Column({nullable: false, default: false})
+    public priceComputed: boolean;
 
-    @OneToMany(type => ResultsEntity, res => res.category)
-    results: ResultsEntity[];
+    @OneToMany((type) => ResultsEntity, (res) => res.category)
+    public results: ResultsEntity[];
 
-    _transform(): CategoryModel {
-        let model = new CategoryModel;
+    public _transform(): CategoryModel {
+        const model = new CategoryModel;
         model.id = this.id;
         model.name = this.name;
         model.cubecompsId = this.cubecompsId;
@@ -42,11 +42,11 @@ export class CategoryEntity extends BaseEntity implements Transformable<Category
         model.rounds = this.rounds;
         model.importedRounds = this.importedRounds || 0;
         model.sortByAverage = this.sortByAverage || true;
-        model.priceComputed= this.priceComputed ||false;
+        model.priceComputed = this.priceComputed || false;
         return model;
     }
 
-    _assimilate(origin: CategoryModel) {
+    public _assimilate(origin: CategoryModel) {
         this.id = origin.id;
         this.name = origin.name;
         this.multiplicator = origin.multiplicator;
@@ -54,7 +54,7 @@ export class CategoryEntity extends BaseEntity implements Transformable<Category
         this.rounds = origin.rounds;
         this.importedRounds = origin.importedRounds || 0;
         this.sortByAverage = origin.sortByAverage || true;
-        this.priceComputed= origin.priceComputed || false;
+        this.priceComputed = origin.priceComputed || false;
     }
 
 }
