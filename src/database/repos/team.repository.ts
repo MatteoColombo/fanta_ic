@@ -4,6 +4,7 @@ import { BaseCommonRepository } from "../BaseCommonRepository";
 import { TeamModel } from "../../model/team";
 import { UserEntity } from "../entities/user.entity";
 import { UserRepository } from "./user.repository";
+import { PersonEntity } from "../entities/person.entity";
 
 
 @EntityRepository(TeamEntity)
@@ -20,14 +21,19 @@ export class TeamRepository extends BaseCommonRepository<TeamEntity>{
 
     public async getTeams(orderByPoints: boolean): Promise<TeamEntity[]> {
         if (orderByPoints)
-            return this.repository.find({ order: { points: "DESC" },relations: ['user'] });
-        return this.repository.find({ order: { name: "ASC" },relations:['user'] });
+            return this.repository.find({ order: { points: "DESC" }, relations: ['user'] });
+        return this.repository.find({ order: { name: "ASC" }, relations: ['user'] });
     }
 
     public async getUserTeam(user: number): Promise<TeamEntity> {
         return this.repository.createQueryBuilder()
             .select("team").from(TeamEntity, "team")
             .innerJoin("team.user", "user").where("user.id = :id", { id: user }).getOne();
+    }
+
+    public async getTeamCubers(id: number): Promise<PersonEntity[]> {
+        let team: TeamEntity = await this.repository.findOne({ relations: ['cubers'] });
+        return team.cubers.sort((a, b) => a.points - b.points);
     }
 
     public async createTeam(team: TeamModel, user: number): Promise<TeamEntity> {
@@ -58,6 +64,16 @@ export class TeamRepository extends BaseCommonRepository<TeamEntity>{
 
     private async getUser(id: number): Promise<UserEntity> {
         return await getCustomRepository(UserRepository).getUserById(id);
+    }
+
+    public async computeTeamPoints(): Promise<TeamEntity[]> {
+        let teams: TeamEntity[] = await this.repository.find({ relations: ['cubers'] });
+        teams.forEach((t: TeamEntity) => t.points = t.cubers.reduce((v, p, i, _) => { return v + p.points }, 0));
+        return this.repository.save(teams);
+    }
+
+    public async savePositions(teams: TeamEntity[]): Promise<TeamEntity[]> {
+        return this.repository.save(teams);
     }
 
 }

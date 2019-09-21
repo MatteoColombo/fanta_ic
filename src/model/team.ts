@@ -13,6 +13,9 @@ export class TeamModel {
     public points: number;
 
     @autoserialize
+    public position:number;
+
+    @autoserialize
     public ownerId: number;
 
     @autoserialize
