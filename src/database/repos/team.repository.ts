@@ -28,7 +28,8 @@ export class TeamRepository extends BaseCommonRepository<TeamEntity>{
     public async getUserTeam(user: number): Promise<TeamEntity> {
         return this.repository.createQueryBuilder()
             .select("team").from(TeamEntity, "team")
-            .innerJoin("team.user", "user").where("user.id = :id", { id: user }).getOne();
+            .innerJoin("team.user", "user").where("user.id = :id", { id: user })
+            .innerJoinAndSelect("team.cubers","cubers").getOne();
     }
 
     public async getTeamCubers(id: number): Promise<PersonEntity[]> {

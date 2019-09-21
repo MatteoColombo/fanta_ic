@@ -145,9 +145,14 @@ async function getWCACompetitorsForEvent(id: string, event: string) {
     });
 }
 
-router.get("/team", async (req, res) => {
-    let team: TeamEntity = await getCustomRepository(TeamRepository).getUserTeam(req.user.id);
-    res.status(200).json(team.cubers.map((c) => c._transform()));
+router.get("/team", isLoggedIn, async (req, res) => {
+    try {
+        let team: TeamEntity = await getCustomRepository(TeamRepository).getUserTeam(req.user.id);
+        res.status(200).json(team._transform());
+    } catch (e) {
+        res.status(200).json({});
+    }
+
 });
 
 export { router }

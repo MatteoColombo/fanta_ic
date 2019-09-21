@@ -1,67 +1,146 @@
+var cubers = [], myTeam = [];
+var maxCubers = 6;
+var maxCredits = 2500;
+var teamId;
+var teamName;
+
+
 $(document).ready(function () {
 
-    var cubers = [], myTeam = [];
-
+    /** Download the persons list */
     $.getJSON("/api/persons", function (data) {
         cubers = data;
-        setCubers();
+        /** Download my team */
+        $.getJSON("/api/persons/team", function (data) {
+            /** If team exists, save data and populate */
+            if (data !== undefined && data !== {}) {
+                teamId = data.id;
+                $("#teamname").val(data.name);
+                myTeam = data.cubers;
+                printTeamList();
+            }
+            updateCredits();
+            setSaveButtonState();
+            printCubersList();
+        });
     });
 
-    $.getJSON("/api/persons/team", function (data) {
-        myTeam = data;
-        setTeam();
-    });   
 
-    function setCubers() {
-        cubers.forEach(c => {
-            $("#cubers-list").append(
-            `<li class='list-group-item'><div class='row'>
-            <div class='col-md-6'>` + c.name + `</div>
-            <div class='col-md-1'><i class='fas fa-coins'></i></div>
-            <div class='col-md-2'>` + c.price + `</div>
-            <div class='col-md-2'><button class='btn btn-info b-list' id='a`+c.id+`' onclick="selectCuber(`+c.id+`)">
-            <i class='fas fa-plus'></i></button></div>`)
-        });
-    }
-
-    function setTeam() {
-        myTeam.forEach(c => {
-            $("#team").append(`<li class="list-group-item back"><div class="row">
-            <div class="col-md-9">` + c.name + `</div>
-            <div class="col-md-2"><button class="btn btn-info t-list" id='a`+c.id+`' onclick="deselectCuber(`+c.id+`)">
-            <i class="fas fa-times"></i></button></div>
-            </div></li>`)
-        });
-    }
-
-    
-    function selectCuber(id) {
-        cuber = findPerson();
-        $("#a"+id).attr("disabled");
-        myTeam.push(cuber); /* Add cuber to the team */
-        $("#team").append(`<li class="list-group-item back"><div class="row">
-            <div class="col-md-9">` + cuber.name + `</div>
-            <div class="col-md-2"><button class="btn btn-info t-list" id='a`+cuber.id+`' onclick="deselectCuber(`+cuber.id+`)">
-            <i class="fas fa-times"></i></button></div>
-            </div></li>`) /* visualize the new cuber */
-    }
-
-    function deselectCuber(id) {
-        $("#a"+id).detach(); /* delete cuber from page */
-        myTeam.splice(findIndex(id), 1); /*delete cuber from team variable*/
-    }
-
-    function findPerson(id) {
-        for(c of cubers) {
-            if(c.id === id)
-                return c;
-        }
-    }
-
-    function findIndex(id) {
-        for(let i=0; i<myTeam.length; i++) {
-            if(c[i].id === id)
-                return i;
-        }
-    }
 });
+
+/** Prints the list of cubers */
+function printCubersList() {
+    cubers.forEach(c => {
+        // If the cuber is already in the team, disable the add button
+        var inTeam = myTeam.findIndex((p) => p.id === c.id) > -1;
+        $("#cubers-list").append(
+            `<li class='list-group-item' id='p` + c.id + `'><div class='row'>
+        <div class='col-md-6'>` + c.name + `</div>
+        <div class='col-md-1'><i class='fas fa-coins'></i></div>
+        <div class='col-md-2 price'>` + c.price + `</div>
+        <div class='col-md-2'><button class='btn btn-info b-list' onclick="selectCuber(` + c.id + `)"` + (inTeam ? "disabled" : "") + `>
+        <i class='fas fa-plus'></i></button></div></li>`)
+    });
+}
+
+/** Prints the list of cubers in the team */
+function printTeamList() {
+    myTeam.forEach(cuber => printTeamMember(cuber));
+}
+
+/** Print a single cuber in the team */
+function printTeamMember(cuber) {
+    $("#team").append(`<li class="list-group-item back" id='t` + cuber.id + `'><div class="row">
+    <div class="col-md-9">` + cuber.name + `</div>
+    <div class="col-md-2"><button class="btn btn-info t-list" onclick="deselectCuber(` + cuber.id + `)">
+    <i class="fas fa-times"></i></button></div>
+    </div></li>`)
+}
+
+/** Select cuber to add him to the team */
+function selectCuber(id) {
+    /** If the team is full, refuse */
+    if (myTeam.length === maxCubers) {
+        alert("Limite cuber raggiunto!");
+    } else {
+        /** Get the person from the cubers list */
+        cuber = findPerson(id);
+        /** Add to the team */
+        myTeam.push(cuber);
+        /** Disable the add button */
+        $("#p" + id + " button").prop("disabled", true)
+        printTeamMember();
+        updateCredits();
+        setSaveButtonState();
+    }
+}
+
+function setSaveButtonState() {
+    if (myTeam.length < maxCubers || getTeamCredits() < 0) {
+        $("#save").prop("disabled", true)
+    } else {
+        $("#save").prop("disabled", false)
+    }
+}
+
+function deselectCuber(id) {
+    /*delete cuber from team variable*/
+    myTeam.splice(findIndex(id), 1);
+    /** Re-enable add button */
+    $("#p" + id + " button").prop("disabled", false)
+    /** Remove row from team list */
+    $("#t" + id).remove();
+    updateCredits();
+    setSaveButtonState();
+}
+
+function findPerson(id) {
+    return cubers.find(p => p.id === id);
+}
+
+function findIndex(id) {
+    return cubers.findIndex(p => p.id === id);
+}
+
+function updateCredits() {
+    $("#credits").text(maxCredits - getTeamCredits());
+}
+
+function getTeamCredits() {
+    return myTeam.reduce((v, p) => v + p.price, 0);
+}
+
+function save() {
+    if ($("#teamname").val() === "") {
+        alert("È necessario inserire un nome per il team");
+    } else {
+        var team = {
+            "team": {
+                "name": $("#teamname").val(),
+                "cubers": myTeam
+            }
+        }
+        if (teamId !== undefined) {
+            team.team["id"] = teamId;
+        }
+        $.ajax({
+            type: teamId? "PUT":"POST",
+            url: "/api/team",
+            data: team,
+            success: function (data) {
+                teamId = data.id;
+                $("#teamname").val(data.name);
+                myTeam = data.cubers;
+                printTeamList();
+                updateCredits();
+                setSaveButtonState();
+                printCubersList();
+                alert("Team aggiornato!");
+            },
+            error: function (err) {
+                alert("errore!");
+                console.log(err);
+            }
+        });
+    }
+}

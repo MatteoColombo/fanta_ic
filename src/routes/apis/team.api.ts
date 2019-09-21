@@ -41,6 +41,7 @@ router.post("/", /* isLoggedIn,*/ teamEditIsOpen, userHasNoTeam,
             model = (await repo.updateTeam(model, 397 /*req.user.id*/))._transform();
             res.status(200).json(model);
         } catch (e) {
+            console.log(e);
             if (e.code == "ER_DUP_ENTRY") {
                 res.status(400).json({ "error": "ER_DUP_ENTRY" });
             } else {
