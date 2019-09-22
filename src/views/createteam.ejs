@@ -1,28 +1,134 @@
 <%- include('./common/header') -%>
 <%- include('./navbar/navbarbuttons') -%>
 
-<div class="container back pt-md-5 mt-md-5">
-    <div class="row">
-        <div class="col-md-4 offset-md-1">
-            <h4>Cuber</h4>
-            <ul class="list-group list-group-flush mb-md-3" id="cubers-list">
-            </ul>
+<h1 class="home-msg text-center">Crea Team</h1>
+<div class="row">
+
+    <div class="col-lg-4 order-2 order-lg-1 first-elem">
+        <div>
+            <input type="text" class="form-control" id="findperson" placeholder="Cerca persone">
         </div>
-        <div class="col-md-4 offset-md-2" >
-            <div class="border border-primary px-md-3">
-                <div class="row">
-                    <div class="col-md-8"><input style="margin: 8px 0 8px 0" placeholder="Team name" class="form-control" id="teamname" style="width:100%" /></div>
-                    <div class="col-md-4"><button class="btn btn-block btn-info mt-md-2" role="button" style="color: white" id="save" onclick="save()">Salva</button></div>
+        <div class="team-selector">
+            <div class="list-group">
+                <div class="list-group-item d-flex">
+                    <div class="flex-fill">
+                        <p class="person">Matteo Colombo</p>
+                        <p>1098$</p>
+                    </div>
+                    <button class="btn btn-warning">+</button>
                 </div>
-            <ul class="list-group list-group-flush" id="team">
-            </ul>
-            </div>  
+                <div class="list-group-item d-flex">
+                    <div class="flex-fill">
+                        <p class="person">Matteo Colombo</p>
+                        <p>1098$</p>
+                    </div>
+                    <button class="btn btn-warning" disabled>+</button>
+                </div>
+                <div class="list-group-item d-flex">
+                    <div class="flex-fill">
+                        <p class="person">Matteo Colombo</p>
+                        <p>1098$</p>
+                    </div>
+                    <button class="btn btn-warning" disabled>+</button>
+                </div>
+                <div class="list-group-item d-flex">
+                    <div class="flex-fill">
+                        <p class="person">Matteo Colombo</p>
+                        <p>1098$</p>
+                    </div>
+                    <button class="btn btn-warning">+</button>
+                </div>
+                <div class="list-group-item d-flex">
+                    <div class="flex-fill">
+                        <p class="person">Matteo Colombo</p>
+                        <p>1098$</p>
+                    </div>
+                    <button class="btn btn-warning">+</button>
+                </div>
+                <div class="list-group-item d-flex">
+                    <div class="flex-fill">
+                        <p class="person">Matteo Colombo</p>
+                        <p>1098$</p>
+                    </div>
+                    <button class="btn btn-warning">+</button>
+                </div>
+                <div class="list-group-item d-flex">
+                    <div class="flex-fill">
+                        <p class="person">Matteo Colombo</p>
+                        <p>1098$</p>
+                    </div>
+                    <button class="btn btn-warning">+</button>
+                </div>
+                <div class="list-group-item d-flex">
+                    <div class="flex-fill">
+                        <p class="person">Matteo Colombo</p>
+                        <p>1098$</p>
+                    </div>
+                    <button class="btn btn-warning">+</button>
+                </div>
             </div>
         </div>
-        <button class="btn fixed-bottom box">Crediti residui: <span id="credits"></span></div>
+    </div>
+    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 first-elem">
+        <div class="row">
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="teamname" placeholder="Nome del team">
+            </div>
+            <div class="col-sm-4 mt-4 mt-sm-0">
+                <button type="button" class="btn btn-primary" style="width: 100%">Salva</button>
+            </div>
+        </div>
+        <div class="row first-elem">
+            <p class="col-9" style="margin-bottom: 10px"><strong>BUDGET:</strong></p>
+            <p class="col-3 text-right" style="margin-bottom:10px"><strong>2500$</strong></p>
+            <div class="col-12">
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 45%" aria-valuemin="0"
+                        aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row first-elem">
+            <div class="col-4 text-center team-usr">
+                <button class="team-rm btn btn-danger">X</button>
+                <img src="/public/img/user.png" class="img-fluid team-usr-img" alt="">
+                <p class="team-usr-p">Matteo Colombo</p>
+                <p>20$</p>
+            </div>
+            <div class="col-4 text-center team-usr">
+                <button class="team-rm btn btn-danger">X</button>
+                <img src="/public/img/user2.png" class="img-fluid team-usr-img" alt="">
+                <p class="team-usr-p">Matteo Colombo</p>
+                <p>20$</p>
+            </div>
+            <div class="col-4 text-center team-usr">
+                <button class="team-rm btn btn-danger">X</button>
+                <img src="/public/img/user3.png" class="img-fluid team-usr-img" alt="">
+                <p class="team-usr-p">Matteo Colombo</p>
+                <p>20$</p>
+            </div>
+            <div class="col-4 text-center team-usr">
+                <button class="team-rm btn btn-danger">X</button>
+                <img src="/public/img/user4.png" class="img-fluid team-usr-img" alt="">
+                <p class="team-usr-p">Matteo Colombo</p>
+                <p>20$</p>
+            </div>
+            <div class="col-4  text-center team-usr">
+                <button class="team-rm btn btn-danger">X</button>
+                <img src="/public/img/user5.png" class="img-fluid team-usr-img" alt="">
+                <p class="team-usr-p">Matteo Colombo</p>
+                <p>20$</p>
+            </div>
+            <div class="col-4 text-center team-usr">
+                <button class="team-rm btn btn-danger">X</button>
+                <img src="/public/img/user6.png" class="img-fluid team-usr-img" alt="">
+                <p class="team-usr-p">Matteo Colombo</p>
+                <p>20$</p>
+            </div>
+        </div>
     </div>
 
-
+</div>
 
 <%- include('./common/logos') -%>
 <%- include('./common/footer') -%>
