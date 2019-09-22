@@ -1,4 +1,4 @@
-var cubers = [], myTeam = [];
+var cubers = [], myTeam = [], filteredCubers;
 var maxCubers = 6;
 var maxCredits = 2500;
 var teamId;
@@ -6,77 +6,109 @@ var teamName;
 
 
 $(document).ready(function () {
-
     /** Download the persons list */
     $.getJSON("/api/persons", function (data) {
         cubers = data;
+        filteredCubers = data;
         /** Download my team */
-        $.getJSON("/api/persons", function (data) {
+        $.getJSON("/api/persons/team", function (data) {
             /** If team exists, save data and populate */
             if (data.id) {
                 teamId = data.id;
                 $("#teamname").val(data.name);
                 myTeam = data.cubers;
-                printTeamList();
             }
+            printTeamList();
+            printCubersList();
             updateCredits();
             setSaveButtonState();
-            printCubersList();
         });
     });
 
+    $("#teamname").on("input", function () {
+        setSaveButtonState();
+    });
+
+
+    $("#findperson").on("input", function () {
+        var query = $("#findperson").val();
+        filterList(query);
+    });
 
 });
 
+function filterList(query) {
+    filteredCubers = cubers.filter(p => p.name.toLowerCase().startsWith(query.toLowerCase()));
+    printCubersList();
+}
+
 /** Prints the list of cubers */
 function printCubersList() {
-    cubers.forEach(c => {
+    $("#cubers-list").empty();
+    filteredCubers.forEach(c => {
         // If the cuber is already in the team, disable the add button
         var inTeam = myTeam.findIndex((p) => p.id === c.id) > -1;
-        $("#cubers-list").append(
-            `<li class='list-group-item' id='p` + c.id + `'><div class='row'>
-        <div class='col-md-6'>` + c.name + `</div>
-        <div class='col-md-1'><i class='fas fa-coins'></i></div>
-        <div class='col-md-2 price'>` + c.price + `</div>
-        <div class='col-md-2'><button class='btn btn-info b-list' onclick="selectCuber(` + c.id + `)"` + (inTeam ? "disabled" : "") + `>
-        <i class='fas fa-plus'></i></button></div></li>`)
+        msg = "<div class=\"list-group-item d-flex\" id=\"pl" + c.id + "\">";
+        msg += "<div class=\"flex-fill\">";
+        msg += "<p class=\"person\">" + c.name + "</p>";
+        msg += "<p>" + c.price + "€</p>";
+        msg += "</div><button class=\"btn btn-warning\"" + (inTeam ? "disabled" : "") + " onclick=\"selectCuber(" + c.id + ")\">+</button></div>"
+        $("#cubers-list").append(msg);
     });
 }
 
 /** Prints the list of cubers in the team */
 function printTeamList() {
-    myTeam.forEach(cuber => printTeamMember(cuber));
+    $("#team").empty();
+    for (var i = 0; i < maxCubers; i++) {
+        if (i < myTeam.length) printTeamMember(myTeam[i], i);
+        else printTeamMemberNoUser(i);
+    }
 }
 
 /** Print a single cuber in the team */
-function printTeamMember(cuber) {
-    $("#team").append(`<li class="list-group-item back" id='t` + cuber.id + `'><div class="row">
-    <div class="col-md-9">` + cuber.name + `</div>
-    <div class="col-md-2"><button class="btn btn-info t-list" onclick="deselectCuber(` + cuber.id + `)">
-    <i class="fas fa-times"></i></button></div>
-    </div></li>`)
+function printTeamMember(cuber, i) {
+    var msg = "<div class=\"col-4 text-center team-usr\" id=\"tp" + i + "\">";
+    msg += "<button class=\"team-rm btn btn-danger\" onclick=\"deselectCuber(" + cuber.id + ")\">X</button>";
+    msg += "<img src=\"/public/img/user" + i + ".png\" class=\"img-fluid team-usr-img\">";
+    msg += "<p class=\"team-usr-p tpname\">" + cuber.name + "</p>";
+    msg += "<p class=\"tpprice\">" + cuber.price + "€</p></div>";
+    $("#team").append(msg);
 }
 
-/** Select cuber to add him to the team */
+function printTeamMemberNoUser(i) {
+    var msg = "<div class=\"col-4 text-center team-usr\" id=\"tp" + i + "\">";
+    msg += "<button class=\"team-rm btn btn-danger d-none\">X</button>";
+    msg += "<img src=\"/public/img/nouser.png\" class=\"img-fluid team-usr-img\">";
+    msg += "<p class=\"team-usr-p tpname\">Inserisci Cuber</p>";
+    msg += "<p class=\"tpprice\"> - </p></div>";
+    $("#team").append(msg);
+}
+
+
+
 function selectCuber(id) {
-    /** If the team is full, refuse */
     if (myTeam.length === maxCubers) {
-        alert("Limite cuber raggiunto!");
+
     } else {
-        /** Get the person from the cubers list */
-        cuber = findPerson(id);
-        /** Add to the team */
-        myTeam.push(cuber);
-        /** Disable the add button */
-        $("#p" + id + " button").prop("disabled", true)
-        printTeamMember(cuber);
-        updateCredits();
-        setSaveButtonState();
+        var credits = getTeamCredits();
+        var cuber = findPerson(id);
+        if ((credits + cuber.price) > maxCredits) {
+
+        } else {
+            myTeam.push(cuber);
+            $("#pl" + id + " button").prop("disabled", true)
+            printTeamList()
+            updateCredits();
+            setSaveButtonState();
+            $("#findperson").val("");
+            filterList("");
+        }
     }
 }
 
 function setSaveButtonState() {
-    if (myTeam.length < maxCubers || getTeamCredits() < 0) {
+    if (myTeam.length < maxCubers || getTeamCredits() < 0 || $("#teamname").val() === "") {
         $("#save").prop("disabled", true)
     } else {
         $("#save").prop("disabled", false)
@@ -84,12 +116,9 @@ function setSaveButtonState() {
 }
 
 function deselectCuber(id) {
-    /*delete cuber from team variable*/
     myTeam.splice(findIndex(id), 1);
-    /** Re-enable add button */
-    $("#p" + id + " button").prop("disabled", false)
-    /** Remove row from team list */
-    $("#t" + id).remove();
+    $("#pl" + id + " button").prop("disabled", false);
+    printTeamList();
     updateCredits();
     setSaveButtonState();
 }
@@ -103,7 +132,9 @@ function findIndex(id) {
 }
 
 function updateCredits() {
-    $("#credits").text(maxCredits - getTeamCredits());
+    var credits = getTeamCredits();
+    $("#remaining-credits").text(maxCredits - getTeamCredits());
+    $("#credits-indicator").width(((maxCredits - credits) / maxCredits) * 100 + "%");
 }
 
 function getTeamCredits() {
@@ -124,20 +155,20 @@ function save() {
             team.team["id"] = teamId;
         }
         $.ajax({
-            type: teamId? "PUT":"POST",
+            type: teamId ? "PUT" : "POST",
             url: "/api/team",
             data: team,
             success: function (data) {
+                console.log("success");
                 teamId = data.id;
                 $("#teamname").val(data.name);
                 myTeam = data.cubers;
-                $("#cubers-list").empty();
-                $("#team").empty();
                 printTeamList();
+                printCubersList();
                 updateCredits();
                 setSaveButtonState();
-                printCubersList();
-                alert("Team aggiornato!");
+                $("#findperson").val("");
+                filterList("");
             },
             error: function (err) {
                 alert("errore!");
