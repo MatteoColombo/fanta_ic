@@ -11,7 +11,7 @@ $(document).ready(function () {
     $.getJSON("/api/persons", function (data) {
         cubers = data;
         /** Download my team */
-        $.getJSON("/api/persons/team", function (data) {
+        $.getJSON("/api/persons", function (data) {
             /** If team exists, save data and populate */
             if (data.id) {
                 teamId = data.id;

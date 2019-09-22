@@ -8,7 +8,6 @@ import { TeamModel } from "../../model/team";
 import { config } from "../../secrets/config";
 
 export async function userHasNoTeam(req, res, next) {
-    // TODO remove 0
     const hasTeam: boolean = await getCustomRepository(UserRepository).userHasTeam(req.user.id);
     if (!hasTeam && req.body.team.id === undefined) {
         next();
@@ -18,7 +17,6 @@ export async function userHasNoTeam(req, res, next) {
 }
 
 export async function userHasTeam(req, res, next) {
-    // TODO remove 0
     const hasTeam: boolean = await getCustomRepository(UserRepository).userHasTeam(req.user.id);
     if (hasTeam) {
         next();

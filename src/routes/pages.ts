@@ -3,7 +3,7 @@ import { getCustomRepository } from "typeorm";
 import { TeamEntity } from "../database/entities/team.entity";
 import { TeamRepository } from "../database/repos/team.repository";
 import { config } from "../secrets/config";
-import { isOrganizer } from "./middlewares/auth.middleware";
+import { isOrganizer, isLoggedInWR } from "./middlewares/auth.middleware";
 
 const router: Router = Router();
 
@@ -14,19 +14,19 @@ router.get("/regolamento", (req, res) => res.render("regulation", { title: "Rego
 router.get("/classifica", async (req, res) => {
     const teams: TeamEntity[] = await getCustomRepository(TeamRepository).getTeams(true);
     res.render("leaderboard", {
-        teams,
+        teams: teams,
         title: "Classifica - FantaIC", user: req.user
     });
 });
 
-router.get("/crea", async (req, res) => {
+router.get("/crea", isLoggedInWR, async (req, res) => {
     res.render("createteam", {
         title: "Crea squadra - FantaIC",
         user: req.user,
     });
 });
 
-router.get("/admin", isOrganizer, async (req, res) => {
+router.get("/admin", isLoggedInWR, isOrganizer, async (req, res) => {
     const today: Date = new Date();
     const co = config.game.creation_opens;
     const cc = config.game.creation_closes;

@@ -1,35 +1,39 @@
-<%- include('header') -%>
-<%- include('navbar') -%>
+<%- include('./common/header') -%>
+<%- include('./navbar/navbar') -%>
 
-<div class="container back">
-    <div class="row pt-md-4">
-        <div class="col-md-10 offset-md-1 py-md-5 mt-md-3">
-            <p style="text-align: center">
-            Benvenuto nel Fanta IC 2019! Scegli i 6 cuber che faranno parte della tua squadra,
-            tifa per loro e segui i loro risultati all'Italian Championship: 
-            ti faranno guadagnare punti per vincere grandiosi premi!<br>
+
+<div class="row home-msg">
+    <div class="col-md-8 offset-md-2 text-justify">
+        <h3>Benvenuto nel Fanta IC 2019!
+        </h3>
+        <p>
+            Scegli i 6 cuber che faranno parte della tua squadra,
+            tifa per loro e segui i risultati all'Italian Championship:
+            ti faranno guadagnare punti per vincere grandiosi premi!</p>
+        <p>
             Ricordati di dare un'occhiata al regolamento prima di giocare.
-            </p>
-        </div>
+        </p>
     </div>
-    <div class="row mb-md-4">
-        <div class="col-md-4 offset-md-2">
-            <a href="/crea" class="btn btn-primary btn-lg btn-block py-md-5 create-edit" role="button">Crea squadra</a>
-        </div>
-        <div class="col-md-4">
-            <a role="button" class="btn btn-danger btn-lg btn-block py-md-5" href="/classifica">Classifica</a>
-        </div>
+</div>
+<div class="row">
+    <div class="col-md-4 offset-md-2 home-button">
+        <a href="/crea" class="btn btn-primary btn-lg btn-block py-md-5 create-edit" role="button">Crea squadra</a>
     </div>
-    <div class="row">
-            <div class="col-md-4 offset-md-2">
-                <a href="/regolamento" class="btn btn-warning btn-lg btn-block py-md-5" role="button">Regolamento</a>
-            </div>
-            <div class="col-md-4">
-                    <a href="http://www.cubecomps.com/" class="btn btn-success btn-lg btn-block py-md-5" role="button" target="_blank" onclick="this.blur();">Risultati Ufficiali</a>
-            </div>
-    
-        </div>
+    <div class="col-md-4  home-button">
+        <a role="button" class="btn btn-danger btn-lg btn-block py-md-5" href="/classifica">Classifica</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4 offset-md-2 home-button">
+        <a href="/regolamento" class="btn btn-warning btn-lg btn-block py-md-5" role="button">Regolamento</a>
+    </div>
+    <div class="col-md-4 home-button">
+        <a href="http://www.cubecomps.com/" class="btn btn-success btn-lg btn-block py-md-5" role="button"
+            target="_blank" onclick="this.blur();">Risultati Ufficiali</a>
+    </div>
 
-<%- include('logos') -%>
-<%- include('footer') -%>
-<%- include('endbody') -%>
+</div>
+
+<%- include('./common/logos') -%>
+<%- include('./common/footer') -%>
+<%- include('./common/endbody') -%>

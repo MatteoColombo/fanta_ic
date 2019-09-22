@@ -17,8 +17,13 @@ import { isLoggedIn, isOrganizer } from "../middlewares/auth.middleware";
 const router: Router = Router();
 
 router.get("/", async (req, res) => {
-    const persons: PersonEntity[] = await getCustomRepository(PersonRepository).getPersons(true);
-    res.status(200).json(persons.map((p) => p._transform()));
+    try {
+        const persons: PersonEntity[] = await getCustomRepository(PersonRepository).getPersons(true);
+        res.status(200).json(persons.map((p) => p._transform()));
+
+    } catch (e) {
+        res.status(200).json({});
+    }
 });
 
 router.get("/import", isOrganizer, async (req, res) => {
@@ -142,14 +147,5 @@ async function getWCACompetitorsForEvent(id: string, event: string) {
     });
 }
 
-router.get("/team", isLoggedIn, async (req, res) => {
-    try {
-        const team: TeamEntity = await getCustomRepository(TeamRepository).getUserTeam(req.user.id);
-        res.status(200).json(team._transform());
-    } catch (e) {
-        res.status(200).json({});
-    }
-
-});
 
 export { router };

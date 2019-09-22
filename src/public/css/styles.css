@@ -10,6 +10,10 @@ a{
     font-family: 'Montserrat', sans-serif;
 }
 
+.back{
+    margin-top:56px;
+}
+
 a:hover{
     text-decoration: none;
 }
@@ -51,6 +55,18 @@ h1, h2, h3, h4 {
     font-weight: 700;
     font-family: 'Montserrat', sans-serif;
     align-self: right;
+}
+
+.logos{
+    padding: 40px 0 40px 0;
+}
+
+.home-button{
+    margin-top: 20px;
+}
+
+.home-msg{
+    padding: 40px 0 0 0;
 }
 
 .admin-page .import-buttons{

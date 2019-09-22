@@ -17,6 +17,14 @@ export function isLoggedIn(req: express.Request, res: express.Response, next) {
     }
 }
 
+export function isLoggedInWR(req: express.Request, res: express.Response, next) {
+    if (req.isAuthenticated()) {
+        next();
+    } else {
+        res.redirect("/api/auth/login")
+    }
+}
+
 export function isGuest(req: express.Request, res: express.Response, next) {
     if (!req.isAuthenticated()) {
         next();

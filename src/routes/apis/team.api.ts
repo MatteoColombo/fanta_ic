@@ -9,15 +9,12 @@ import * as midd from "../middlewares/team.middlewares";
 
 const router: Router = Router();
 
-// TODO add login requirement
-
 router.post("/", isLoggedIn, midd.teamEditIsOpen, midd.userHasNoTeam,
     midd.requestHasTeam, midd.teamHasName, midd.verifyPersons,
     midd.checkPointsZero, midd.checkTeamPrices, async (req, res) => {
         try {
             let model: TeamModel = Deserialize(req.body.team, TeamModel);
             const repo: TeamRepository = getCustomRepository(TeamRepository);
-            // TODO remove 0
             model = (await repo.createTeam(model, req.user.id))._transform();
             res.status(200).json(model);
         } catch (e) {
