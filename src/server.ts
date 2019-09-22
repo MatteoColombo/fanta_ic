@@ -30,7 +30,7 @@ db.createConnection()
         setErrorHandlers();
         setPort();
         app.listen(app.get("port"), () => {
-           return;
+            return;
         });
     });
 
@@ -78,7 +78,7 @@ function setRoutes() {
 function setErrorHandlers() {
     app.use((req, res, next) => {
         // TODO replace this with an error page.
-        res.status(404).render("error404");
+        res.status(404).render("error404", { title: "Errore - Pagina non trovata", user: req.user });
     });
 }
 

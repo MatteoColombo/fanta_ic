@@ -1,4 +1,4 @@
-a{
+a {
     text-decoration: none;
     outline: none;
 }
@@ -10,11 +10,11 @@ a{
     font-family: 'Montserrat', sans-serif;
 }
 
-.back{
-    margin-top:56px;
+.back {
+    margin-top: 56px;
 }
 
-a:hover{
+a:hover {
     text-decoration: none;
 }
 
@@ -57,67 +57,88 @@ h1, h2, h3, h4 {
     align-self: right;
 }
 
-.logos{
+.logos {
     padding: 40px 0 40px 0;
 }
 
-.home-button{
+.home-button {
     margin-top: 20px;
 }
 
-.home-msg{
+.first-elem {
+    margin-top: 40px;
+}
+
+.home-msg {
     padding: 40px 0 0 0;
 }
 
-.admin-page .import-buttons{
+.a-lead a {
+    color: #0275d8;
+}
+
+.admin-page .import-buttons {
     margin-top: 40px;
     text-align: center;
 }
 
-.admin-page .import-buttons button{
+.admin-page .import-buttons button {
     margin-right: 20px;
 }
 
-.admin-page .import-buttons>button:first-child{
+.admin-page .import-buttons>button:first-child {
     margin-right: 30px;
 }
 
-.admin-page .import-buttons>button:nth-child(2){
+.admin-page .import-buttons>button:nth-child(2) {
     margin-left: 30px;
 }
 
-.admin-page .loading-data{
+.admin-page .loading-data {
     margin: 40px 0 40px 0;
     text-align: center;
 }
 
-.admin-page table{
+.admin-page table {
     margin: 0 auto;
     margin-top: 40px;
-    width:70%;
+    width: 70%;
 }
 
-.admin-page #persons-table{
-    width:50%;
+.admin-page #persons-table {
+    width: 50%;
 }
 
-.admin-page tbody{
+.admin-page tbody {
     height: 800px;
     overflow-y: scroll;
 }
 
-.admin-page #import-section .form-control{
+.admin-page #import-section .form-control {
     margin-right: 20px;
-    float:left;
+    float: left;
     width: 80%;
 }
 
-.admin-page #import-section button{
+.admin-page #import-section button {
     float: left;
     width: 15%;
     margin-right: 20px;
 }
 
-.admin-page #import-section button{
-    margin-bottom:40px;
+.admin-page #import-section button {
+    margin-bottom: 40px;
+}
+
+@media (max-width: 576px){
+    h2{
+        font-size: 24px;
+    }
+}
+
+
+@media (max-width: 380px){
+    h2{
+        font-size: 20px;
+    }
 }

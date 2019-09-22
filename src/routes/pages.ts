@@ -13,9 +13,13 @@ router.get("/regolamento", (req, res) => res.render("regulation", { title: "Rego
 
 router.get("/classifica", async (req, res) => {
     const teams: TeamEntity[] = await getCustomRepository(TeamRepository).getTeams(true);
+    const cc = config.game.creation_closes;
+    const creationCloses: Date = new Date(cc.year, (cc.month - 1), cc.day, cc.hour, cc.minute);
+    const today: Date = new Date();
     res.render("leaderboard", {
         teams: teams,
-        title: "Classifica - FantaIC", user: req.user
+        title: "Classifica - FantaIC", user: req.user,
+        open: creationCloses < today
     });
 });
 
