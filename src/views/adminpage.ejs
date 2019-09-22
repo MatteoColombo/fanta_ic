@@ -1,26 +1,27 @@
 <%- include('./common/header') -%>
 <%- include('./navbar/navbarbuttons') -%>
 
-<div class="container back pt-md-5 mt-md-5 admin-page">
-    <% if(import_data){ %> 
-        <%- include('admin/importdata')%>
+<div class="admin-page">
+    <% if(import_data){ %>
+    <%- include('admin/importdata')%>
     <% } %>
-    <% if(import_results){ %> 
-        <%- include('admin/importresults')%>
+    <% if(import_results){ %>
+    <%- include('admin/importresults')%>
     <%} %>
-    <% if(!import_results && !import_data){ %> 
-        <%- include('admin/teamlist')%>
+    <% if(!import_results && !import_data){ %>
+    <%- include('admin/teamlist')%>
     <%} %>
 
-    
-   
+</div>
+
+
 <%- include('./common/logos') -%>
 <%- include('./common/footer') -%>
-<% if(import_data){ %> 
-    <script src="/public/js/importdata.js"></script>
+<% if(import_data){ %>
+<script src="/public/js/importdata.js"></script>
 <% } %>
-<% if(import_results){ %> 
-    <script src="/public/js/importresults.js"></script>
+<% if(import_results){ %>
+<script src="/public/js/importresults.js"></script>
 <%} %>
 
 <%- include('./common/endbody') -%>

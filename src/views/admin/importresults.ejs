@@ -1,38 +1,17 @@
 <div id="import-section">
-    <h2>Importa round</h2>
-    <div>
-        <select class="form-control" id="round-selector">
-        </select>
-        <button type="button" class="btn btn-large btn-primary" id="import">Importa</button>
+    <h2 class="home-msg">Importa round</h2>
+    <div class=" row first-elem">
+        <div class="col-lg-9">
+            <select class="form-control" id="round-selector">
+            </select>
+        </div>
+        <div class="col-lg-3 mt-4 mt-lg-0">
+            <button type="button" class="btn btn-large btn-primary" id="import" style="width:100%">Importa</button>
+        </div>
     </div>
 </div>
-<div id="comp-finished" class="d-none">
+<div id="comp-finished" class="home-msg d-none">
     <h2>Tutti i round sono stati importati</h2>
 </div>
-<div id="progress" class="loading-data d-none">
-    <div class="spinner-grow text-primary" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-secondary" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-success" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-danger" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-warning" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-info" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-light" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-dark" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-</div>
-<h2>Classifica</h2>
+
+<%- include('loading') %>
