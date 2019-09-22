@@ -1,47 +1,34 @@
-<h2>Istruzioni</h2>
-<p>L'import può richiedere un po' di tempo visto che dipende anche dal sito WCA. Attendere il completamento</p>
-<ol>
-    <li>Importare le persone.</li>
-    <li>Calcolare i prezzi</li>
-</ol>
-<div class="import-buttons">
-    <button type="button" id="importdata" class="btn btn-primary btn-lg">Importa persone</button>
-    <button type="button" id="computeprices" class="btn btn-primary btn-lg">Calcola prezzi</button>
+<h2 class="home-msg">Istruzioni</h2>
+<div class="first-elem">
+    <p>L'import può richiedere un po' di tempo visto che dipende anche dal sito WCA. Attendere il completamento</p>
+    <ol>
+        <li>Importare le persone.</li>
+        <li>Calcolare i prezzi</li>
+    </ol>
 </div>
-<div id="progress" class="loading-data d-none">
-    <div class="spinner-grow text-primary" role="status">
-        <span class="sr-only">Loading...</span>
+<div class="row import-buttons">
+    <div class="col-12 col-md-6 text-right">
+        <button type="button" id="importdata" class="home-button btn btn-primary btn-lg">Importa persone</button>
     </div>
-    <div class="spinner-grow text-secondary" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-success" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-danger" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-warning" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-info" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-light" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-dark" role="status">
-        <span class="sr-only">Loading...</span>
+    <div class="col-12 col-md-6">
+        <button type="button" id="computeprices" class="home-button btn btn-primary btn-lg">Calcola prezzi</button>
     </div>
 </div>
 
-<table class="table table-bordered table-striped table-fluid" id="persons-table">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">Nome</th>
-            <th scope="col">Prezzo</th>
-        </tr>
-    </thead>
-    <tbody id="persons">
-    </tbody>
-</table>
+<%- include("loading") %>
+
+<div class="row first-elem">
+    <div class="col-lg-8 offset-lg-2">
+            <table class="table table-bordered table-striped table-fluid" id="persons-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Prezzo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="persons">
+                    </tbody>
+                </table>
+    </div>
+</div>
+
