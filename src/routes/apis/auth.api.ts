@@ -10,7 +10,7 @@ const router: Router = Router();
  */
 router.get("/logout", isLoggedIn, (req, res): void => {
     req.session.destroy((err) => {
-        res.redirect("/");
+        res.render("home", { title: "FantaIC", user: null })
     });
 });
 
@@ -24,7 +24,7 @@ router.get("/login", isGuest, authMiddleWare, passport.authenticate("wca"));
  */
 router.get("/login/callback", isGuest, passport.authenticate("wca"),
     (req, res) => {
-        res.redirect("/");
+        res.render("home", { title: "FantaIC", user: req.user });
     });
 
 export { router };

@@ -1,0 +1,31 @@
+<%- include('./common/header') -%>
+<%- include('./navbar/navbarbuttons') -%>
+
+
+<div class="row">
+    <div class="col-md-8 offset-md-2 text-justify">
+        <h2 class="home-msg">Effettua l'accesso!
+        </h2>
+        <p class="first-elem">
+            Effettua il login utilizzando il tuo account WCA.
+        </p>
+        <p> PRIVACY POLICY - Facendo login tramite l'account WCA, acconsentite alla archiviazione di informazioni
+            personali (nome, WCAID) nel nostro Database, esclusivamente allo scopo di erogazione del servizio
+            (pubblicazione e gestione degli articoli, tutorial ecc.). - Cubing Italy utilizza dei cookie tecnici che
+            sono necessari alla normale erogazione del servizio. Tali cookie, che sono piccoli file di testo che vengono
+            scaricati nei file temporanei del tuo browser, sono usati per memorizzare la propria sessione.
+        </p>
+        <div class="row first-elem">
+            <div class="col-12">
+                <a role="button" class="btn btn-outline-primary btn-lg" style="width: 100%;"
+                    href="/api/auth/login">Accedi con il
+                    tuo account WCA </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<%- include('./common/logos') -%>
+<%- include('./common/footer') -%>
+<%- include('./common/endbody') -%>

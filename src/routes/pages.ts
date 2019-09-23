@@ -3,7 +3,7 @@ import { getCustomRepository } from "typeorm";
 import { TeamEntity } from "../database/entities/team.entity";
 import { TeamRepository } from "../database/repos/team.repository";
 import { config } from "../secrets/config";
-import { isOrganizer, isLoggedInWR } from "./middlewares/auth.middleware";
+import { isOrganizer, isLoggedInWR, isGuest } from "./middlewares/auth.middleware";
 
 const router: Router = Router();
 
@@ -29,6 +29,11 @@ router.get("/crea", isLoggedInWR, async (req, res) => {
         user: req.user,
     });
 });
+
+router.get("/login", isGuest, async (req, res) => res.render("login", {
+    title: "Crea squadra - FantaIC",
+    user: req.user,
+}));
 
 router.get("/admin", isLoggedInWR, isOrganizer, async (req, res) => {
     const today: Date = new Date();
