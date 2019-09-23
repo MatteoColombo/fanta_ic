@@ -126,6 +126,18 @@ h1, h2, h3, h4 {
     font-weight: 600;
 }
 
+.breadcrumb{
+    background-color: transparent;
+}
+
+.breadcrumb .breadcrumb-item a{
+    color: #0275d8;
+}
+
+.breadcrumb .active{
+    color: #000;
+}
+
 @media (max-width: 991px) {
     #importdata, #computeprices {
         width: 100%;

@@ -86,3 +86,16 @@ export async function checkTeamPrices(req, res, next) {
         res.status(400).json({ error: "TEAM_OVER_BUDGET" });
     }
 }
+
+export async function checkDates(req, res, next) {
+    const today: Date = new Date();
+    const co = config.game.creation_opens;
+    const cc = config.game.creation_closes;
+    const creationCloses: Date = new Date(cc.year, (cc.month - 1), cc.day, cc.hour, cc.minute);
+    const creationOpens: Date = new Date(co.year, (co.month - 1), co.day, co.hour, co.minute);
+    if (today >= creationOpens && today <= creationCloses) {
+        next();
+    } else {
+        res.status(403).json({ error: "CREATION_IS_CLOSED" });
+    }
+}

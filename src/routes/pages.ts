@@ -4,6 +4,7 @@ import { TeamEntity } from "../database/entities/team.entity";
 import { TeamRepository } from "../database/repos/team.repository";
 import { config } from "../secrets/config";
 import { isOrganizer, isLoggedInWR, isGuest } from "./middlewares/auth.middleware";
+import { UserRepository } from "../database/repos/user.repository";
 
 const router: Router = Router();
 
@@ -34,7 +35,7 @@ router.get("/team", isLoggedInWR, async (req, res) => {
         let max: number = config.game.budget;
         let credits: number = max - team.cubers.reduce((v, p) => v + p.price, 0);
         let perc: number = (credits) / max * 100;
-        res.render("team", {
+        res.render("myteam", {
             title: "Il mio Team - FantaIC",
             user: req.user,
             team: team._transform(),
@@ -51,11 +52,21 @@ router.get("/team", isLoggedInWR, async (req, res) => {
     }
 });
 
-router.get("/team:id", isLoggedInWR, async (req, res) => {
-    res.render("createteam", {
-        title: "Crea squadra - FantaIC",
-        user: req.user,
-    });
+router.get("/team/:id", async (req, res) => {
+    try {
+        const today: Date = new Date();
+        const cc = config.game.creation_closes;
+        const creationCloses: Date = new Date(cc.year, (cc.month - 1), cc.day, cc.hour, cc.minute);
+        let team: TeamEntity = await getCustomRepository(TeamRepository).getTeamById(req.params.id);
+        let max: number = config.game.budget;
+        let credits: number = max - team.cubers.reduce((v, p) => v + p.price, 0);
+        let perc: number = (credits) / max * 100;
+        if (today > creationCloses) {
+            res.render("team", { user: req.user, title: team.name + " - FantaIC", team: team._transform(), perc: perc, credits: credits })
+        } else throw "NOT OK";
+    } catch (e) {
+        res.render("error404", { title: "Team non trovato - FantaIC", user: req.user });
+    }
 });
 
 router.get("/login", isGuest, async (req, res) => res.render("login", {
