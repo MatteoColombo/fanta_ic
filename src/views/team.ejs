@@ -1,0 +1,41 @@
+<%- include('./common/header') -%>
+<%- include('./navbar/navbarbuttons') -%>
+
+<h1 class="home-msg text-center">Il mio team</h1>
+
+<div class="row">
+
+    <div class="col-lg-8 offset-lg-2 first-elem">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2><%= team.name %></h2>
+            </div>
+            <div class="col-lg-4 row">
+                    <p class="col-9" style="margin-bottom: 10px"><strong>BUDGET:</strong></p>
+                    <p class="col-3 text-right" style="margin-bottom:10px"><strong id="remaining-credits"><%=credits%></strong>€
+                    </p>
+                    <div class="col-12">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" id="credits-indicator"
+                                style="width: <%=perc%>%" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="row first-elem" id="team">
+            <% for(let i=0;i<team.cubers.length;i++){
+                let cuber = team.cubers[i]; %>
+            <div class="col-4 text-center team-usr">
+                <img src="/public/img/user<%=i%>.png" class="img-fluid team-usr-img">
+                <p class="team-usr-p tpname"><%=cuber.name%></p>
+                <p class="tpprice\"><%=cuber.price%>€</p>
+            </div>
+            <%}%>
+        </div>
+    </div>
+
+</div>
+
+<%- include('./common/logos') -%>
+            <%- include('./common/footer') -%>
+            <%- include('./common/endbody') -%>
