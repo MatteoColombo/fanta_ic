@@ -58,6 +58,15 @@ export class TeamRepository extends BaseCommonRepository<TeamEntity> {
         return this.getTeamById(entity.id);
     }
 
+    public async getIfNameIsUsed(name: string, user: number): Promise<boolean> {
+        let exists: boolean = await this.repository.createQueryBuilder()
+            .select("team").from(TeamEntity, "team")
+            .innerJoin("team.user", "user")
+            .where("user.id != :id", { id: user })
+            .andWhere("team.name = :name", { name: name }).getCount() > 0;
+        return exists;
+    }
+
     public async computeTeamPoints(): Promise<TeamEntity[]> {
         const teams: TeamEntity[] = await this.repository.find({ relations: ["cubers"] });
         teams.forEach((t: TeamEntity) => t.points = t.cubers.reduce((v, p, i, _) => v + p.points, 0));

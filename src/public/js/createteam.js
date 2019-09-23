@@ -3,6 +3,8 @@ var maxCubers = 6;
 var maxCredits = 2500;
 var teamId;
 var teamName;
+var nameAvailable;
+var teamInput;
 
 
 $(document).ready(function () {
@@ -25,8 +27,34 @@ $(document).ready(function () {
         });
     });
 
-    $("#teamname").on("input", function () {
-        setSaveButtonState();
+    teamInput = $("#teamname");
+    nameAvailable = true;
+
+    teamInput.on("input", function () {
+        var name = teamInput.val();
+        if (name !== "") {
+            $.ajax({
+                url: "/api/team/exists?name=" + name.trim(),
+                type: "GET",
+                success: function (data) {
+                    if (data.exists) {
+                        teamInput.removeClass("is-valid");
+                        teamInput.addClass("is-invalid");
+                        nameAvailable = false;
+                    } else {
+                        teamInput.removeClass("is-invalid");
+                        teamInput.addClass("is-valid");
+                        nameAvailable = true
+                    }
+                    setSaveButtonState();
+                }
+            });
+        } else {
+            teamInput.removeClass("is-valid");
+            teamInput.removeClass("is-invalid");
+            setSaveButtonState();
+        }
+
     });
 
 
@@ -89,12 +117,22 @@ function printTeamMemberNoUser(i) {
 
 function selectCuber(id) {
     if (myTeam.length === maxCubers) {
-
+        var btn = $("#pl" + id + " button");
+        btn.tooltip({ title: "Hai già raggiunto il numero massimo di cuber!", placement: "right", delay: { show: 0, hide: 2000 } });
+        btn.tooltip('show');
+        btn.on('hidden.bs.tooltip', function () {
+            btn.tooltip("dispose");
+        });
     } else {
         var credits = getTeamCredits();
         var cuber = findPerson(id);
         if ((credits + cuber.price) > maxCredits) {
-
+            var btn = $("#pl" + id + " button");
+            btn.tooltip({ title: "Questo cuber è oltre il tuo budget!", placement: "right", delay: { show: 0, hide: 2000 } });
+            btn.tooltip('show');
+            btn.on('hidden.bs.tooltip', function () {
+                btn.tooltip("dispose");
+            });
         } else {
             myTeam.push(cuber);
             $("#pl" + id + " button").prop("disabled", true)
@@ -108,7 +146,7 @@ function selectCuber(id) {
 }
 
 function setSaveButtonState() {
-    if (myTeam.length < maxCubers || getTeamCredits() < 0 || $("#teamname").val() === "") {
+    if (myTeam.length < maxCubers || getTeamCredits() < 0 || $("#teamname").val() === "" || !nameAvailable) {
         $("#save").prop("disabled", true)
     } else {
         $("#save").prop("disabled", false)
@@ -159,7 +197,6 @@ function save() {
             url: "/api/team",
             data: team,
             success: function (data) {
-                console.log("success");
                 teamId = data.id;
                 $("#teamname").val(data.name);
                 myTeam = data.cubers;
@@ -169,6 +206,8 @@ function save() {
                 setSaveButtonState();
                 $("#findperson").val("");
                 filterList("");
+                $(".alert").removeClass("d-none");
+                setTimeout(function () { $('.alert').addClass("d-none") }, 3000);
             },
             error: function (err) {
                 alert("errore!");

@@ -43,4 +43,14 @@ router.put("/", isLoggedIn, midd.teamEditIsOpen,
         }
     });
 
+router.get("/exists", isLoggedIn, async (req, res) => {
+    let query: string = (req.query.name || "").trim();
+    if (query !== "") {
+        let repo: TeamRepository = getCustomRepository(TeamRepository);
+        let exists: boolean = await repo.getIfNameIsUsed(query, req.user.id);
+        res.status(200).json({ "exists": exists });
+    } else {
+        res.status(400).json({ "error": "BAD_REQUEST" });
+    }
+});
 export { router };
