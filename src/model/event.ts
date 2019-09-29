@@ -1,18 +1,15 @@
 import { autoserialize } from "cerialize";
 
-export class CategoryModel {
+export class EventModel {
 
     @autoserialize
-    public id: string;
+    public eventId: string;
 
     @autoserialize
     public name: string;
 
     @autoserialize
     public multiplicator: number;
-
-    @autoserialize
-    public cubecompsId: number;
 
     @autoserialize
     public rounds: number;
@@ -22,7 +19,4 @@ export class CategoryModel {
 
     @autoserialize
     public sortByAverage: boolean;
-
-    @autoserialize
-    public priceComputed: boolean;
 }

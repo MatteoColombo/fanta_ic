@@ -1,6 +1,7 @@
 import { autoserialize } from "cerialize";
 
-export class PersonModel {
+
+export class CuberModel {
 
     @autoserialize
     public id: number;
@@ -9,9 +10,18 @@ export class PersonModel {
     public name: string;
 
     @autoserialize
-    public price: number;
+    public wcaId: string;
 
     @autoserialize
     public points: number;
+
+    @autoserialize
+    public price: number;
+
+    @autoserialize
+    public rank3: number;
+
+    @autoserialize
+    public photoUrl: string;
 
 }

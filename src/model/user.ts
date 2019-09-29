@@ -1,5 +1,4 @@
 import { autoserialize, autoserializeAs } from "cerialize";
-import { TeamModel } from "./team";
 
 export class UserModel {
 
@@ -10,8 +9,9 @@ export class UserModel {
     public name: string;
 
     @autoserialize
+    public wcaId: string;
+
+    @autoserialize
     public isOrganizer: boolean;
 
-    @autoserializeAs(TeamModel)
-    public team: TeamModel;
 }

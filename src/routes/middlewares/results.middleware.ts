@@ -1,11 +1,12 @@
 import * as express from "express";
-import { getCustomRepository } from "typeorm";
-import { CategoryEntity } from "../../database/entities/category.entity";
-import { CategoryRepository } from "../../database/repos/category.repository";
+import { EventRepository } from "../../database/repos/event.repository";
+import { RepoManager } from "../../database/repo-manager";
+import { EventModel } from "../../model/event";
+;
 
 export async function checkEvent(req, res, next) {
-    const repo: CategoryRepository = getCustomRepository(CategoryRepository);
-    const exists: boolean = await repo.checkIfEventExists(req.params.event);
+    const repo: EventRepository = RepoManager.getEventRepo();
+    const exists: boolean = await repo.eventExists(req.params.event);
     if (exists) {
         next();
     } else {
@@ -14,8 +15,8 @@ export async function checkEvent(req, res, next) {
 }
 
 export async function checkRound(req, res, next) {
-    const repo: CategoryRepository = getCustomRepository(CategoryRepository);
-    const event: CategoryEntity = await repo.getCategoryById(req.params.event);
+    const repo: EventRepository = RepoManager.getEventRepo();
+    const event: EventModel = await repo.getEvent(req.params.event);
     const round: number = Number(req.params.round) || 0;
     if (round === (event.importedRounds + 1) && round <= event.rounds) {
         next();

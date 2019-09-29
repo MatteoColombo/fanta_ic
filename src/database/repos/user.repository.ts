@@ -1,36 +1,26 @@
-import { EntityRepository } from "typeorm";
+import { EntityRepository, AbstractRepository, getCustomRepository } from "typeorm";
 import { UserModel } from "../../model/user";
 import { config } from "../../secrets/config";
-import { BaseCommonRepository } from "../BaseCommonRepository";
+import { IUser } from "../interfaces/i-user";
 import { UserEntity } from "../entities/user.entity";
 
 @EntityRepository(UserEntity)
-export class UserRepository extends BaseCommonRepository<UserEntity> {
+export class UserRepository extends AbstractRepository<UserEntity> implements IUser {
 
-    public entityIdentifier = "UserEntity";
 
-    public async InitDefaults(): Promise<void> {
+    public async initDefaults(): Promise<void> {
         return;
     }
 
-    public async getUserById(id: number): Promise<UserEntity> {
+    public async getUserById(id: number): Promise<UserModel> {
         return this.repository.findOne(id);
     }
 
-    public async getUsers(): Promise<UserEntity[]> {
-        return this.repository.find({ order: { name: "ASC" } });
-    }
-
-    public async saveUser(user: UserModel): Promise<UserEntity> {
+    public async saveUser(user: UserModel): Promise<UserModel> {
         if (config.admin.findIndex((id: number) => id === user.id) > -1) {
             user.isOrganizer = true;
         }
-        return this.repository.save(this.convertUser(user));
-    }
-
-    public async userHasTeam(user: number): Promise<boolean> {
-        const u: UserEntity = await this.repository.findOne({ where: { id: user }, relations: ["team"] });
-        return u.team != null;
+        return this.convertAndSave(user);
     }
 
     private convertUser(origin: UserModel): UserEntity {
@@ -38,4 +28,10 @@ export class UserRepository extends BaseCommonRepository<UserEntity> {
         entity._assimilate(origin);
         return entity;
     }
+
+    private async convertAndSave(origin: UserModel): Promise<UserModel> {
+        origin = await this.repository.save(this.convertUser(origin));
+        return origin;
+    }
+
 }

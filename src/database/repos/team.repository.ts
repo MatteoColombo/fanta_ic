@@ -1,91 +1,111 @@
-import { EntityRepository, getCustomRepository } from "typeorm";
-import { TeamModel } from "../../model/team";
-import { BaseCommonRepository } from "../BaseCommonRepository";
-import { PersonEntity } from "../entities/person.entity";
+import { AbstractRepository, EntityRepository } from "typeorm";
 import { TeamEntity } from "../entities/team.entity";
+import { ITeam } from "../interfaces/i-team";
+import { TeamModel } from "../../model/team";
 import { UserEntity } from "../entities/user.entity";
-import { UserRepository } from "./user.repository";
 
 @EntityRepository(TeamEntity)
-export class TeamRepository extends BaseCommonRepository<TeamEntity> {
+export class TeamRepository extends AbstractRepository<TeamEntity> implements ITeam {
 
-    public entityIdentifier = "TeamRepository";
-
-    public async InitDefaults(): Promise<void> {
+    initDefaults(): void {
         return;
     }
 
-    public async getTeamById(id: number): Promise<TeamEntity> {
-        return this.repository.findOne(id);
+    public async    getTeam(id: number): Promise<TeamModel> {
+        let team: TeamEntity = await this.repository.findOne(id);
+        return this.entityToModel(team);
     }
 
-    public async getTeams(orderByPoints: boolean): Promise<TeamEntity[]> {
-        if (orderByPoints) {
-            return this.repository.find({ order: { points: "DESC" }, relations: ["user"] });
-        }
-        return this.repository.find({ order: { name: "ASC" }, relations: ["user"] });
-    }
-
-    public async getUserTeam(user: number): Promise<TeamEntity> {
-        return this.repository.createQueryBuilder()
+    public async getUserTeam(user: number): Promise<TeamModel> {
+        let team: TeamEntity = await this.repository.createQueryBuilder()
             .select("team").from(TeamEntity, "team")
-            .innerJoin("team.user", "user").where("user.id = :id", { id: user })
-            .innerJoinAndSelect("team.cubers", "cubers").getOne();
-    }
-
-    public async getTeamCubers(id: number): Promise<PersonEntity[]> {
-        const team: TeamEntity = await this.repository.findOne({ relations: ["cubers"] });
-        return team.cubers.sort((a, b) => a.points - b.points);
-    }
-
-    public async createTeam(team: TeamModel, user: number): Promise<TeamEntity> {
-        const entity: TeamEntity = await this.getTeamEntity(team, user);
-        await this.repository.save(entity);
-        return this.getTeamById(entity.id);
-    }
-
-    public async updateTeam(team: TeamModel, user: number): Promise<TeamEntity> {
-        const oldteam: TeamEntity = await this.repository.createQueryBuilder()
-            .select("team").from(TeamEntity, "team")
-            .innerJoin("team.user", "user")
+            .innerJoinAndSelect("team.cubers", "cubers")
             .where("user.id = :id", { id: user })
             .getOne();
-        const entity: TeamEntity = await this.getTeamEntity(team, user);
-        if (oldteam) { entity.id = oldteam.id; }
-        oldteam.cubers = [];
-        await this.repository.save(oldteam);
-        await this.repository.save(entity);
-        return this.getTeamById(entity.id);
+        return this.entityToModel(team);
     }
 
-    public async getIfNameIsUsed(name: string, user: number): Promise<boolean> {
-        let exists: boolean = await this.repository.createQueryBuilder()
+    public async userHasTeam(user: number): Promise<boolean> {
+        let count: number = await this.repository.createQueryBuilder()
             .select("team").from(TeamEntity, "team")
-            .innerJoin("team.user", "user")
-            .where("user.id != :id", { id: user })
-            .andWhere("team.name = :name", { name: name }).getCount() > 0;
-        return exists;
+            .innerJoin("team.owner", "user")
+            .getCount();
+        return count > 0;
     }
 
-    public async computeTeamPoints(): Promise<TeamEntity[]> {
-        const teams: TeamEntity[] = await this.repository.find({ relations: ["cubers"] });
-        teams.forEach((t: TeamEntity) => t.points = t.cubers.reduce((v, p, i, _) => v + p.points, 0));
-        return this.repository.save(teams);
+    public async getTeams(): Promise<TeamModel[]> {
+        let teams: TeamEntity[] = await this.repository.find({ order: { rank: "ASC", name: "ASC" } });
+        return teams.map(t => this.entityToModel(t));
     }
 
-    public async savePositions(teams: TeamEntity[]): Promise<TeamEntity[]> {
-        return this.repository.save(teams);
+    public async getTeamsShort(): Promise<TeamModel[]> {
+        let teams: TeamEntity[] = await this.repository.createQueryBuilder()
+            .select("team").from(TeamEntity, "team")
+            .orderBy("rank", "ASC").addOrderBy("name", "ASC")
+            .getMany();
+        return teams.map(t => this.entityToModel(t));
     }
 
-    private async getTeamEntity(origin: TeamModel, user: number): Promise<TeamEntity> {
-        const entity: TeamEntity = new TeamEntity();
+    public async createTeam(origin: TeamModel, user: number): Promise<TeamModel> {
+        let team: TeamEntity = this.modelToEntity(origin);
+        team.owner = new UserEntity();
+        team.owner.id = user;
+        team = await this.repository.save(team);
+        return this.entityToModel(team);
+    }
+
+    public async updateTeam(origin: TeamModel, user: number): Promise<TeamModel> {
+        let oldTeam: TeamEntity = await this.repository.createQueryBuilder()
+            .select("team").from(TeamEntity, "team")
+            .innerJoin("team.cubers", "cubers")
+            .where("user.id = :id", { id: user })
+            .getOne();
+        if (oldTeam) {
+            origin.id = oldTeam.id
+        }
+        let team: TeamEntity = this.modelToEntity(origin);
+        team.owner = new UserEntity();
+        team.owner.id = user;
+        team = await this.repository.save(team);
+        return this.entityToModel(team);
+    }
+
+    public async teamNameIsUsed(name: string, user: number): Promise<boolean> {
+        let count: number = await this.repository.createQueryBuilder()
+            .select("team").from(TeamEntity, "team")
+            .innerJoin("team.owner", "user")
+            .where("team.name = :name", { name: name })
+            .andWhere("user.id != user", { user: user })
+            .getCount();
+        return count > 0;
+    }
+
+    public async    computeTeamsPoints(): Promise<TeamModel[]> {
+        let teams: TeamEntity[] = await this.repository.find();
+        teams.forEach(t => t.points = t.cubers.reduce((v, c) => v + c.points, 0));
+        teams = await this.repository.save(teams);
+        return teams.map(t => this.entityToModel(t));
+    }
+
+    public async updateTeamsPositions(teams: TeamModel[]): Promise<TeamModel[]> {
+        let entity: TeamEntity[] = teams.map(t => this.modelToEntity(t));
+        entity = await this.repository.save(entity);
+        return entity.map(t => this.entityToModel(t));
+    }
+
+
+    private entityToModel(origin: TeamEntity): TeamModel {
+        return origin._transform();
+    }
+
+    private modelToEntity(origin: TeamModel): TeamEntity {
+        let entity: TeamEntity = new TeamEntity();
         entity._assimilate(origin);
-        entity.user = await this.getUser(user);
         return entity;
     }
 
-    private async getUser(id: number): Promise<UserEntity> {
-        return await getCustomRepository(UserRepository).getUserById(id);
-    }
+
+
+
 
 }

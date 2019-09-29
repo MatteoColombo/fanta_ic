@@ -6,6 +6,7 @@ import { UserEntity } from "../database/entities/user.entity";
 import { UserRepository } from "../database/repos/user.repository";
 import { UserModel } from "../model/user";
 import { config } from "../secrets/config";
+import { RepoManager } from "../database/repo-manager";
 
 export function authMiddleWare(req, res, next) {
     if (process.env.NODE_ENV === "production") {
@@ -32,10 +33,10 @@ export function authMiddleWare(req, res, next) {
 }
 
 async function loginCallback(accessToken, refreshToken, profile, done) {
-    const user: UserModel = Deserialize(profile._json.me, UserModel);
-    const repo: UserRepository = getCustomRepository(UserRepository);
-    const entity: UserEntity = await repo.saveUser(user);
-    done(null, entity._transform());
+    let user: UserModel = Deserialize(profile._json.me, UserModel);
+    const repo: UserRepository = RepoManager.getUserRepo();
+    user = await repo.saveUser(user);
+    done(null, user);
 }
 
 passport.serializeUser((user: UserModel, done) => {
@@ -43,7 +44,7 @@ passport.serializeUser((user: UserModel, done) => {
 });
 
 passport.deserializeUser(async (id: number, done) => {
-    const userRepo: UserRepository = getCustomRepository(UserRepository);
-    const dbUser: UserEntity = await  userRepo.getUserById(id);
-    done(null, dbUser._transform());
+    const repo: UserRepository = RepoManager.getUserRepo();
+    let user: UserModel = await repo.getUserById(id);
+    done(null, user);
 });

@@ -1,28 +1,19 @@
 import { Router } from "express";
-import { getCustomRepository } from "typeorm";
-import { TeamEntity } from "../database/entities/team.entity";
-import { TeamRepository } from "../database/repos/team.repository";
-import { config } from "../secrets/config";
 import { isOrganizer, isLoggedInWR, isGuest } from "./middlewares/auth.middleware";
-import { UserRepository } from "../database/repos/user.repository";
+import { renderHome, renderLogin, renderRules, renderLeaderboard } from "./controllers/pages.routes.controller";
 
 const router: Router = Router();
 
-router.get("/", (req, res) => res.render("home", { title: "FantaIC", user: req.user }));
+router.get("/", renderHome);
 
-router.get("/regolamento", (req, res) => res.render("regulation", { title: "Regolamento - FantaIC", user: req.user }));
+router.get("/login", isGuest, renderLogin);
 
-router.get("/classifica", async (req, res) => {
-    const teams: TeamEntity[] = await getCustomRepository(TeamRepository).getTeams(true);
-    const cc = config.game.creation_closes;
-    const creationCloses: Date = new Date(cc.year, (cc.month - 1), cc.day, cc.hour, cc.minute);
-    const today: Date = new Date();
-    res.render("leaderboard", {
-        teams: teams,
-        title: "Classifica - FantaIC", user: req.user,
-        open: creationCloses < today
-    });
-});
+router.get("/regolamento", renderRules);
+
+router.get("/classifica", renderLeaderboard);
+/*
+
+
 
 router.get("/team", isLoggedInWR, async (req, res) => {
     const today: Date = new Date();
@@ -52,6 +43,7 @@ router.get("/team", isLoggedInWR, async (req, res) => {
     }
 });
 
+
 router.get("/team/:id", async (req, res) => {
     try {
         const today: Date = new Date();
@@ -69,10 +61,7 @@ router.get("/team/:id", async (req, res) => {
     }
 });
 
-router.get("/login", isGuest, async (req, res) => res.render("login", {
-    title: "Accedi - FantaIC",
-    user: req.user,
-}));
+
 
 router.get("/admin", isLoggedInWR, isOrganizer, async (req, res) => {
     const today: Date = new Date();
@@ -105,5 +94,5 @@ router.get("/admin", isLoggedInWR, isOrganizer, async (req, res) => {
         });
     }
 });
-
-export { router };
+*/
+export { router }
