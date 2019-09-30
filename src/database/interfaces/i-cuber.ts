@@ -8,7 +8,7 @@ export interface ICuber extends IRepo {
 
     getCubers(sortByPrice: boolean): Promise<CuberModel[]>;
 
-    updatePoints(cuber: number, points: number): Promise<CuberModel>;
+    updatePoints(cuber: number, points: number, rank3: number): Promise<CuberModel>;
     updatePrice(cuber: number, price: number): Promise<CuberModel>;
 
     addCuber(cuber: CuberModel): Promise<CuberModel>;

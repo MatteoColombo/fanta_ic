@@ -97,7 +97,7 @@ export async function importPrices(req, res) {
             let prevPos: number = 0;
 
             for (let i = 0; i < Math.min(config.game.at_points, p.length); i++) {
-                if (!p[i].rank) { continue; }
+                if (!p[i].rank || p[i].rank === 0) { continue; }
                 let result: ResultModel = new ResultModel();
                 let cuber: CuberModel = await cRepo.getCuberByName(p[i].name);
                 result.cuber = cuber.id;
@@ -122,7 +122,7 @@ export async function importPrices(req, res) {
             results.sort((a, b) => (b.points - a.points));
             results = results.filter((e, i) => i < Math.min(results.length, config.game.best_n_placements_to_consider));
             let price = results.reduce((v, c) => v + c.points, 0);
-            await cRepo.updatePrice(cuber.id, price);
+            await cRepo.updatePrice(cuber.id, price < 10 ? 10 : price);
         }
         cubers = await cRepo.getCubers(true);
 

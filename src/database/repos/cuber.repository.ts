@@ -27,8 +27,12 @@ export class CuberRepository extends AbstractRepository<CuberEntity> implements 
         return cubers.map(c => this.entityToModel(c));
     }
 
-    updatePoints(cuber: number, points: number): Promise<CuberModel> {
-        throw new Error("Method not implemented.");
+    public async updatePoints(cuber: number, points: number, rank3: number): Promise<CuberModel> {
+        let entity: CuberEntity = await this.repository.findOne(cuber);
+        entity.points = points;
+        entity.rank3 = rank3;
+        entity = await this.repository.save(entity);
+        return this.entityToModel(entity);
     }
 
     public async updatePrice(cuber: number, price: number): Promise<CuberModel> {

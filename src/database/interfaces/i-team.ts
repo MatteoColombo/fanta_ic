@@ -16,6 +16,5 @@ export interface ITeam extends IRepo {
 
     teamNameIsUsed(name: string, user: number): Promise<boolean>;
 
-    computeTeamsPoints(): Promise<TeamModel[]>;
-    updateTeamsPositions(teams: TeamModel[]): Promise<TeamModel[]>;
+    updateTeamRank(id: number, rank: number, points: number): Promise<TeamModel>;
 }

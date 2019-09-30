@@ -80,17 +80,12 @@ export class TeamRepository extends AbstractRepository<TeamEntity> implements IT
         return count > 0;
     }
 
-    public async    computeTeamsPoints(): Promise<TeamModel[]> {
-        let teams: TeamEntity[] = await this.repository.find();
-        teams.forEach(t => t.points = t.cubers.reduce((v, c) => v + c.points, 0));
-        teams = await this.repository.save(teams);
-        return teams.map(t => this.entityToModel(t));
-    }
-
-    public async updateTeamsPositions(teams: TeamModel[]): Promise<TeamModel[]> {
-        let entity: TeamEntity[] = teams.map(t => this.modelToEntity(t));
-        entity = await this.repository.save(entity);
-        return entity.map(t => this.entityToModel(t));
+    public async updateTeamRank(id: number, rank: number, points: number): Promise<TeamModel> {
+        let team: TeamEntity = await this.repository.findOne(id);
+        team.points = points;
+        team.rank = rank;
+        team = await this.repository.save(team);
+        return this.entityToModel(team);
     }
 
 
