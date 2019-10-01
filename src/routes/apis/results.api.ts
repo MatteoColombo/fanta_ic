@@ -5,7 +5,7 @@ import { getImportableEvents, importRound } from "../controllers/result.api.cont
 
 const router: Router = Router();
 
-router.get("/categories/importable", /*isOrganizer,*/ getImportableEvents);
-router.get("/import/events/:event/rounds/:round",/* isOrganizer,*/ checkInputRequest, importRound);
+router.get("/categories/importable", isOrganizer, getImportableEvents);
+router.get("/import/events/:event/rounds/:round", isOrganizer, checkInputRequest, importRound);
 
 export { router };

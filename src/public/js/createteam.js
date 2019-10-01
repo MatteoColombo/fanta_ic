@@ -9,11 +9,11 @@ var teamInput;
 
 $(document).ready(function () {
     /** Download the persons list */
-    $.getJSON("/api/persons", function (data) {
+    $.getJSON("/api/cubers", function (data) {
         cubers = data;
         filteredCubers = data;
         /** Download my team */
-        $.getJSON("/api/persons/team", function (data) {
+        $.getJSON("/api/cubers/team", function (data) {
             /** If team exists, save data and populate */
             if (data.id) {
                 teamId = data.id;
@@ -32,7 +32,16 @@ $(document).ready(function () {
 
     teamInput.on("input", function () {
         var name = teamInput.val();
-        if (name !== "") {
+        if (name === "") {
+            teamInput.removeClass("is-valid");
+            teamInput.removeClass("is-invalid");
+            setSaveButtonState();
+        } else if (name.match(/^[A-Za-z0-9àèéìòùÀÈÉÌÒÙ!\s]+$/) ? false : true) {
+            teamInput.removeClass("is-valid");
+            teamInput.addClass("is-invalid");
+            nameAvailable = false;
+            setSaveButtonState();
+        } else {
             $.ajax({
                 url: "/api/team/exists?name=" + name.trim(),
                 type: "GET",
@@ -49,12 +58,7 @@ $(document).ready(function () {
                     setSaveButtonState();
                 }
             });
-        } else {
-            teamInput.removeClass("is-valid");
-            teamInput.removeClass("is-invalid");
-            setSaveButtonState();
         }
-
     });
 
 
@@ -78,7 +82,7 @@ function printCubersList() {
         var inTeam = myTeam.findIndex((p) => p.id === c.id) > -1;
         msg = "<div class=\"list-group-item d-flex\" id=\"pl" + c.id + "\">";
         msg += "<div class=\"flex-fill\">";
-        msg += "<p class=\"person\">" + c.name + "</p>";
+        msg += "<p class=\"person\">" + (c.wcaId ? "<a target=\"blank\" href=\"https://www.worldcubeassociation.org/persons/" + c.wcaId + "\">" : "") + c.name + (c.wcaId ? "<\a>" : "") + "</p > ";
         msg += "<p>" + c.price + "€</p>";
         msg += "</div><button class=\"btn btn-warning\"" + (inTeam ? "disabled" : "") + " onclick=\"selectCuber(" + c.id + ")\">+</button></div>"
         $("#cubers-list").append(msg);
@@ -98,7 +102,11 @@ function printTeamList() {
 function printTeamMember(cuber, i) {
     var msg = "<div class=\"col-4 text-center team-usr\" id=\"tp" + i + "\">";
     msg += "<button class=\"team-rm btn btn-danger\" onclick=\"deselectCuber(" + cuber.id + ")\">X</button>";
-    msg += "<img src=\"/public/img/user" + i + ".png\" class=\"img-fluid team-usr-img\">";
+    if (cuber.photoUrl) {
+        msg += "<img src=\"" + cuber.photoUrl + "\" class=\"img-fluid team-usr-img\">";
+    } else {
+        msg += "<img src=\"/public/img/user" + i + ".png\" class=\"img-fluid team-usr-img\">";
+    }
     msg += "<p class=\"team-usr-p tpname\">" + cuber.name + "</p>";
     msg += "<p class=\"tpprice\">" + cuber.price + "€</p></div>";
     $("#team").append(msg);

@@ -80,7 +80,9 @@ export class CuberRepository extends AbstractRepository<CuberEntity> implements 
     }
 
     private entityToModel(origin: CuberEntity): CuberModel {
-        return origin._transform();
+        if (origin)
+            return origin._transform();
+        else return null;
     }
 
     private modelToEntity(origin: CuberModel): CuberEntity {

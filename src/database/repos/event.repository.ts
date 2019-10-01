@@ -44,7 +44,7 @@ export class EventRepository extends AbstractRepository<EventEntity> implements 
         let events: EventEntity[] = await this.repository.createQueryBuilder()
             .select("event").from(EventEntity, "event")
             .where("event.rounds > event.importedRounds")
-            .orderBy("ID", "ASC").getMany();
+            .orderBy("event.eventId", "ASC").getMany();
         return events.map(e => this.entityToEvent(e));
     }
 
@@ -68,7 +68,9 @@ export class EventRepository extends AbstractRepository<EventEntity> implements 
     }
 
     private entityToEvent(event: EventEntity): EventModel {
-        return event._transform();
+        if (event)
+            return event._transform();
+        else return null;
     }
 
 

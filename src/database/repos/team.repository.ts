@@ -11,7 +11,7 @@ export class TeamRepository extends AbstractRepository<TeamEntity> implements IT
         return;
     }
 
-    public async    getTeam(id: number): Promise<TeamModel> {
+    public async getTeam(id: number): Promise<TeamModel> {
         let team: TeamEntity = await this.repository.findOne(id);
         return this.entityToModel(team);
     }
@@ -20,6 +20,7 @@ export class TeamRepository extends AbstractRepository<TeamEntity> implements IT
         let team: TeamEntity = await this.repository.createQueryBuilder()
             .select("team").from(TeamEntity, "team")
             .innerJoinAndSelect("team.cubers", "cubers")
+            .innerJoin("team.owner", "user")
             .where("user.id = :id", { id: user })
             .getOne();
         return this.entityToModel(team);
@@ -29,6 +30,7 @@ export class TeamRepository extends AbstractRepository<TeamEntity> implements IT
         let count: number = await this.repository.createQueryBuilder()
             .select("team").from(TeamEntity, "team")
             .innerJoin("team.owner", "user")
+            .where("user.id = :id", { id: user })
             .getCount();
         return count > 0;
     }
@@ -51,23 +53,26 @@ export class TeamRepository extends AbstractRepository<TeamEntity> implements IT
         team.owner = new UserEntity();
         team.owner.id = user;
         team = await this.repository.save(team);
-        return this.entityToModel(team);
+        return this.getUserTeam(user);
     }
 
     public async updateTeam(origin: TeamModel, user: number): Promise<TeamModel> {
         let oldTeam: TeamEntity = await this.repository.createQueryBuilder()
             .select("team").from(TeamEntity, "team")
             .innerJoin("team.cubers", "cubers")
+            .innerJoin("team.owner", "user")
             .where("user.id = :id", { id: user })
             .getOne();
         if (oldTeam) {
             origin.id = oldTeam.id
         }
+        oldTeam.cubers = [];
+        await this.repository.save(oldTeam);
         let team: TeamEntity = this.modelToEntity(origin);
         team.owner = new UserEntity();
         team.owner.id = user;
         team = await this.repository.save(team);
-        return this.entityToModel(team);
+        return this.getUserTeam(user);
     }
 
     public async teamNameIsUsed(name: string, user: number): Promise<boolean> {
@@ -75,7 +80,7 @@ export class TeamRepository extends AbstractRepository<TeamEntity> implements IT
             .select("team").from(TeamEntity, "team")
             .innerJoin("team.owner", "user")
             .where("team.name = :name", { name: name })
-            .andWhere("user.id != user", { user: user })
+            .andWhere("user.id != :user", { user: user })
             .getCount();
         return count > 0;
     }
@@ -90,7 +95,9 @@ export class TeamRepository extends AbstractRepository<TeamEntity> implements IT
 
 
     private entityToModel(origin: TeamEntity): TeamModel {
-        return origin._transform();
+        if (origin)
+            return origin._transform();
+        else return null;
     }
 
     private modelToEntity(origin: TeamModel): TeamEntity {

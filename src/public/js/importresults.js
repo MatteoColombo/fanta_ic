@@ -6,7 +6,7 @@ $(document).ready(function () {
         select.empty();
         for (var i = 0; i < data.length; i++) {
             select.append(
-                "<option value='/" + data[i].id + "/rounds/" + (data[i].importedRounds + 1) + "'>" + data[i].name + " - Round " + (data[i].importedRounds + 1) + "</option> "
+                "<option value='/" + data[i].eventId + "/rounds/" + (data[i].importedRounds + 1) + "'>" + data[i].name + " - Round " + (data[i].importedRounds + 1) + "</option> "
             );
         }
     }

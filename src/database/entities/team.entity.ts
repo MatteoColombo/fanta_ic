@@ -1,4 +1,4 @@
-import {  PrimaryGeneratedColumn, Column, ManyToMany, OneToOne, JoinTable, JoinColumn, Entity } from "typeorm";
+import { PrimaryGeneratedColumn, Column, ManyToMany, OneToOne, JoinTable, JoinColumn, Entity } from "typeorm";
 import { ITransformable } from "../interfaces/i-transformable";
 import { TeamModel } from "../../model/team";
 import { CuberEntity } from "./cuber.entity";
@@ -46,6 +46,17 @@ export class TeamEntity implements ITransformable<TeamModel>{
         this.name = origin.name;
         this.points = origin.points;
         this.rank = origin.rank;
+        if (origin.cubers) {
+            this.cubers = origin.cubers.map(cuber => {
+                let c: CuberEntity = new CuberEntity();
+                c.id = cuber.id;
+                return c;
+            })
+        }
+        if (origin.owner) {
+            this.owner = new UserEntity();
+            this.owner.id = origin.owner.id;
+        }
     }
 
 

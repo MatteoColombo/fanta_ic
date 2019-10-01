@@ -21,16 +21,16 @@ export async function importRound(req, res) {
         const eRepo: EventRepository = RepoManager.getEventRepo();
         const cRepo: CuberRepository = RepoManager.getCuberRepo();
         const rRepo: ResultRepository = RepoManager.getResultRepo();
-
+        console.log(req.params);
         const event: EventModel = await eRepo.getEvent(req.params.event);
         const compId = config.wca.competition_id;
         const json = await getWCALiveJSON(compId, req.params.event, req.params.round);
-        console.log("downloaded");
         const wResults = json.data.round.results;
         let results: ResultModel[] = [];
         for (let wr of wResults) {
             // Exclude foreign people and those who don't have results
-            if (wr.person.country.name !== config.game.country || (wr.best === 0 && wr.average === 0)) continue;
+            if (wr.person.country.name !== config.game.country) continue;
+            if (wr.best === 0) continue;
             let cuber: CuberModel = await cRepo.getCuberByName(wr.person.name);
             let result: ResultModel = new ResultModel();
             result.best = wr.best;
@@ -39,13 +39,11 @@ export async function importRound(req, res) {
             result.cuber = cuber.id;
             results.push(result);
         }
-        console.log(results);
         if (event.sortByAverage) {
             results.sort((a, b) => compareAverages(a, b));
         } else {
             results.sort((a, b) => compareBest(a, b));
         }
-        console.log(results);
 
         assignPositions(results);
         results = results.filter(r => r.rank <= config.game.at_points);
@@ -113,6 +111,7 @@ function assignPoints(arr: ResultModel[], event: EventModel, first: boolean) {
 
 async function insertResult(arr: ResultModel[], repo: ResultRepository) {
     for (let r of arr) {
+        if (!r.cuber) continue;
         await repo.insertResult(r, r.eventId, r.cuber);
     }
 }
@@ -127,7 +126,7 @@ async function updateCuberPoints(rRepo: ResultRepository, cRepo: CuberRepository
             cuber.points += results[i].points;
         }
         let r3: ResultModel = results.find(r => r.eventId === "333");
-        cuber.rank3 = r3 ? r3.rank : 0;
+        cuber.rank3 = r3 ? r3.rank : 99999;
         await cRepo.updatePoints(cuber.id, cuber.points, cuber.rank3);
     }
 }
@@ -184,14 +183,15 @@ function updateTeamsRank(teams: TeamModel[]) {
     }
 }
 
-async function saveTeamsRank(arr: TeamModel[], tRepo) {
+async function saveTeamsRank(arr: TeamModel[], tRepo: TeamRepository) {
     for (let team of arr) {
-        tRepo.updateTeamsRank(team.id, team.rank, team.points);
+        tRepo.updateTeamRank(team.id, team.rank, team.points);
     }
 }
 
 
 async function getWCALiveJSON(compId, eventId, roundNumber) {
+    console.log(compId, eventId, roundNumber);
     return request({
         json: true,
         method: "POST",

@@ -6,6 +6,7 @@ import { EventModel } from "../../model/event";
 
 export async function checkInputRequest(req, res, next) {
     const repo: EventRepository = RepoManager.getEventRepo();
+    console.log(req.params);
     const event: EventModel = await repo.getEvent(req.params.event);
     if (event.eventId) {
         const round: number = Number(req.params.round) || 0;

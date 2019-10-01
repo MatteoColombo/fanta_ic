@@ -10,10 +10,10 @@ import { CuberRepository } from "../../database/repos/cuber.repository";
 export async function checkNewTeam(req, res, next) {
     const cc = config.game.creation_closes;
     const co = config.game.creation_opens;
-    const close: Date = new Date(cc.year, cc.month, cc.day, cc.hour, cc.minute);
-    const open: Date = new Date(co.year, co.month, co.day, co.hour, co.minute);
+    const close: Date = new Date(cc.year, cc.month - 1, cc.day, cc.hour, cc.minute);
+    const open: Date = new Date(co.year, co.month - 1, co.day, co.hour, co.minute);
     const now: Date = new Date();
-    const user: number = Number(req.user.id);
+    const user: number = Number(req.user.id);;
     if (now < close && now > open) {
         try {
             let tRepo: TeamRepository = RepoManager.getTeamRepo();
@@ -61,8 +61,8 @@ export async function checkNewTeam(req, res, next) {
 export async function checkUpdateTeam(req, res, next) {
     const cc = config.game.creation_closes;
     const co = config.game.creation_opens;
-    const close: Date = new Date(cc.year, cc.month, cc.day, cc.hour, cc.minute);
-    const open: Date = new Date(co.year, co.month, co.day, co.hour, co.minute);
+    const close: Date = new Date(cc.year, cc.month - 1, cc.day, cc.hour, cc.minute);
+    const open: Date = new Date(co.year, co.month - 1, co.day, co.hour, co.minute);
     const now: Date = new Date();
     const user: number = Number(req.user.id);
     if (now < close && now > open) {

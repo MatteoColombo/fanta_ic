@@ -77,6 +77,10 @@ h1, h2, h3, h4 {
     color: #0275d8;
 }
 
+table a, p a{
+    color: #0f4470;
+}
+
 .admin-page .loading-data {
     margin-top: 40px;
 }
@@ -99,6 +103,7 @@ h1, h2, h3, h4 {
 
 .team-usr-img {
     max-width: 85px;
+    border-radius: 50%;
 }
 
 .team-usr-p {
