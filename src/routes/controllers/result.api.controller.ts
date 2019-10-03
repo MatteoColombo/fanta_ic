@@ -35,7 +35,7 @@ export async function importRound(req, res) {
             result.best = wr.best;
             result.average = wr.average;
             result.eventId = event.eventId;
-            result.cuber = cuber.id;
+            result.cuber = cuber ? cuber.id : null;
             results.push(result);
         }
         if (event.sortByAverage) {
