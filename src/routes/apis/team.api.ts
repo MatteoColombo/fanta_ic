@@ -1,7 +1,7 @@
 import { Router } from "express";
+import { newTeam, teamExists, updateTeam } from "../controllers/team.api.controller";
 import { isLoggedIn } from "../middlewares/auth.middleware";
 import { checkNewTeam, checkUpdateTeam, } from "../middlewares/team.middlewares";
-import { newTeam, updateTeam, teamExists } from "../controllers/team.api.controller";
 
 const router: Router = Router();
 

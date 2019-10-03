@@ -1,6 +1,5 @@
 import { autoserialize } from "cerialize";
 
-
 export class CuberModel {
 
     @autoserialize

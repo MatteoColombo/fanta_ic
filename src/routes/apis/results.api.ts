@@ -1,7 +1,7 @@
 import { Router } from "express";
+import { getImportableEvents, importRound } from "../controllers/result.api.controller";
 import { isOrganizer } from "../middlewares/auth.middleware";
 import { checkInputRequest } from "../middlewares/results.middleware";
-import { getImportableEvents, importRound } from "../controllers/result.api.controller";
 
 const router: Router = Router();
 

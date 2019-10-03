@@ -1,19 +1,18 @@
 import { AbstractRepository, EntityRepository } from "typeorm";
+import { CuberModel } from "../../model/cuber";
 import { CuberEntity } from "../entities/cuber.entity";
 import { ICuber } from "../interfaces/i-cuber";
-import { CuberModel } from "../../model/cuber";
-import { exists } from "fs";
 
 @EntityRepository(CuberEntity)
 export class CuberRepository extends AbstractRepository<CuberEntity> implements ICuber {
 
     public async getCuberById(id: number): Promise<CuberModel> {
-        let cuber: CuberEntity = await this.repository.findOne(id);
+        const cuber: CuberEntity = await this.repository.findOne(id);
         return this.entityToModel(cuber);
     }
 
     public async getCuberByName(name: string): Promise<CuberModel> {
-        let cuber: CuberEntity = await this.repository.findOne({ name: name });
+        const cuber: CuberEntity = await this.repository.findOne({ name });
         return this.entityToModel(cuber);
     }
 
@@ -24,7 +23,7 @@ export class CuberRepository extends AbstractRepository<CuberEntity> implements 
         } else {
             cubers = await this.repository.find({ order: { points: "DESC", name: "ASC" } });
         }
-        return cubers.map(c => this.entityToModel(c));
+        return cubers.map((c) => this.entityToModel(c));
     }
 
     public async updatePoints(cuber: number, points: number, rank3: number): Promise<CuberModel> {
@@ -48,48 +47,46 @@ export class CuberRepository extends AbstractRepository<CuberEntity> implements 
         return this.entityToModel(entity);
     }
 
-
     public async deleteCuber(cuber: CuberModel): Promise<void> {
         this.repository.delete(cuber.id);
     }
 
     public async cuberExists(id: number): Promise<boolean> {
-        let count: number = await this.repository.count({ id: id });
+        const count: number = await this.repository.count({ id });
         return count > 0;
     }
 
     public async cubersExist(ids: number[]): Promise<boolean> {
-        for (let id of ids) {
-            let exists: boolean = await this.cuberExists(id);
-            if (!exists) return false;
+        for (const id of ids) {
+            const exists: boolean = await this.cuberExists(id);
+            if (!exists) { return false; }
         }
         return true;
     }
 
     public async getCubersPrice(ids: number[]): Promise<number> {
         let sum = 0;
-        for (let id of ids) {
-            let cuber: CuberEntity = await this.repository.findOne(id);
+        for (const id of ids) {
+            const cuber: CuberEntity = await this.repository.findOne(id);
             sum += cuber.price;
         }
         return sum;
     }
 
-    initDefaults(): void {
+    public initDefaults(): void {
         throw new Error("Method not implemented.");
     }
 
     private entityToModel(origin: CuberEntity): CuberModel {
-        if (origin)
+        if (origin) {
             return origin._transform();
-        else return null;
+        } else { return null; }
     }
 
     private modelToEntity(origin: CuberModel): CuberEntity {
-        let entity: CuberEntity = new CuberEntity();
+        const entity: CuberEntity = new CuberEntity();
         entity._assimilate(origin);
         return entity;
     }
-
 
 }

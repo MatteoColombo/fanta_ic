@@ -3,10 +3,10 @@ import passport from "passport";
 import { Strategy as WCAStrategy } from "passport-wca";
 import { getCustomRepository } from "typeorm";
 import { UserEntity } from "../database/entities/user.entity";
+import { RepoManager } from "../database/repo-manager";
 import { UserRepository } from "../database/repos/user.repository";
 import { UserModel } from "../model/user";
 import { config } from "../secrets/config";
-import { RepoManager } from "../database/repo-manager";
 
 export function authMiddleWare(req, res, next) {
     if (process.env.NODE_ENV === "production") {
@@ -45,6 +45,6 @@ passport.serializeUser((user: UserModel, done) => {
 
 passport.deserializeUser(async (id: number, done) => {
     const repo: UserRepository = RepoManager.getUserRepo();
-    let user: UserModel = await repo.getUserById(id);
+    const user: UserModel = await repo.getUserById(id);
     done(null, user);
 });

@@ -1,17 +1,17 @@
-import { ITransformable } from "../interfaces/i-transformable";
-import { Column, ManyToOne, JoinTable, Entity } from "typeorm";
+import { Column, Entity, JoinTable, ManyToOne } from "typeorm";
 import { ResultModel } from "../../model/result";
+import { ITransformable } from "../interfaces/i-transformable";
 import { CuberEntity } from "./cuber.entity";
 import { EventEntity } from "./event.entity";
 
 @Entity()
-export class ResultEntity implements ITransformable<ResultModel>{
+export class ResultEntity implements ITransformable<ResultModel> {
 
-    @ManyToOne(type => CuberEntity, cuber => cuber.results, { primary: true })
+    @ManyToOne((type) => CuberEntity, (cuber) => cuber.results, { primary: true })
     @JoinTable()
     public cuber: CuberEntity;
 
-    @ManyToOne(type => EventEntity, event => event.results, { primary: true })
+    @ManyToOne((type) => EventEntity, (event) => event.results, { primary: true })
     @JoinTable()
     public event: EventEntity;
 
@@ -27,9 +27,8 @@ export class ResultEntity implements ITransformable<ResultModel>{
     @Column({ nullable: false, default: 0 })
     public average: number;
 
-
-    _transform(): ResultModel {
-        let model: ResultModel = new ResultModel();
+    public _transform(): ResultModel {
+        const model: ResultModel = new ResultModel();
         model.cuber = this.cuber.id;
         model.eventId = this.event.eventId;
         model.points = this.points;
@@ -39,7 +38,7 @@ export class ResultEntity implements ITransformable<ResultModel>{
         return model;
     }
 
-    _assimilate(origin: ResultModel): void {
+    public _assimilate(origin: ResultModel): void {
         this.cuber = new CuberEntity();
         this.cuber.id = origin.cuber;
         this.event = new EventEntity();
@@ -49,6 +48,5 @@ export class ResultEntity implements ITransformable<ResultModel>{
         this.best = origin.best;
         this.average = origin.average;
     }
-
 
 }

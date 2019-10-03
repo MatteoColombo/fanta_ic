@@ -1,5 +1,5 @@
-import { IRepo } from "./i-repo";
 import { CuberModel } from "../../model/cuber";
+import { IRepo } from "./i-repo";
 
 export interface ICuber extends IRepo {
 

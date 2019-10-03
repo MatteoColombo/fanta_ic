@@ -1,5 +1,5 @@
-import { IRepo } from "./i-repo";
 import { ResultModel } from "../../model/result";
+import { IRepo } from "./i-repo";
 
 export interface IResult extends IRepo {
 

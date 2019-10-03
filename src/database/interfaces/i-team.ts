@@ -1,5 +1,5 @@
-import { IRepo } from "./i-repo";
 import { TeamModel } from "../../model/team";
+import { IRepo } from "./i-repo";
 
 export interface ITeam extends IRepo {
 

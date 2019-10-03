@@ -1,5 +1,5 @@
-import { IRepo } from "./i-repo";
 import { EventModel } from "../../model/event";
+import { IRepo } from "./i-repo";
 
 export interface IEvent extends IRepo {
 

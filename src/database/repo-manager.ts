@@ -1,29 +1,29 @@
-import { UserRepository } from "./repos/user.repository";
-import { TeamRepository } from "./repos/team.repository";
-import { EventRepository } from "./repos/event.repository";
-import { CuberRepository } from "./repos/cuber.repository";
-import { ResultRepository } from "./repos/result.repository";
 import { getCustomRepository } from "typeorm";
+import { CuberRepository } from "./repos/cuber.repository";
+import { EventRepository } from "./repos/event.repository";
+import { ResultRepository } from "./repos/result.repository";
+import { TeamRepository } from "./repos/team.repository";
+import { UserRepository } from "./repos/user.repository";
 
 export class RepoManager {
 
-    static getUserRepo() {
+    public static getUserRepo() {
         return getCustomRepository(UserRepository);
     }
 
-    static getTeamRepo() {
+    public static getTeamRepo() {
         return getCustomRepository(TeamRepository);
     }
 
-    static getEventRepo() {
+    public static getEventRepo() {
         return getCustomRepository(EventRepository);
     }
 
-    static getCuberRepo() {
+    public static getCuberRepo() {
         return getCustomRepository(CuberRepository);
     }
 
-    static getResultRepo() {
+    public static getResultRepo() {
         return getCustomRepository(ResultRepository);
     }
 }

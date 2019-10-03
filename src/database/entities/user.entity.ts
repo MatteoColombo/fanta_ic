@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn, OneToOne } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryColumn } from "typeorm";
 import { UserModel } from "../../model/user";
 import { ITransformable } from "../interfaces/i-transformable";
 import { TeamEntity } from "./team.entity";
@@ -18,9 +18,8 @@ export class UserEntity implements ITransformable<UserModel> {
     @Column({ nullable: true })
     public wcaId: string;
 
-    @OneToOne(type => TeamEntity, team => team.owner)
+    @OneToOne((type) => TeamEntity, (team) => team.owner)
     public team: TeamEntity;
-
 
     public _transform(): UserModel {
         const model: UserModel = new UserModel();

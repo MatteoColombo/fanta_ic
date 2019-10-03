@@ -1,12 +1,11 @@
-import { EntityRepository, AbstractRepository, getCustomRepository } from "typeorm";
+import { AbstractRepository, EntityRepository, getCustomRepository } from "typeorm";
 import { UserModel } from "../../model/user";
 import { config } from "../../secrets/config";
-import { IUser } from "../interfaces/i-user";
 import { UserEntity } from "../entities/user.entity";
+import { IUser } from "../interfaces/i-user";
 
 @EntityRepository(UserEntity)
 export class UserRepository extends AbstractRepository<UserEntity> implements IUser {
-
 
     public async initDefaults(): Promise<void> {
         return;

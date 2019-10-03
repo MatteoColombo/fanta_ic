@@ -1,6 +1,6 @@
 import { Router } from "express";
+import { getCubers, getTeam, importCubers, importPrices } from "../controllers/person.api.controller";
 import { isOrganizer } from "../middlewares/auth.middleware";
-import { getCubers, importCubers, importPrices, getTeam } from "../controllers/person.api.controller";
 
 const router: Router = Router();
 

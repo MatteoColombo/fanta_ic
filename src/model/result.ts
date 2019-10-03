@@ -1,10 +1,9 @@
 import { autoserialize } from "cerialize";
 
-
 export class ResultModel {
 
     @autoserialize
-    public cuber: number
+    public cuber: number;
 
     @autoserialize
     public eventId: string;

@@ -1,11 +1,11 @@
-import { ITransformable } from "../interfaces/i-transformable";
-import { PrimaryGeneratedColumn, Column, ManyToMany, OneToMany, Entity } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { CuberModel } from "../../model/cuber";
-import { TeamEntity } from "./team.entity";
+import { ITransformable } from "../interfaces/i-transformable";
 import { ResultEntity } from "./result.entity";
+import { TeamEntity } from "./team.entity";
 
 @Entity()
-export class CuberEntity implements ITransformable<CuberModel>{
+export class CuberEntity implements ITransformable<CuberModel> {
 
     @PrimaryGeneratedColumn()
     public id: number;
@@ -28,15 +28,14 @@ export class CuberEntity implements ITransformable<CuberModel>{
     @Column({ nullable: true })
     public photoUrl: string;
 
-    @ManyToMany(type => TeamEntity, team => team.cubers)
+    @ManyToMany((type) => TeamEntity, (team) => team.cubers)
     public teams: TeamEntity[];
 
-    @OneToMany(type => ResultEntity, result => result.cuber)
+    @OneToMany((type) => ResultEntity, (result) => result.cuber)
     public results: ResultEntity[];
 
-
-    _transform(): CuberModel {
-        let model: CuberModel = new CuberModel();
+    public _transform(): CuberModel {
+        const model: CuberModel = new CuberModel();
         model.id = this.id;
         model.name = this.name;
         model.wcaId = this.wcaId;
@@ -47,7 +46,7 @@ export class CuberEntity implements ITransformable<CuberModel>{
         return model;
     }
 
-    _assimilate(origin: CuberModel): void {
+    public _assimilate(origin: CuberModel): void {
         this.id = origin.id;
         this.name = origin.name;
         this.wcaId = origin.wcaId;

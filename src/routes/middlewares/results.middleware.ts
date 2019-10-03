@@ -1,12 +1,10 @@
 import * as express from "express";
-import { EventRepository } from "../../database/repos/event.repository";
 import { RepoManager } from "../../database/repo-manager";
+import { EventRepository } from "../../database/repos/event.repository";
 import { EventModel } from "../../model/event";
-;
 
 export async function checkInputRequest(req, res, next) {
     const repo: EventRepository = RepoManager.getEventRepo();
-    console.log(req.params);
     const event: EventModel = await repo.getEvent(req.params.event);
     if (event.eventId) {
         const round: number = Number(req.params.round) || 0;
@@ -19,4 +17,3 @@ export async function checkInputRequest(req, res, next) {
         res.status(404).json({ error: "NOT_FOUND" });
     }
 }
-

@@ -1,9 +1,9 @@
-import { EntityRepository, AbstractRepository, MoreThanOrEqual } from "typeorm";
-import { IResult } from "../interfaces/i-result";
-import { ResultEntity } from "../entities/result.entity";
+import { AbstractRepository, EntityRepository, MoreThanOrEqual } from "typeorm";
 import { ResultModel } from "../../model/result";
-import { EventEntity } from "../entities/event.entity";
 import { CuberEntity } from "../entities/cuber.entity";
+import { EventEntity } from "../entities/event.entity";
+import { ResultEntity } from "../entities/result.entity";
+import { IResult } from "../interfaces/i-result";
 
 @EntityRepository(ResultEntity)
 export class ResultRepository extends AbstractRepository<ResultEntity> implements IResult {
@@ -20,19 +20,19 @@ export class ResultRepository extends AbstractRepository<ResultEntity> implement
     }
 
     public async getResultsByPerson(id: number): Promise<ResultModel[]> {
-        let results: ResultEntity[] = await this.repository.createQueryBuilder()
+        const results: ResultEntity[] = await this.repository.createQueryBuilder()
             .select("result").from(ResultEntity, "result")
             .innerJoinAndSelect("result.cuber", "cuber")
             .innerJoinAndSelect("result.event", "event")
-            .where("cuber.id = :id", { id: id }).getMany();
-        return results.map(r => r._transform());
+            .where("cuber.id = :id", { id }).getMany();
+        return results.map((r) => r._transform());
     }
 
     public async deleteResults(): Promise<void> {
         this.repository.delete({ points: MoreThanOrEqual(0) });
     }
 
-    initDefaults(): void {
+    public initDefaults(): void {
         return;
     }
 
