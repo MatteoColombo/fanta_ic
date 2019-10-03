@@ -21,7 +21,6 @@ export async function importRound(req, res) {
         const eRepo: EventRepository = RepoManager.getEventRepo();
         const cRepo: CuberRepository = RepoManager.getCuberRepo();
         const rRepo: ResultRepository = RepoManager.getResultRepo();
-        console.log(req.params);
         const event: EventModel = await eRepo.getEvent(req.params.event);
         const compId = config.wca.competition_id;
         const json = await getWCALiveJSON(compId, req.params.event, req.params.round);
@@ -99,12 +98,13 @@ function assignPositions(arr: ResultModel[]) {
     }
 }
 
-function assignPoints(arr: ResultModel[], event: EventModel, first: boolean) {
+export function assignPoints(arr: ResultModel[], event: EventModel, first: boolean) {
     for (let res of arr) {
         if (res.best <= 0 && first) {
             res.points = 0;
         } else {
             res.points = config.game.points[res.rank] * event.multiplicator;
+            console.log(res.points);
         }
     }
 }
@@ -137,7 +137,7 @@ function updateTeamPoints(teams: TeamModel[]) {
     }
 }
 
-function updateTeamsRank(teams: TeamModel[]) {
+export function updateTeamsRank(teams: TeamModel[]) {
     let prevPoints = 0;
     let prevRank = 0;
     let dupRank: Set<number> = new Set<number>();
@@ -147,7 +147,7 @@ function updateTeamsRank(teams: TeamModel[]) {
             teams[i].rank = prevRank;
             dupRank.add(prevRank);
         } else {
-            teams[i].rank = i + i;
+            teams[i].rank = i + 1;
             prevRank = i + 1;
             prevPoints = teams[i].points;
         }
@@ -162,8 +162,8 @@ function updateTeamsRank(teams: TeamModel[]) {
             let ca = a.cubers;
             let cb = b.cubers;
             for (let i = 0; i < ca.length; i++) {
-                if (ca[i] > cb[i]) return -1;
-                if (cb[i] > ca[i]) return 1;
+                if (ca[i].points > cb[i].points) return -1;
+                if (cb[i].points > ca[i].points) return 1;
             }
             let rank3B: number = ca.reduce((v, c) => c.rank3 < v ? c.rank3 : v, 999);
             let rank3A: number = cb.reduce((v, c) => c.rank3 < v ? c.rank3 : v, 999);

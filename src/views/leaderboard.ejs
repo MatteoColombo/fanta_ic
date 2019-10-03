@@ -18,9 +18,9 @@
             </thead>
             <tbody>
                 <% for(let team of teams) {%>
-                <tr <% if(team.position === 1){%> class="gold" <%} else if(team.position ===2) { %> class="silver"
-                    <% } else if(team.position === 3) { %> class="bronze" <% }%>>
-                    <th scope="row"><%= team.position %></th>
+                <tr <% if(team.rank === 1){%> class="gold" <%} else if(team.rank ===2) { %> class="silver"
+                    <% } else if(team.rank === 3) { %> class="bronze" <% }%>>
+                    <th scope="row"><%= team.rank %></th>
                     <td class="text-left a-lead">
                         <% if(open){%>
                         <a href="/team/<%=team.id%>"><%= team.name %></a>
