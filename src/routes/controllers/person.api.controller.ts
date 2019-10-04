@@ -123,8 +123,9 @@ export async function importPrices(req, res) {
             await cRepo.updatePrice(cuber.id, price < 10 ? 10 : price);
         }
         cubers = await cRepo.getCubers(true);
-
         res.status(200).json(cubers);
+        rRepo.deleteResults();
+
 
     } catch (e) {
         res.status(500).json({ error: "SERVER_ERROR" });

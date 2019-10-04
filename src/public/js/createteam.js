@@ -103,7 +103,7 @@ function printTeamMember(cuber, i) {
     var msg = "<div class=\"col-4 text-center team-usr\" id=\"tp" + i + "\">";
     msg += "<button class=\"team-rm btn btn-danger\" onclick=\"deselectCuber(" + cuber.id + ")\">X</button>";
     if (cuber.photoUrl) {
-        msg += "<img src=\"" + cuber.photoUrl + "\" class=\"img-fluid team-usr-img\">";
+        msg += "<img src=\"" + cuber.photoUrl + "\" class=\"img-fluid team-usr-img rounded-circle\">";
     } else {
         msg += "<img src=\"/public/img/user" + i + ".png\" class=\"img-fluid team-usr-img\">";
     }

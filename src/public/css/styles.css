@@ -102,8 +102,8 @@ table a, p a{
 }
 
 .team-usr-img {
-    max-width: 85px;
-    border-radius: 50%;
+    width: 85px;
+    height: 85px;
 }
 
 .team-usr-p {
@@ -150,16 +150,26 @@ table a, p a{
 }
 
 @media (max-width: 767px) {
+    .team-rm{
+        padding:6px;
+    }
+
     h2 {
         font-size: 24px;
     }
 }
 
 @media (max-width: 380px) {
+
+    .team-rm{
+        padding: 5px;
+    }
+
     h2 {
         font-size: 20px;
     }
     .team-usr-img {
-        max-width: 65px;
+        width: 65px;
+        height: 65px;
     }
 }

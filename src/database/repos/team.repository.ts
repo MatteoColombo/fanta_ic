@@ -36,7 +36,7 @@ export class TeamRepository extends AbstractRepository<TeamEntity> implements IT
     }
 
     public async getTeams(): Promise<TeamModel[]> {
-        const teams: TeamEntity[] = await this.repository.find({ order: { rank: "ASC", name: "ASC" } });
+        const teams: TeamEntity[] = await this.repository.find({ order: { rank: "ASC", name: "ASC" }, relations: ["owner"] });
         return teams.map((t) => this.entityToModel(t));
     }
 
