@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $.getJSON("/api/persons", function (data) {
+    $.getJSON("/api/cubers", function (data) {
         populateTable(data);
         if (data.length > 0) {
             $('#importdata').prop("disabled", true);
@@ -14,7 +14,7 @@ $(document).ready(function () {
     $('#importdata').click(function () {
         $('#progress').removeClass("d-none");
         $('#importdata').prop("disabled", true);
-        $.get("/api/persons/import", function (data) {
+        $.get("/api/cubers/import", function (data) {
             $('#progress').addClass("d-none");
             populateTable(data);
         });
@@ -23,7 +23,7 @@ $(document).ready(function () {
     $('#computeprices').click(function () {
         $('#progress').removeClass("d-none");
         $('#computeprices').prop("disabled", true);
-        $.get("/api/persons/import/prices", function (data) {
+        $.get("/api/cubers/import/prices", function (data) {
             $('#progress').addClass("d-none");
             populateTable(data);
         });
@@ -33,8 +33,10 @@ $(document).ready(function () {
         var tab = $('#persons');
         tab.empty();
         for (var i = 0; i < data.length; i++) {
-            tab.append("<tr><td>" +
+            tab.append("<tr><td class=\"text-left\">" +
+                (data[i].wcaId ? "<a href=\"https://www.worldcubeassociation.org/persons/" + data[i].wcaId + "\">" : "") +
                 data[i].name +
+                (data[i].wcaId ? "<\a>" : "") +
                 "</td><td>" +
                 data[i].price +
                 "</td></tr>");

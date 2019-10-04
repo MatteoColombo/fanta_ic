@@ -1,6 +1,7 @@
-import { BaseEntity, Connection, createConnection, getCustomRepository } from "typeorm";
-import { BaseCommonRepository } from "./BaseCommonRepository";
-import { Bootstrap } from "./bootstrap";
+import { Connection, createConnection, } from "typeorm";
+import { IRepo } from "./interfaces/i-repo";
+import { RepoManager } from "./repo-manager";
+import { EventRepository } from "./repos/event.repository";
 
 export class Database {
 
@@ -18,11 +19,8 @@ export class Database {
     }
 
     public async initDatabase(): Promise<void> {
-        const repos: Array<BaseCommonRepository<BaseEntity>> = Bootstrap();
-        for (const repo of repos) {
-            await repo.InitDefaults();
-        }
-
+        const repo: EventRepository = RepoManager.getEventRepo();
+        await repo.initDefaults();
         return;
     }
 

@@ -1,5 +1,6 @@
 import { autoserialize, autoserializeAs } from "cerialize";
-import { PersonModel } from "./person";
+import { CuberModel } from "./cuber";
+import { UserModel } from "./user";
 
 export class TeamModel {
 
@@ -13,15 +14,11 @@ export class TeamModel {
     public points: number;
 
     @autoserialize
-    public position: number;
+    public rank: number;
 
-    @autoserialize
-    public ownerId: number;
+    @autoserializeAs(CuberModel)
+    public cubers: CuberModel[];
 
-    @autoserialize
-    public ownerName: string;
-
-    @autoserializeAs(PersonModel)
-    public cubers: PersonModel[];
-
+    @autoserializeAs(UserModel)
+    public owner: UserModel;
 }

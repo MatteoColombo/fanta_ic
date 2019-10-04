@@ -21,7 +21,7 @@ export function isLoggedInWR(req: express.Request, res: express.Response, next) 
     if (req.isAuthenticated()) {
         next();
     } else {
-        res.redirect("/login")
+        res.redirect("/login");
     }
 }
 

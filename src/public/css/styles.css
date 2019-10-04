@@ -77,6 +77,10 @@ h1, h2, h3, h4 {
     color: #0275d8;
 }
 
+table a, p a{
+    color: #0f4470;
+}
+
 .admin-page .loading-data {
     margin-top: 40px;
 }
@@ -98,7 +102,8 @@ h1, h2, h3, h4 {
 }
 
 .team-usr-img {
-    max-width: 85px;
+    width: 85px;
+    height: 85px;
 }
 
 .team-usr-p {
@@ -145,16 +150,26 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 767px) {
+    .team-rm{
+        padding:6px;
+    }
+
     h2 {
         font-size: 24px;
     }
 }
 
 @media (max-width: 380px) {
+
+    .team-rm{
+        padding: 5px;
+    }
+
     h2 {
         font-size: 20px;
     }
     .team-usr-img {
-        max-width: 65px;
+        width: 65px;
+        height: 65px;
     }
 }

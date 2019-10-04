@@ -1,57 +1,59 @@
-import { BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { PersonModel } from "../../model/person";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { TeamModel } from "../../model/team";
-import { ITransformable } from "../transformable.interface";
-import { PersonEntity } from "./person.entity";
+import { ITransformable } from "../interfaces/i-transformable";
+import { CuberEntity } from "./cuber.entity";
 import { UserEntity } from "./user.entity";
 
 @Entity()
-export class TeamEntity extends BaseEntity implements ITransformable<TeamModel> {
+export class TeamEntity implements ITransformable<TeamModel> {
 
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column({ nullable: false, unique: true })
+    @Column({ nullable: false })
     public name: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: false, default: 0 })
     public points: number;
 
-    @Column({ nullable: true, default: 0 })
-    public position: number;
+    @Column({ nullable: false, default: 0 })
+    public rank: number;
 
-    @ManyToMany((type) => PersonEntity, { eager: true })
+    @ManyToMany((type) => CuberEntity, (cuber) => cuber.teams, { eager: true, onDelete: "CASCADE" })
     @JoinTable()
-    public cubers: PersonEntity[];
+    public cubers: CuberEntity[];
 
     @OneToOne((type) => UserEntity, (user) => user.team)
-    public user: UserEntity;
+    @JoinColumn()
+    public owner: UserEntity;
 
     public _transform(): TeamModel {
-        const model = new TeamModel();
+        const model: TeamModel = new TeamModel();
         model.id = this.id;
         model.name = this.name;
         model.points = this.points;
-        model.position = this.position;
-        model.cubers = this.cubers.map((c: PersonEntity) => c._transform());
-        if (this.user) {
-            model.ownerId = this.user.id;
-            model.ownerName = this.user.name;
-        }
+        model.rank = this.rank;
+        model.cubers = this.cubers ? this.cubers.map((c) => c._transform()) : [];
+        model.owner = this.owner ? this.owner._transform() : null;
         return model;
-    }
 
-    public _assimilate(origin: TeamModel) {
+    }
+    public _assimilate(origin: TeamModel): void {
         this.id = origin.id;
         this.name = origin.name;
-        this.points = origin.points || 0;
+        this.points = origin.points;
+        this.rank = origin.rank;
         if (origin.cubers) {
-            this.cubers = origin.cubers.map((c: PersonModel) => {
-                const temp: PersonEntity = new PersonEntity();
-                temp._assimilate(c);
-                return temp;
+            this.cubers = origin.cubers.map((cuber) => {
+                const c: CuberEntity = new CuberEntity();
+                c.id = cuber.id;
+                return c;
             });
         }
-
+        if (origin.owner) {
+            this.owner = new UserEntity();
+            this.owner.id = origin.owner.id;
+        }
     }
+
 }

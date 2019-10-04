@@ -3,6 +3,7 @@ import passport from "passport";
 import { Strategy as WCAStrategy } from "passport-wca";
 import { getCustomRepository } from "typeorm";
 import { UserEntity } from "../database/entities/user.entity";
+import { RepoManager } from "../database/repo-manager";
 import { UserRepository } from "../database/repos/user.repository";
 import { UserModel } from "../model/user";
 import { config } from "../secrets/config";
@@ -32,10 +33,10 @@ export function authMiddleWare(req, res, next) {
 }
 
 async function loginCallback(accessToken, refreshToken, profile, done) {
-    const user: UserModel = Deserialize(profile._json.me, UserModel);
-    const repo: UserRepository = getCustomRepository(UserRepository);
-    const entity: UserEntity = await repo.saveUser(user);
-    done(null, entity._transform());
+    let user: UserModel = Deserialize(profile._json.me, UserModel);
+    const repo: UserRepository = RepoManager.getUserRepo();
+    user = await repo.saveUser(user);
+    done(null, user);
 }
 
 passport.serializeUser((user: UserModel, done) => {
@@ -43,7 +44,7 @@ passport.serializeUser((user: UserModel, done) => {
 });
 
 passport.deserializeUser(async (id: number, done) => {
-    const userRepo: UserRepository = getCustomRepository(UserRepository);
-    const dbUser: UserEntity = await  userRepo.getUserById(id);
-    done(null, dbUser._transform());
+    const repo: UserRepository = RepoManager.getUserRepo();
+    const user: UserModel = await repo.getUserById(id);
+    done(null, user);
 });

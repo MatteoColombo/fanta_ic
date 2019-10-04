@@ -1,10 +1,10 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryColumn } from "typeorm";
 import { UserModel } from "../../model/user";
-import { ITransformable } from "../transformable.interface";
+import { ITransformable } from "../interfaces/i-transformable";
 import { TeamEntity } from "./team.entity";
 
 @Entity()
-export class UserEntity extends BaseEntity implements ITransformable<UserModel> {
+export class UserEntity implements ITransformable<UserModel> {
 
     @PrimaryColumn({ nullable: false })
     public id: number;
@@ -15,8 +15,10 @@ export class UserEntity extends BaseEntity implements ITransformable<UserModel> 
     @Column({ nullable: false, default: false })
     public isOrganizer: boolean;
 
-    @OneToOne((type) => TeamEntity, { cascade: true })
-    @JoinColumn()
+    @Column({ nullable: true })
+    public wcaId: string;
+
+    @OneToOne((type) => TeamEntity, (team) => team.owner)
     public team: TeamEntity;
 
     public _transform(): UserModel {
