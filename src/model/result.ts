@@ -19,4 +19,10 @@ export class ResultModel {
 
     @autoserialize
     public average: number;
+
+    @autoserialize
+    public singleRecord: number = 0;
+
+    @autoserialize
+    public averageRecord: number = 0;
 }

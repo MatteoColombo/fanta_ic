@@ -27,6 +27,13 @@ export class ResultEntity implements ITransformable<ResultModel> {
     @Column({ nullable: false, default: 0 })
     public average: number;
 
+    @Column({ nullable: false, default: 0 })
+    public singleRecord: number;
+
+    @Column({ nullable: false, default: 0 })
+    public averageRecord: number;
+
+
     public _transform(): ResultModel {
         const model: ResultModel = new ResultModel();
         model.cuber = this.cuber.id;
@@ -35,6 +42,8 @@ export class ResultEntity implements ITransformable<ResultModel> {
         model.rank = this.rank;
         model.best = this.best;
         model.average = this.average;
+        model.averageRecord = this.averageRecord;
+        model.singleRecord = this.singleRecord;
         return model;
     }
 
@@ -47,6 +56,8 @@ export class ResultEntity implements ITransformable<ResultModel> {
         this.rank = origin.rank;
         this.best = origin.best;
         this.average = origin.average;
+        this.averageRecord = origin.averageRecord;
+        this.singleRecord = origin.singleRecord;
     }
 
 }

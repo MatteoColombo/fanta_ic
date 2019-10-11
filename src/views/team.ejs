@@ -34,10 +34,14 @@
             <% for(let i=0;i<team.cubers.length;i++){
                 let cuber = team.cubers[i]; %>
             <div class="col-4 text-center team-usr">
-                <img src="/public/img/user<%=i%>.png" class="img-fluid team-usr-img">
-                <p class="team-usr-p tpname"><%=cuber.name%></p>
-                <p class="tpprice\">Prezzo: <%=cuber.price%>€</p>
-                <p class="tpprice\">Punti: <strong><%=cuber.points%></strong></p>
+                <% if(cuber.photoUrl){%>
+                <img src="<%- cuber.photoUrl %>" class="img-fluid team-usr-img rounded-image">
+                <%}else {%>
+                <img src="/public/img/user<%=i%>.png" class="img-fluid team-usr-img rounded-image">
+                <}%>
+                    <p class="team-usr-p tpname"><%=cuber.name%></p>
+                    <p class="tpprice\">Prezzo: <%=cuber.price%>€</p>
+                    <p class="tpprice\">Punti: <strong><%=cuber.points%></strong></p>
             </div>
             <%}%>
         </div>

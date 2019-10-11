@@ -36,6 +36,18 @@ export async function importRound(req, res) {
             result.average = wr.average;
             result.eventId = event.eventId;
             result.cuber = cuber ? cuber.id : null;
+            if (wr.recordTags.single) {
+                if (wr.recordTags.single === "NR")
+                    result.singleRecord = 1;
+                if (["WR", "ER", "SAR", "NAR", "AsR", "AfR", "OcR"].find(r => r === wr.recordTags.single))
+                    result.singleRecord = 3;
+            }
+            if (wr.recordTags.average) {
+                if (wr.recordTags.average === "NR")
+                    result.averageRecord = 1;
+                if (["WR", "ER", "SAR", "NAR", "AsR", "AfR", "OcR"].find(r => r === wr.recordTags.average))
+                    result.averageRecord = 3;
+            }
             results.push(result);
         }
         if (event.sortByAverage) {
@@ -45,7 +57,6 @@ export async function importRound(req, res) {
         }
 
         assignPositions(results);
-        results = results.filter((r) => r.rank <= config.game.at_points);
         assignPoints(results, event, event.importedRounds === 0);
         await insertResult(results, rRepo);
         await updateCuberPoints(rRepo, cRepo);
@@ -99,10 +110,14 @@ function assignPositions(arr: ResultModel[]) {
 
 export function assignPoints(arr: ResultModel[], event: EventModel, first: boolean) {
     for (const res of arr) {
-        if (res.best <= 0 && first) {
+        if (res.rank > config.game.at_points) {
             res.points = 0;
         } else {
-            res.points = config.game.points[res.rank] * event.multiplicator;
+            if (res.best <= 0 && first) {
+                res.points = 0;
+            } else {
+                res.points = config.game.points[res.rank] * event.multiplicator;
+            }
         }
     }
 }
@@ -123,6 +138,8 @@ async function updateCuberPoints(rRepo: ResultRepository, cRepo: CuberRepository
         for (let i = 0; i < Math.min(results.length, config.game.best_n_placements_to_consider); i++) {
             cuber.points += results[i].points;
         }
+        let records: number = results.reduce((v, r) => v + (r.singleRecord + r.average), 0) * 50;
+        cuber.points += Math.min(150, records);
         const r3: ResultModel = results.find((r) => r.eventId === "333");
         cuber.rank3 = r3 ? r3.rank : 99999;
         await cRepo.updatePoints(cuber.id, cuber.points, cuber.rank3);
@@ -191,7 +208,7 @@ async function getWCALiveJSON(compId, eventId, roundNumber) {
     return request({
         body: {
             operationName: "Round",
-            query: "query Round($competitionId: ID!, $roundId: ID!) {\nround(competitionId: $competitionId, roundId: $roundId) {\n id\n name\n results {\n ranking\n best\n average\n person {\n wcaId\n name\n country {\n name\n}\n}\n}\n}\n}\n",
+            query: "query Round($competitionId: ID!, $roundId: ID!) {\nround(competitionId: $competitionId, roundId: $roundId) {\n id\n name\n results {\n ranking\n best\n average\n person {\n wcaId\n name\n country {\n name\n}\n} recordTags {\n single\n average\n}\n}\n}\n}\n",
             variables: { competitionId: compId, roundId: `${eventId}-r${roundNumber}` }
         },
         json: true,
