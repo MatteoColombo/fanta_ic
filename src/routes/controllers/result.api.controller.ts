@@ -138,9 +138,8 @@ async function updateCuberPoints(rRepo: ResultRepository, cRepo: CuberRepository
         for (let i = 0; i < Math.min(results.length, config.game.best_n_placements_to_consider); i++) {
             cuber.points += results[i].points;
         }
-        let records: number = results.reduce((v, r) => v + (r.singleRecord + r.averageRecord), 0) * 50;
-        console.log(records);
-        cuber.points += Math.min(150, records);
+        let records: number = results.reduce((v, r) => v + (r.singleRecord + r.averageRecord), 0) * 100;
+        cuber.points += Math.min(300, records);
         const r3: ResultModel = results.find((r) => r.eventId === "333");
         cuber.rank3 = r3 ? r3.rank : 99999;
         await cRepo.updatePoints(cuber.id, cuber.points, cuber.rank3);

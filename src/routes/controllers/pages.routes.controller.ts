@@ -19,7 +19,6 @@ export function renderRules(req, res) {
 export async function renderLeaderboard(req, res) {
     const repo: TeamRepository = RepoManager.getTeamRepo();
     const teams: TeamModel[] = await repo.getTeams();
-    //TODO add privacy
     const cc = config.game.creation_closes;
     const creationCloses: Date = new Date(cc.year, (cc.month - 1), cc.day, cc.hour, cc.minute);
     const today: Date = new Date();
@@ -51,7 +50,7 @@ export async function renderMyTeamPage(req, res) {
                 user: req.user
             });
         } else {
-
+            res.redirect("/classifica");
         }
     } else if (today < creationOpens) {
         res.render("error404", { title: "Errore", user: req.user });
@@ -104,7 +103,6 @@ export async function renderAdminPage(req, res) {
     } else {
         const tRepo: TeamRepository = RepoManager.getTeamRepo();
         const teams: TeamModel[] = await tRepo.getTeams();
-        console.log(teams[0]);
         res.render("adminpage", {
             import_data: false,
             import_results: false,
