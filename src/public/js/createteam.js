@@ -70,7 +70,7 @@ $(document).ready(function () {
 });
 
 function filterList(query) {
-    filteredCubers = cubers.filter(p => p.name.toLowerCase().startsWith(query.toLowerCase()));
+    filteredCubers = cubers.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
     printCubersList();
 }
 

@@ -1,6 +1,6 @@
 export const config = {
     wca: {
-        competition_id: "RoadtoICMonterotondo2019",
+        competition_id: "ItalianChampionship2019",
         dev: {
             login_redirect_uri: "http://localhost:4200/api/auth/login/callback",
             user_agent: "http://localhost:4200",

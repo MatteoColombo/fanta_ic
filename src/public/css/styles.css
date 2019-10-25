@@ -77,7 +77,7 @@ h1, h2, h3, h4 {
     color: #0275d8;
 }
 
-table a, p a{
+table a, p a {
     color: #0f4470;
 }
 
@@ -112,9 +112,9 @@ table a, p a{
     margin-bottom: 5px;
 }
 
-.team-selector{
+.team-selector {
     max-height: 474px;
-    overflow-y:scroll;
+    overflow-y: scroll;
 }
 
 .list-group-item p {
@@ -131,15 +131,15 @@ table a, p a{
     font-weight: 600;
 }
 
-.breadcrumb{
+.breadcrumb {
     background-color: transparent;
 }
 
-.breadcrumb .breadcrumb-item a{
+.breadcrumb .breadcrumb-item a {
     color: #0275d8;
 }
 
-.breadcrumb .active{
+.breadcrumb .active {
     color: #000;
 }
 
@@ -147,24 +147,29 @@ table a, p a{
     #importdata, #computeprices {
         width: 100%;
     }
+    td, th {
+        padding-left: 7px !important;
+        padding-right: 7px !important;
+    }
 }
 
 @media (max-width: 767px) {
-    .team-rm{
-        padding:6px;
+    .team-rm {
+        padding: 6px;
     }
-
     h2 {
         font-size: 24px;
     }
 }
 
 @media (max-width: 380px) {
-
-    .team-rm{
+    td, th {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+    .team-rm {
         padding: 5px;
     }
-
     h2 {
         font-size: 20px;
     }

@@ -29,7 +29,7 @@ export async function checkNewTeam(req, res, next) {
             const nameExists: boolean = await tRepo.teamNameIsUsed(team.name, user);
             if (nameExists) { throw new Error("NAME_ALREADY_USED"); }
 
-            if (team.name.match(/^[A-Za-z0-9àèéìòùÀÈÉÌÒÙ!\s]+$/) ? false : true) { throw new Error("BAD_NAME"); }
+            if (team.name.match(/^[A-Za-z0-9àèéìòùÀÈÉÌÒÙ!\s]+$/) && team.name.length <= 80 ? false : true) { throw new Error("BAD_NAME"); }
 
             team.cubers = req.body.team.cubers.reduce((arr, c) => {
                 const index: number = arr.findIndex((cuber) => cuber.id === c.id);
@@ -79,7 +79,7 @@ export async function checkUpdateTeam(req, res, next) {
             const nameExists: boolean = await tRepo.teamNameIsUsed(team.name, user);
             if (nameExists) { throw new Error("NAME_ALREADY_USED"); }
 
-            if (team.name.match(/^[A-Za-z0-9àèéìòùÀÈÉÌÒÙ!\s]+$/) ? false : true) { throw new Error("BAD_NAME"); }
+            if (team.name.match(/^[A-Za-z0-9àèéìòùÀÈÉÌÒÙ!\s]+$/) && team.name.length <= 80 ? false : true) { throw new Error("BAD_NAME"); }
 
             team.cubers = req.body.team.cubers.reduce((arr, c) => {
                 const index: number = arr.findIndex((cuber) => cuber.id === c.id);

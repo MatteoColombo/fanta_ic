@@ -29,7 +29,7 @@ export async function updateTeam(req, res) {
 export async function teamExists(req, res) {
     const query: string = (req.query.name || "").trim();
     if (query !== "") {
-        if (query.match(/^[A-Za-z0-9àèéìòùÀÈÉÌÒÙ!\s]+$/) ? false : true) {
+        if (query.match(/^[A-Za-z0-9àèéìòùÀÈÉÌÒÙ!\s]+$/) && query.length <= 80 ? false : true) {
             res.status(200).json({ exists: true });
         } else {
             const repo: TeamRepository = RepoManager.getTeamRepo();

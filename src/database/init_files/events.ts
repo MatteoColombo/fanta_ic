@@ -7,7 +7,7 @@ export const events: Array<{ id: string, name: string, multiplicator: number, ro
     { id: "666", name: "Cubo 6x6x6", multiplicator: 1, rounds: 1, sortByAverage: true },
     { id: "777", name: "Cubo 7x7x7", multiplicator: 1, rounds: 1, sortByAverage: true },
     { id: "333bf", name: "3x3x3 BLD", multiplicator: 1.5, rounds: 2, sortByAverage: false },
-    { id: "333fm", name: "3x3x3 FMC", multiplicator: 1, rounds: 1, sortByAverage: false },
+    { id: "333fm", name: "3x3x3 FMC", multiplicator: 1, rounds: 1, sortByAverage: true },
     { id: "333oh", name: "3x3x3 OH", multiplicator: 1.25, rounds: 2, sortByAverage: true },
     { id: "minx", name: "Megaminx", multiplicator: 1, rounds: 2, sortByAverage: true },
     { id: "pyram", name: "Pyraminx", multiplicator: 1.25, rounds: 2, sortByAverage: true },
