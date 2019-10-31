@@ -3,14 +3,17 @@
 
 <h1 class="home-msg text-center"><%= team.name %></h1>
 
-
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/classifica">Classifica</a></li>
         <li class="breadcrumb-item active" aria-current="page">Team</li>
     </ol>
 </nav>
-<div class="row">
+
+
+<h2 class="text-center">Proprietario: <%=team.owner.name%></h2>
+
+<div class="row first-elem">
 
     <div class="col-lg-8 offset-lg-2 ">
         <div class="row">
@@ -35,13 +38,13 @@
                 let cuber = team.cubers[i]; %>
             <div class="col-4 text-center team-usr">
                 <% if(cuber.photoUrl){%>
-                <img src="<%- cuber.photoUrl %>" class="img-fluid team-usr-img rounded-image">
+                <img src="<%- cuber.photoUrl %>" class="img-fluid team-usr-img rounded-circle">
                 <%}else {%>
-                <img src="/public/img/user<%=i%>.png" class="img-fluid team-usr-img rounded-image">
-                <}%>
+                <img src="/public/img/user<%=i%>.png" class="img-fluid team-usr-img">
+                <%}%>
                     <p class="team-usr-p tpname"><%=cuber.name%></p>
-                    <p class="tpprice\">Prezzo: <%=cuber.price%>€</p>
-                    <p class="tpprice\">Punti: <strong><%=cuber.points%></strong></p>
+                <p class="tpprice\">Prezzo: <%=cuber.price%>€</p>
+                <p class="tpprice\">Punti: <strong><%=cuber.points%></strong></p>
             </div>
             <%}%>
         </div>

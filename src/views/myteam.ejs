@@ -13,12 +13,12 @@
             <div class="col-lg-4 row">
                 <p class="col-9" style="margin-bottom: 10px"><strong>BUDGET:</strong></p>
                 <p class="col-3 text-right" style="margin-bottom:10px"><strong
-                        id="remaining-credits"><%=credits%></strong>€
+                        id="remaining-credits"><%= credits %></strong>€
                 </p>
                 <div class="col-12">
                     <div class="progress">
                         <div class="progress-bar bg-success" role="progressbar" id="credits-indicator"
-                            style="width: <%=perc%>%" aria-valuemin="0" aria-valuemax="100"></div>
+                            style="width: <%= perc %>%" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
             </div>
@@ -28,10 +28,10 @@
                 let cuber = team.cubers[i]; %>
             <div class="col-4 text-center team-usr">
                 <% if(cuber.photoUrl){%>
-                <img src="<%- cuber.photoUrl %>" class="img-fluid team-usr-img rounded-image">
+                <img src="<%- cuber.photoUrl %>" class="img-fluid team-usr-img rounded-circle">
                 <%}else {%>
-                <img src="/public/img/user<%=i%>.png" class="img-fluid team-usr-img rounded-image">
-                <}%>
+                <img src="/public/img/user<%=i%>.png" class="img-fluid team-usr-img">
+                <%}%>
                     <p class="team-usr-p tpname"><%=cuber.name%></p>
                     <p class="tpprice\"><%=cuber.price%>€</p>
             </div>

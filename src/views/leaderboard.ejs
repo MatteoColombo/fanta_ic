@@ -13,6 +13,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col" class="text-left">Team</th>
+                    <th scope="col" class="text-left d-none d-sm-block">Proprietario</th>
                     <th scope="col">Punti</th>
                 </tr>
             </thead>
@@ -20,7 +21,11 @@
                 <% for(let team of teams) {%>
                 <tr <% if(team.rank === 1){%> class="gold" <%} else if(team.rank ===2) { %> class="silver"
                     <% } else if(team.rank === 3) { %> class="bronze" <% }%>>
-                    <th scope="row"><%= team.rank %></th>
+                    <% if(team.rank === 0) {%>
+                        <th scope="row">1</th>
+                    <%} else {%>
+                        <th scope="row"><%= team.rank %></th>
+                    <%}%>
                     <td class="text-left a-lead">
                         <% if(open){%>
                         <a href="/team/<%=team.id%>"><%= team.name %></a>
@@ -28,6 +33,7 @@
                         <%= team.name %>
                         <% } %>
                     </td>
+                    <td class="text-left d-none d-sm-block"><%=team.owner.name%></td>
                     <td><%= team.points %></td>
                 </tr>
                 <% } %>

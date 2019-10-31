@@ -23,7 +23,7 @@ export class TeamEntity implements ITransformable<TeamModel> {
     @JoinTable()
     public cubers: CuberEntity[];
 
-    @OneToOne((type) => UserEntity, (user) => user.team)
+    @OneToOne((type) => UserEntity, (user) => user.team, { eager: true })
     @JoinColumn()
     public owner: UserEntity;
 

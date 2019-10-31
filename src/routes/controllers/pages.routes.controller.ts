@@ -43,9 +43,9 @@ export async function renderMyTeamPage(req, res) {
             const credits: number = max - team.cubers.reduce((v, p) => v + p.price, 0);
             const perc: number = (credits) / max * 100;
             res.render("myteam", {
-                credits,
-                perc,
-                team,
+                credits:credits,
+                perc:perc,
+                team:team,
                 title: "Il mio Team - FantaIC",
                 user: req.user
             });
