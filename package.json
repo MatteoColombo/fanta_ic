@@ -63,7 +63,7 @@
     "reflect-metadata": "^0.1.13",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "typeorm": "^0.2.18",
+    "typeorm": "^0.2.25",
     "typeorm-store": "^1.2.0",
     "mysql2": "^1.6.5"
   }
